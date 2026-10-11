@@ -1,0 +1,2715 @@
+diff --git a/research/lean-whole-residual-hosting/AUDIT.json b/research/lean-whole-residual-hosting/AUDIT.json
+new file mode 100644
+index 0000000..4820e81
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/AUDIT.json
+@@ -0,0 +1,85 @@
++{
++  "audit_completed_utc": "2026-10-11T22:12:37.864870+00:00",
++  "base": {
++    "repository": "https://github.com/CrocSwap/integer-mult-bounds",
++    "main": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++    "local_branch": "lean/single-stream-interface-obstruction"
++  },
++  "instructions": {
++    "AGENTS.md": "None found in workspace/repository search",
++    "CONTRIBUTING.md": {
++      "sha256": "1211e3bf0be7945690efb79539e96f13f45b24311c8c0e4200ae4ee72315eaf7",
++      "followed": "Pinned pending sources; reviewed contribution index; preserved attribution and upstream files; disclosed AI assistance; scoped mathematical and finite checks separately. Repository test outcomes, including baseline blocker, are in VALIDATION.md."
++    }
++  },
++  "target": {
++    "pr": 442,
++    "commit": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd",
++    "written_obligation": "research/idle-axis-hosting/PROOF.md \u00a72: move whole residuals through an admissible complete invocation window and absorb into the pending child. Bit case only.",
++    "why_bounded": "A finite-list operator identity and concrete Fin 64 masks can be proved independently of the inherited all-size compiler, while keeping the complete endpoint and physical ownership/chart contracts explicit."
++  },
++  "required_other_pins": {
++    "PR397": "cb6455fa1e9af68be47c33948d3d1a6f0717a5e4",
++    "PR448": "359022bcd71143e45d48def0dd005bf67f339aa7",
++    "Jacob_Sussman": "9c94857bbaee886f8649edee0bc2d3c738f9555e"
++  },
++  "source_fixture": "pinned-window.json",
++  "relevant_existing_lean": [
++    {
++      "purpose": "Coordinate factor algebra",
++      "path": "Work/GFrame/Clifford/Core.lean",
++      "sha256": "4aaacd2ab72b5cd627c619f7083595a3c82f781dd24eb92d9c28a9ef424b3285",
++      "url": "https://github.com/jacobalansussman/wht-power-saving-lean/blob/9c94857bbaee886f8649edee0bc2d3c738f9555e/Work/GFrame/Clifford/Core.lean"
++    },
++    {
++      "purpose": "Window factor algebra",
++      "path": "Work/BridgeGeom/Stage.lean",
++      "sha256": "f3f831c2f36612f54e53f4d60ae2d8f3b44ca7fc83b5445621b3d9839e688941",
++      "url": "https://github.com/jacobalansussman/wht-power-saving-lean/blob/9c94857bbaee886f8649edee0bc2d3c738f9555e/Work/BridgeGeom/Stage.lean"
++    },
++    {
++      "purpose": "Full language permits cross-role updates",
++      "path": "Work/Block/Word.lean",
++      "sha256": "7bf08ae84f79761bda635ffc207ef460058cbbe7eb675c7d7cd1af05f600473d",
++      "url": "https://github.com/jacobalansussman/wht-power-saving-lean/blob/9c94857bbaee886f8649edee0bc2d3c738f9555e/Work/Block/Word.lean"
++    },
++    {
++      "purpose": "Physical routes are role-local or framed cross-role maps",
++      "path": "Work/GFrame/Engine/Route.lean",
++      "sha256": "183ba200d92faf67fa41fdaa011980e7674e6f878b3c1f0da028c3f85f4ddc11",
++      "url": "https://github.com/jacobalansussman/wht-power-saving-lean/blob/9c94857bbaee886f8649edee0bc2d3c738f9555e/Work/GFrame/Engine/Route.lean"
++    }
++  ],
++  "prior_inspection": {
++    "audit": "../lean-single-stream-obstruction/AUDIT.json",
++    "scope": "All 502 PR titles/bodies at first snapshot, main Lean dirty wrapper, PR397 scalar bridge (fresh replay), PR430 structural interface audit, PR487/488 selected Lean obligations, PR448 discussion, and Jacob Sussman source interfaces. Expanded this session to PR442 source/generator/replay and Jacob coordinate/window algebra. Full Jacob Mathlib build not run."
++  },
++  "current_work_check": "upstream-check.json",
++  "nonduplication": "No matching completed Lean bit whole-hosting window theorem identified in inspected source or bounded PR scans. Existing coordinate factor/window identities and PR442/505 prose mechanisms are credited, not claimed novel. OpenAI WordScheduling is generic scheduling/substitution background; exact pin and statement scopes in upstream-check.json.",
++  "review_prior": "REVIEW-PRIOR.md",
++  "review_positive": "REVIEW-POSITIVE.md",
++  "PR448_status": {
++    "claim": "Unestablished",
++    "acknowledgement": "https://github.com/CrocSwap/integer-mult-bounds/pull/448#issuecomment-6113842081",
++    "reason": "One helper across two streams requires an unprovided interface or separately paid second helper. No such interface or advertised gain is assumed here."
++  },
++  "formal_scope": {
++    "proved": [
++      "Coordinate-swap factor and exact-remainder identities",
++      "Retiming complete endpoints through arbitrary finite windows, allowing same-chart idle factors",
++      "Retained-output equality across different dirty-bank layouts, threading real auxiliary outputs",
++      "Concrete selected rank-28 mask coverage and conditional window instantiation",
++      "Boundary counterexamples and a nonempty toy physical-contract instance"
++    ],
++    "not_discharged": [
++      "Physical-provider universal dirty endpoint contracts",
++      "Owner injections and no aliasing",
++      "Physical common-chart realization and conjugacy",
++      "Actual cover-class chronology and correspondence to endpoint events",
++      "Physical remainder implementation",
++      "Restoration or later use of excluded auxiliary banks",
++      "Complex case, cost, compiler, or kappa claim"
++    ]
++  },
++  "publication": "None; local files and patch only"
++}
+diff --git a/research/lean-whole-residual-hosting/Audit.lean b/research/lean-whole-residual-hosting/Audit.lean
+new file mode 100644
+index 0000000..39b96d1
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/Audit.lean
+@@ -0,0 +1,56 @@
++import CoordinateSwap
++import Hosting
++import PhysicalHosting
++import PinnedWindow
++import PinnedHosting
++import BoundaryExamples
++import PhysicalExample
++
++-- Audit every named theorem, including supporting and boundary results.
++#print axioms WholeHosting.masksDisjoint_symm
++#print axioms WholeHosting.swapAddress_involution
++#print axioms WholeHosting.swapAddress_commute
++#print axioms WholeHosting.swapAddress_disjoint_union
++#print axioms WholeHosting.bitAction_involution
++#print axioms WholeHosting.bitAction_commute
++#print axioms WholeHosting.bitAction_disjoint_comp
++#print axioms WholeHosting.remainder_disjoint
++#print axioms WholeHosting.union_remainder
++#print axioms WholeHosting.bitAction_complete
++#print axioms WholeHosting.bitAction_empty
++#print axioms WholeHosting.bitFactors_union
++#print axioms WholeHosting.bitFactors_complete
++#print axioms WholeHosting.base_commutes
++#print axioms WholeHosting.runBase_commutes
++#print axioms WholeHosting.delay_residuals
++#print axioms WholeHosting.whole_hosting
++#print axioms WholeHosting.whole_hosting_in_context
++#print axioms WholeHosting.Implementations.original_eq
++#print axioms WholeHosting.Implementations.relocated_eq
++#print axioms WholeHosting.implementation_whole_hosting
++#print axioms WholeHosting.PhysicalImplementations.original_projection
++#print axioms WholeHosting.PhysicalImplementations.relocated_projection
++#print axioms WholeHosting.physical_whole_hosting
++#print axioms WholeHosting.physical_hosting_in_context
++#print axioms WholeHosting.PinnedBitWindow.disjoint
++#print axioms WholeHosting.PinnedBitWindow.subset
++#print axioms WholeHosting.PinnedBitWindow.coverage
++#print axioms WholeHosting.PinnedBitWindow.same_stage_reorder
++#print axioms WholeHosting.PinnedBitWindow.remainder_empty
++#print axioms WholeHosting.PinnedBitWindow.complete
++#print axioms WholeHosting.PinnedBitWindow.complete_with_remainder
++#print axioms WholeHosting.PinnedBitWindow.selected_window_hosting
++#print axioms WholeHosting.PinnedBitWindow.selected_physical_hosting
++#print axioms WholeHosting.Boundary.readHost_preserves_host
++#print axioms WholeHosting.Boundary.host_preservation_not_commutation
++#print axioms WholeHosting.Boundary.overlapping_masks_not_disjoint
++#print axioms WholeHosting.Boundary.overlapping_masks_not_union
++#print axioms WholeHosting.Boundary.outside_pending_not_completion
++#print axioms WholeHosting.Boundary.swapAB_involution
++#print axioms WholeHosting.Boundary.swapCD_involution
++#print axioms WholeHosting.Boundary.chartBC_involution
++#print axioms WholeHosting.Boundary.same_chart_commute
++#print axioms WholeHosting.Boundary.different_charts_not_commute
++#print axioms WholeHosting.PhysicalExample.old_output_is_threaded
++#print axioms WholeHosting.PhysicalExample.relocated_output_is_threaded
++#print axioms WholeHosting.PhysicalExample.absorption
+diff --git a/research/lean-whole-residual-hosting/BoundaryExamples.lean b/research/lean-whole-residual-hosting/BoundaryExamples.lean
+new file mode 100644
+index 0000000..665f5ae
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/BoundaryExamples.lean
+@@ -0,0 +1,110 @@
++import CoordinateSwap
++
++/-!
++Exact boundary examples for whole-residual hosting. Apache-2.0.
++Prepared with substantial OpenAI Codex assistance.
++
++These witnesses explain why endpoint independence, disjointness, containment,
++and common-chart commutation appear as hypotheses. They are not tests of a
++repository-generated word and do not assert a flaw in a particular template.
++-/
++
++namespace WholeHosting.Boundary
++
++/-- This map preserves the host, but another output reads the host. -/
++def readHost (s : Int × Int) : Int × Int := (s.1, s.2 + s.1)
++
++def flipHost (s : Int × Int) : Int × Int := (-s.1, s.2)
++
++theorem readHost_preserves_host (s : Int × Int) : (readHost s).1 = s.1 := rfl
++
++/-- Merely preserving the host is weaker than commuting with its residual. -/
++theorem host_preservation_not_commutation :
++    readHost (flipHost (1, 0)) ≠ flipHost (readHost (1, 0)) := by
++  decide
++
++def fullMask : Mask Unit := fun _ => true
++
++def witnessAddress : Address Unit Bool := fun _ => (false, true)
++
++def witnessStream : Stream Unit Bool Bool := fun address => (address ()).1
++
++theorem overlapping_masks_not_disjoint : ¬ MasksDisjoint fullMask fullMask := by
++  intro h
++  have impossible := h () rfl
++  contradiction
++
++/-- Repeating a bit factor cancels it; a union would count it once. -/
++theorem overlapping_masks_not_union :
++    bitAction fullMask (bitAction fullMask witnessStream) ≠
++      bitAction (unionMask fullMask fullMask) witnessStream := by
++  intro h
++  have impossible := congrFun h witnessAddress
++  contradiction
++
++/-- Removing a hosted mask outside the pending child cannot recover the child. -/
++theorem outside_pending_not_completion :
++    bitAction (remainderMask (fun _ => false) fullMask)
++        (bitAction fullMask witnessStream) ≠
++      bitAction (fun _ => false) witnessStream := by
++  intro h
++  have impossible := congrFun h witnessAddress
++  contradiction
++
++/-- Four coordinate positions suffice to distinguish a common chart from
++unrelated charts. The permutations below reindex these positions. -/
++inductive Slot where
++  | a | b | c | d
++  deriving DecidableEq, Repr
++
++def swapAB : Slot → Slot
++  | .a => .b
++  | .b => .a
++  | .c => .c
++  | .d => .d
++
++def swapCD : Slot → Slot
++  | .a => .a
++  | .b => .b
++  | .c => .d
++  | .d => .c
++
++def chartBC : Slot → Slot
++  | .a => .a
++  | .b => .c
++  | .c => .b
++  | .d => .d
++
++/-- Each coordinate permutation is invertible, with itself as inverse. -/
++theorem swapAB_involution (i : Slot) : swapAB (swapAB i) = i := by
++  cases i <;> rfl
++
++theorem swapCD_involution (i : Slot) : swapCD (swapCD i) = i := by
++  cases i <;> rfl
++
++theorem chartBC_involution (i : Slot) : chartBC (chartBC i) = i := by
++  cases i <;> rfl
++
++theorem same_chart_commute (i : Slot) : swapAB (swapCD i) = swapCD (swapAB i) := by
++  cases i <;> rfl
++
++/-- Change the chart of just one factor: (b c) (c d) (b c) = (b d). -/
++def otherChartCD (i : Slot) : Slot := chartBC (swapCD (chartBC i))
++
++/-- The factors originally commute, but independent conjugation can destroy it. -/
++theorem different_charts_not_commute :
++    swapAB (otherChartCD .a) ≠ otherChartCD (swapAB .a) := by
++  decide
++
++end WholeHosting.Boundary
++
++#print axioms WholeHosting.Boundary.readHost_preserves_host
++#print axioms WholeHosting.Boundary.host_preservation_not_commutation
++#print axioms WholeHosting.Boundary.overlapping_masks_not_disjoint
++#print axioms WholeHosting.Boundary.overlapping_masks_not_union
++#print axioms WholeHosting.Boundary.outside_pending_not_completion
++#print axioms WholeHosting.Boundary.swapAB_involution
++#print axioms WholeHosting.Boundary.swapCD_involution
++#print axioms WholeHosting.Boundary.chartBC_involution
++#print axioms WholeHosting.Boundary.same_chart_commute
++#print axioms WholeHosting.Boundary.different_charts_not_commute
+diff --git a/research/lean-whole-residual-hosting/CoordinateSwap.lean b/research/lean-whole-residual-hosting/CoordinateSwap.lean
+new file mode 100644
+index 0000000..99099a4
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/CoordinateSwap.lean
+@@ -0,0 +1,162 @@
++import Std
++
++/-!
++Coordinate factors for whole-residual bit hosting. Apache-2.0.
++Prepared with substantial OpenAI Codex assistance.
++
++One address has two coordinates at every index. A bit residual exchanges
++the two coordinates on its mask, inside ONE stream. This is the coordinate
++projector form of D_P in the inherited bit geometry. Payload values and
++address-coordinate values are arbitrary; in particular streams need not be
++separable, initialized, or independent of other live values.
++
++These supporting identities are standard coordinate algebra. The contribution
++is their use with the complete-macro window theorem, not a novelty claim for
++disjoint coordinate factorization. No priced local word is translated here.
++-/
++
++namespace WholeHosting
++
++abbrev Mask (ι : Type u) := ι → Bool
++abbrev Address (ι : Type u) (K : Type v) := ι → K × K
++abbrev Stream (ι : Type u) (K : Type v) (A : Type w) := Address ι K → A
++
++def unionMask {ι : Type u} (p q : Mask ι) : Mask ι := fun i => p i || q i
++
++def remainderMask {ι : Type u} (pending hosted : Mask ι) : Mask ι :=
++  fun i => pending i && !hosted i
++
++def MasksDisjoint {ι : Type u} (p q : Mask ι) : Prop :=
++  ∀ i, p i = true → q i = false
++
++def MaskSubset {ι : Type u} (p q : Mask ι) : Prop :=
++  ∀ i, p i = true → q i = true
++
++def swapAddress {ι : Type u} {K : Type v} (p : Mask ι)
++    (address : Address ι K) : Address ι K :=
++  fun i => if p i then ((address i).2, (address i).1) else address i
++
++def bitAction {ι : Type u} {K : Type v} {A : Type w} (p : Mask ι)
++    (value : Stream ι K A) : Stream ι K A :=
++  fun address => value (swapAddress p address)
++
++theorem masksDisjoint_symm {ι : Type u} {p q : Mask ι}
++    (h : MasksDisjoint p q) : MasksDisjoint q p := by
++  intro i hq
++  cases hp : p i with
++  | false => rfl
++  | true => have := h i hp; simp [hq] at this
++
++theorem swapAddress_involution {ι : Type u} {K : Type v}
++    (p : Mask ι) (address : Address ι K) :
++    swapAddress p (swapAddress p address) = address := by
++  funext i
++  cases hp : p i <;> simp [swapAddress, hp]
++
++/-- The coordinate exchanges commute even when the masks overlap. Overlap
++must nevertheless be excluded for union-based accounting: it cancels. -/
++theorem swapAddress_commute {ι : Type u} {K : Type v}
++    (p q : Mask ι) (address : Address ι K) :
++    swapAddress p (swapAddress q address) =
++      swapAddress q (swapAddress p address) := by
++  funext i
++  cases hp : p i <;> cases hq : q i <;> simp [swapAddress, hp, hq]
++
++theorem swapAddress_disjoint_union {ι : Type u} {K : Type v}
++    (p q : Mask ι) (h : MasksDisjoint p q) (address : Address ι K) :
++    swapAddress p (swapAddress q address) = swapAddress (unionMask p q) address := by
++  funext i
++  cases hp : p i with
++  | false => simp [swapAddress, unionMask, hp]
++  | true => simp [swapAddress, unionMask, hp, h i hp]
++
++theorem bitAction_involution {ι : Type u} {K : Type v} {A : Type w}
++    (p : Mask ι) (value : Stream ι K A) :
++    bitAction p (bitAction p value) = value := by
++  funext address
++  exact congrArg value (swapAddress_involution p address)
++
++theorem bitAction_commute {ι : Type u} {K : Type v} {A : Type w}
++    (p q : Mask ι) (value : Stream ι K A) :
++    bitAction q (bitAction p value) = bitAction p (bitAction q value) := by
++  funext address
++  exact congrArg value (swapAddress_commute p q address)
++
++theorem bitAction_disjoint_comp {ι : Type u} {K : Type v} {A : Type w}
++    (p q : Mask ι) (h : MasksDisjoint p q) (value : Stream ι K A) :
++    bitAction q (bitAction p value) = bitAction (unionMask p q) value := by
++  funext address
++  exact congrArg value (swapAddress_disjoint_union p q h address)
++
++theorem remainder_disjoint {ι : Type u} (pending hosted : Mask ι) :
++    MasksDisjoint hosted (remainderMask pending hosted) := by
++  intro i hi
++  simp [remainderMask, hi]
++
++theorem union_remainder {ι : Type u} (pending hosted : Mask ι)
++    (h : MaskSubset hosted pending) :
++    unionMask hosted (remainderMask pending hosted) = pending := by
++  funext i
++  cases hh : hosted i with
++  | false => simp [unionMask, remainderMask, hh]
++  | true => simp [unionMask, remainderMask, hh, h i hh]
++
++/-- A whole hosted residual plus the pending child's exact remainder has
++the same action as that child, for every contents of the owned stream. -/
++theorem bitAction_complete {ι : Type u} {K : Type v} {A : Type w}
++    (pending hosted : Mask ι) (h : MaskSubset hosted pending)
++    (value : Stream ι K A) :
++    bitAction (remainderMask pending hosted) (bitAction hosted value) =
++      bitAction pending value := by
++  rw [bitAction_disjoint_comp hosted _ (remainder_disjoint pending hosted),
++    union_remainder pending hosted h]
++
++def maskUnion {ι : Type u} : List (Mask ι) → Mask ι
++  | [] => fun _ => false
++  | head :: tail => unionMask head (maskUnion tail)
++
++/-- Each mask is disjoint from all masks following it in the list. -/
++def DisjointMasks {ι : Type u} : List (Mask ι) → Prop
++  | [] => True
++  | head :: tail => MasksDisjoint head (maskUnion tail) ∧ DisjointMasks tail
++
++/-- Apply the masks in chronological list order to one physical stream. -/
++def bitFactors {ι : Type u} {K : Type v} {A : Type w} :
++    List (Mask ι) → Stream ι K A → Stream ι K A
++  | [], value => value
++  | head :: tail, value => bitFactors tail (bitAction head value)
++
++theorem bitAction_empty {ι : Type u} {K : Type v} {A : Type w}
++    (value : Stream ι K A) : bitAction (fun _ => false) value = value := by
++  rfl
++
++/-- An unbounded list theorem, not a finite enumeration of template slots. -/
++theorem bitFactors_union {ι : Type u} {K : Type v} {A : Type w}
++    (masks : List (Mask ι)) (h : DisjointMasks masks) (value : Stream ι K A) :
++    bitFactors masks value = bitAction (maskUnion masks) value := by
++  induction masks generalizing value with
++  | nil => rfl
++  | cons head tail ih =>
++    change bitFactors tail (bitAction head value) = bitAction (unionMask head (maskUnion tail)) value
++    rw [ih h.2, bitAction_disjoint_comp head _ h.1]
++
++/-- Pairwise disjoint, wholly owned residuals followed by the exact
++remainder complete a pending child on arbitrary correlated stream values. -/
++theorem bitFactors_complete {ι : Type u} {K : Type v} {A : Type w}
++    (pending : Mask ι) (masks : List (Mask ι)) (hd : DisjointMasks masks)
++    (hs : MaskSubset (maskUnion masks) pending) (value : Stream ι K A) :
++    bitAction (remainderMask pending (maskUnion masks)) (bitFactors masks value) =
++      bitAction pending value := by
++  rw [bitFactors_union masks hd, bitAction_complete pending _ hs]
++
++end WholeHosting
++
++#print axioms WholeHosting.swapAddress_involution
++#print axioms WholeHosting.swapAddress_commute
++#print axioms WholeHosting.swapAddress_disjoint_union
++#print axioms WholeHosting.bitAction_involution
++#print axioms WholeHosting.bitAction_commute
++#print axioms WholeHosting.bitAction_disjoint_comp
++#print axioms WholeHosting.bitAction_complete
++#print axioms WholeHosting.bitFactors_union
++#print axioms WholeHosting.bitFactors_complete
+diff --git a/research/lean-whole-residual-hosting/Hosting.lean b/research/lean-whole-residual-hosting/Hosting.lean
+new file mode 100644
+index 0000000..dfd2052
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/Hosting.lean
+@@ -0,0 +1,186 @@
++import CoordinateSwap
++
++/-!
++Whole-residual absorption through a window of COMPLETE invocation endpoints.
++Apache-2.0. Prepared with substantial OpenAI Codex assistance.
++
++This proves the bit operator step in PR442 PROOF.md §2, conditional on its
++inherited complete dirty-invocation endpoint and owner/chart interfaces.
++The host is ONE whole stream. `R` contains all other retained live state,
++including every scratch component whose endpoint is to be compared. The
++original and relocated layouts may have different auxiliary banks; this
++module compares their common retained-state projections. PhysicalHosting
++provides the projection adapter with universal auxiliary-input contracts. No operation in `other` can read the host. Temporary
++reads inside a complete invocation are allowed by `EndpointContract` if its
++full endpoint has the stated product form on every input.
++
++All coordinate masks in a window use one common address chart. An idle
++factor may act on the host between invocations; the proof commutes it past
++hosted residuals rather than claiming the host is untouched.
++-/
++namespace WholeHosting
++
++abbrev WindowState (ι : Type u) (K : Type v) (A : Type w) (R : Type z) :=
++  Stream ι K A × R
++
++/-- One complete macro endpoint. For a local invocation `idle` is empty;
++for an intervening idle child `residual` is empty. Allowing both gives a
++convenient closed representation without assuming primitive-gate locality. -/
++structure WindowEvent (ι : Type u) (R : Type z) where
++  idle : Mask ι
++  residual : Mask ι
++  other : R → R
++
++def onHost {ι K A R} (mask : Mask ι) (s : WindowState ι K A R) : WindowState ι K A R :=
++  (bitAction mask s.1, s.2)
++
++def WindowEvent.base {ι K A R} (e : WindowEvent ι R)
++    (s : WindowState ι K A R) : WindowState ι K A R :=
++  (bitAction e.idle s.1, e.other s.2)
++
++def WindowEvent.hosted {ι K A R} (e : WindowEvent ι R)
++    (s : WindowState ι K A R) : WindowState ι K A R :=
++  onHost e.residual (e.base s)
++
++/-- Full endpoint contracts, for arbitrary and possibly correlated dirt.
++The functions here are retained endpoint maps. These are premises to
++instantiate from an actual physical provider, not axioms or consequences of
++the template's combinatorial slot check. Their common `other` map must hold
++for every auxiliary-bank input; old and relocated banks need not be the
++same state space. Scratch restoration is only as strong as `other` specifies. -/
++structure EndpointContract {ι K A R} (e : WindowEvent ι R) where
++  original : WindowState ι K A R → WindowState ι K A R
++  relocated : WindowState ι K A R → WindowState ι K A R
++  original_spec : ∀ s, original s = e.base s
++  relocated_spec : ∀ s, relocated s = e.hosted s
++
++def runBase {ι K A R} : List (WindowEvent ι R) → WindowState ι K A R → WindowState ι K A R
++  | [], s => s
++  | e :: es, s => runBase es (e.base s)
++
++def runHosted {ι K A R} : List (WindowEvent ι R) → WindowState ι K A R → WindowState ι K A R
++  | [], s => s
++  | e :: es, s => runHosted es (e.hosted s)
++
++def residuals {ι R} (events : List (WindowEvent ι R)) : List (Mask ι) :=
++  events.map WindowEvent.residual
++
++def allOnHost {ι K A R} (masks : List (Mask ι))
++    (s : WindowState ι K A R) : WindowState ι K A R :=
++  (bitFactors masks s.1, s.2)
++
++/-- Product endpoint independence plus same-chart coordinate commutation:
++merely preserving the host component would not suffice for this equation. -/
++theorem base_commutes {ι K A R} (e : WindowEvent ι R) (p : Mask ι)
++    (s : WindowState ι K A R) : e.base (onHost p s) = onHost p (e.base s) := by
++  apply Prod.ext
++  · exact bitAction_commute p e.idle s.1
++  · rfl
++
++theorem runBase_commutes {ι K A R} (events : List (WindowEvent ι R))
++    (p : Mask ι) (s : WindowState ι K A R) :
++    runBase events (onHost p s) = onHost p (runBase events s) := by
++  induction events generalizing s with
++  | nil => rfl
++  | cons e es ih =>
++    change runBase es (e.base (onHost p s)) = onHost p (runBase es (e.base s))
++    rw [base_commutes, ih]
++
++/-- Move every hosted residual to the end of the window without changing
++its order. The proof is over arbitrary finite windows and arbitrary arrays. -/
++theorem delay_residuals {ι K A R} (events : List (WindowEvent ι R))
++    (s : WindowState ι K A R) :
++    runHosted events s = allOnHost (residuals events) (runBase events s) := by
++  induction events generalizing s with
++  | nil => rfl
++  | cons e es ih =>
++    change runHosted es (onHost e.residual (e.base s)) =
++      allOnHost (e.residual :: residuals es) (runBase es (e.base s))
++    rw [ih, runBase_commutes]
++    rfl
++
++/-- The whole-hosting operator lemma. Complete invocations plus any
++intervening same-chart idle factors, followed by the exact remainder child,
++equal the original window followed by the entire pending child. -/
++theorem whole_hosting {ι K A R} (events : List (WindowEvent ι R))
++    (pending : Mask ι) (hd : DisjointMasks (residuals events))
++    (hs : MaskSubset (maskUnion (residuals events)) pending)
++    (s : WindowState ι K A R) :
++    onHost (remainderMask pending (maskUnion (residuals events))) (runHosted events s) =
++      onHost pending (runBase events s) := by
++  rw [delay_residuals]
++  apply Prod.ext
++  · exact bitFactors_complete pending (residuals events) hd hs (runBase events s).1
++  · rfl
++
++/-- Prefixes and suffixes may mix all live state arbitrarily. Universality
++of the window equality is what permits composition and correlated inputs. -/
++theorem whole_hosting_in_context {ι K A R X Y}
++    (events : List (WindowEvent ι R)) (pending : Mask ι)
++    (hd : DisjointMasks (residuals events))
++    (hs : MaskSubset (maskUnion (residuals events)) pending)
++    (before : X → WindowState ι K A R) (after : WindowState ι K A R → Y) (x : X) :
++    after (onHost (remainderMask pending (maskUnion (residuals events)))
++      (runHosted events (before x))) =
++      after (onHost pending (runBase events (before x))) :=
++  congrArg after (whole_hosting events pending hd hs (before x))
++
++/-- A chronological list of actual complete implementations, one contract
++per event; the implementation may use and restore temporary dirty scratch. -/
++inductive Implementations {ι K A R} : List (WindowEvent ι R) → Type _ where
++  | nil : Implementations (K := K) (A := A) []
++  | cons {e es} (contract : EndpointContract (K := K) (A := A) e)
++      (rest : Implementations (K := K) (A := A) es) :
++      Implementations (K := K) (A := A) (e :: es)
++
++def Implementations.runOriginal {ι K A R} {events : List (WindowEvent ι R)} :
++    Implementations (K := K) (A := A) events → WindowState ι K A R → WindowState ι K A R
++  | .nil, s => s
++  | .cons contract rest, s => rest.runOriginal (contract.original s)
++
++def Implementations.runRelocated {ι K A R} {events : List (WindowEvent ι R)} :
++    Implementations (K := K) (A := A) events → WindowState ι K A R → WindowState ι K A R
++  | .nil, s => s
++  | .cons contract rest, s => rest.runRelocated (contract.relocated s)
++
++theorem Implementations.original_eq {ι K A R} {events : List (WindowEvent ι R)}
++    (program : Implementations (K := K) (A := A) events) (s : WindowState ι K A R) :
++    program.runOriginal s = runBase events s := by
++  induction program generalizing s with
++  | nil => rfl
++  | cons contract rest ih =>
++    change rest.runOriginal (contract.original s) = runBase _ (_)
++    rw [contract.original_spec, ih]
++    rfl
++
++theorem Implementations.relocated_eq {ι K A R} {events : List (WindowEvent ι R)}
++    (program : Implementations (K := K) (A := A) events) (s : WindowState ι K A R) :
++    program.runRelocated s = runHosted events s := by
++  induction program generalizing s with
++  | nil => rfl
++  | cons contract rest ih =>
++    change rest.runRelocated (contract.relocated s) = runHosted _ (_)
++    rw [contract.relocated_spec, ih]
++    rfl
++
++/-- The result for supplied implementations rather than only symbolic
++endpoints. Instantiating the contracts for a source word remains mandatory. -/
++theorem implementation_whole_hosting {ι K A R} {events : List (WindowEvent ι R)}
++    (program : Implementations (K := K) (A := A) events) (pending : Mask ι)
++    (hd : DisjointMasks (residuals events))
++    (hs : MaskSubset (maskUnion (residuals events)) pending) (s : WindowState ι K A R) :
++    onHost (remainderMask pending (maskUnion (residuals events))) (program.runRelocated s) =
++      onHost pending (program.runOriginal s) := by
++  rw [program.original_eq, program.relocated_eq]
++  exact whole_hosting events pending hd hs s
++
++end WholeHosting
++
++#print axioms WholeHosting.base_commutes
++#print axioms WholeHosting.runBase_commutes
++#print axioms WholeHosting.delay_residuals
++#print axioms WholeHosting.whole_hosting
++#print axioms WholeHosting.whole_hosting_in_context
++#print axioms WholeHosting.Implementations.original_eq
++#print axioms WholeHosting.Implementations.relocated_eq
++#print axioms WholeHosting.implementation_whole_hosting
+diff --git a/research/lean-whole-residual-hosting/NOTICE.md b/research/lean-whole-residual-hosting/NOTICE.md
+new file mode 100644
+index 0000000..72e0ecb
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/NOTICE.md
+@@ -0,0 +1,28 @@
++# Attribution and assistance
++
++New files are under the repository's Apache-2.0 license. Prepared with
++substantial OpenAI Codex assistance, using separate implementation and review
++agents. No publication, pull request, or external comment was made.
++
++The whole-residual construction and written hosting lemma are DaysSky's
++PR442, with the inherited supplier lineage credited in that package. This
++contribution formalizes a conditional part of that existing argument; it does
++not claim discovery of whole hosting or its coordinate factorization.
++
++Jacob Sussman's `wht-power-saving-lean` and the OpenAI framework it extends
++retain their attribution. Its existing coordinate/window algebra helped
++delimit the contribution. PR397's indexed scalar bridge was inspected and
++replayed in the preceding audit, not copied into these proofs. The newer
++PR505 scheduling argument is acknowledged in the audit.
++
++RaD / hipotures' single-stream model, higherbeing's PR448 acknowledgement,
++and Chafik Boukhalfa / chafreaky's PR451 interface note motivated careful
++separation of source interfaces from algebra. Their original contributions
++and assistance disclosures remain their own. See the pinned sources in
++AUDIT.json and REVIEW-PRIOR.md. Credits imply no endorsement.
++
++Lean proofs and replay/check scripts were written for this local contribution.
++The small pinned-window receipt transcribes source metadata and four slot
++descriptors from PR442's freshly generated output. No predecessor Lean proof
++text is copied. The two review documents disclose which files their reviewer
++authored and which snapshots were independently compiled.
+diff --git a/research/lean-whole-residual-hosting/PhysicalExample.lean b/research/lean-whole-residual-hosting/PhysicalExample.lean
+new file mode 100644
+index 0000000..ce0baf7
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/PhysicalExample.lean
+@@ -0,0 +1,57 @@
++import PhysicalHosting
++
++/-!
++A nonempty example of the physical projection adapter. Apache-2.0.
++Prepared with substantial OpenAI Codex assistance.
++
++This is a toy validation of the interface, not a repository source provider.
++One whole-stream residual precedes an idle factor on that stream. The old
++auxiliary layout is Int, the relocated layout is Bool, and both banks change.
++Each complete retained endpoint is independent of every auxiliary input.
++The real auxiliary outputs persist into the second call. Their equality or
++restoration is not claimed, and this example assigns no implementation cost.
++-/
++
++namespace WholeHosting.PhysicalExample
++
++abbrev State := WindowState Unit Bool Bool Int
++
++def first : WindowEvent Unit Int :=
++  { idle := fun _ => false, residual := fun _ => true, other := fun n => n + 1 }
++
++def second : WindowEvent Unit Int :=
++  { idle := fun _ => true, residual := fun _ => false, other := fun n => n + 1 }
++
++def contract (e : WindowEvent Unit Int) :
++    PhysicalContract (K := Bool) (A := Bool) e Int Bool where
++  original := fun state => (e.base state.1, state.2 + state.1.2)
++  relocated := fun state => (e.hosted state.1, !state.2)
++  original_retained := fun _ _ => rfl
++  relocated_retained := fun _ _ => rfl
++
++def program : PhysicalImplementations (K := Bool) (A := Bool) Int Bool [first, second] :=
++  .cons (contract first) (.cons (contract second) .nil)
++
++/-- The second invocation receives the first invocation's changed old bank. -/
++theorem old_output_is_threaded (s : State) (bank : Int) :
++    (program.runOriginal (s, bank)).2 = (bank + s.2) + (s.2 + 1) := rfl
++
++/-- The relocated bank is threaded in its own, different state space. -/
++theorem relocated_output_is_threaded (s : State) (bank : Bool) :
++    (program.runRelocated (s, bank)).2 = !(!bank) := rfl
++
++/-- A nonempty hosted residual is absorbed for every retained stream and
++every pair of old/new auxiliary inputs, without matching or clearing them. -/
++theorem absorption (s : State) (oldBank : Int) (newBank : Bool) :
++    onHost (remainderMask (fun _ => true) (maskUnion (residuals [first, second])))
++        (program.runRelocated (s, newBank)).1 =
++      onHost (fun _ => true) (program.runOriginal (s, oldBank)).1 := by
++  apply physical_whole_hosting
++  · simp [residuals, DisjointMasks, MasksDisjoint, maskUnion, unionMask, first, second]
++  · simp [residuals, MaskSubset, maskUnion, unionMask, first, second]
++
++end WholeHosting.PhysicalExample
++
++#print axioms WholeHosting.PhysicalExample.old_output_is_threaded
++#print axioms WholeHosting.PhysicalExample.relocated_output_is_threaded
++#print axioms WholeHosting.PhysicalExample.absorption
+diff --git a/research/lean-whole-residual-hosting/PhysicalHosting.lean b/research/lean-whole-residual-hosting/PhysicalHosting.lean
+new file mode 100644
+index 0000000..88bef8a
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/PhysicalHosting.lean
+@@ -0,0 +1,114 @@
++import Hosting
++
++/-!
++Projection adapter for layouts with different auxiliary banks. Apache-2.0.
++Prepared with substantial OpenAI Codex assistance.
++
++Relocation can remove/re-tile old banks, so equality of every old and new
++physical register is neither well-typed nor intended. The common retained
++state is (one host stream, R). B and C are the original and relocated
++auxiliary layouts. The endpoint hypotheses below quantify over EVERY
++auxiliary input, allowing arbitrary dirt and arbitrary correlations.
++
++The theorem compares retained outputs only. Every output/workspace component
++whose equality or restoration matters must be included in R or verified by
++an additional contract. Auxiliary outputs are not certified or discarded by
++this theorem. A later computation may ignore them only with a proved scope
++or independence argument. These source obligations remain explicit.
++-/
++namespace WholeHosting
++
++structure PhysicalContract {ι K A R} (e : WindowEvent ι R) (B : Type b) (C : Type c) where
++  original : (WindowState ι K A R × B) → (WindowState ι K A R × B)
++  relocated : (WindowState ι K A R × C) → (WindowState ι K A R × C)
++  original_retained : ∀ s bank, (original (s, bank)).1 = e.base s
++  relocated_retained : ∀ s bank, (relocated (s, bank)).1 = e.hosted s
++
++/-- The banks persist through the whole window; each subsequent invocation
++receives the actual dirty output of its predecessor. -/
++inductive PhysicalImplementations {ι K A R} (B : Type b) (C : Type c) :
++    List (WindowEvent ι R) → Type _ where
++  | nil : PhysicalImplementations (K := K) (A := A) B C []
++  | cons {e es} (contract : PhysicalContract (K := K) (A := A) e B C)
++      (rest : PhysicalImplementations (K := K) (A := A) B C es) :
++      PhysicalImplementations (K := K) (A := A) B C (e :: es)
++
++def PhysicalImplementations.runOriginal {ι K A R B C}
++    {events : List (WindowEvent ι R)} :
++    PhysicalImplementations (K := K) (A := A) B C events →
++      (WindowState ι K A R × B) → (WindowState ι K A R × B)
++  | .nil, s => s
++  | .cons contract rest, s => rest.runOriginal (contract.original s)
++
++def PhysicalImplementations.runRelocated {ι K A R B C}
++    {events : List (WindowEvent ι R)} :
++    PhysicalImplementations (K := K) (A := A) B C events →
++      (WindowState ι K A R × C) → (WindowState ι K A R × C)
++  | .nil, s => s
++  | .cons contract rest, s => rest.runRelocated (contract.relocated s)
++
++theorem PhysicalImplementations.original_projection {ι K A R B C}
++    {events : List (WindowEvent ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (state : WindowState ι K A R × B) :
++    (program.runOriginal state).1 = runBase events state.1 := by
++  induction program generalizing state with
++  | nil => rfl
++  | cons contract rest ih =>
++    change (rest.runOriginal (contract.original state)).1 = runBase _ state.1
++    rw [ih]
++    change runBase _ (contract.original (state.1, state.2)).1 = _
++    rw [contract.original_retained]
++    rfl
++
++theorem PhysicalImplementations.relocated_projection {ι K A R B C}
++    {events : List (WindowEvent ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (state : WindowState ι K A R × C) :
++    (program.runRelocated state).1 = runHosted events state.1 := by
++  induction program generalizing state with
++  | nil => rfl
++  | cons contract rest ih =>
++    change (rest.runRelocated (contract.relocated state)).1 = runHosted _ state.1
++    rw [ih]
++    change runHosted _ (contract.relocated (state.1, state.2)).1 = _
++    rw [contract.relocated_retained]
++    rfl
++
++/-- Exact retained-output equality for physically different bank layouts,
++with actual bank outputs threaded through every complete invocation. -/
++theorem physical_whole_hosting {ι K A R B C} {events : List (WindowEvent ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (pending : Mask ι) (hd : DisjointMasks (residuals events))
++    (hs : MaskSubset (maskUnion (residuals events)) pending)
++    (s : WindowState ι K A R) (oldBank : B) (newBank : C) :
++    onHost (remainderMask pending (maskUnion (residuals events)))
++        (program.runRelocated (s, newBank)).1 =
++      onHost pending (program.runOriginal (s, oldBank)).1 := by
++  rw [program.original_projection, program.relocated_projection]
++  exact whole_hosting events pending hd hs s
++
++/-- External correlations and arbitrary observations of retained outputs
++are permitted. Equality of the retained inputs is the only coupling required
++between the original and relocated layouts. -/
++theorem physical_hosting_in_context {ι K A R B C X Y}
++    {events : List (WindowEvent ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (pending : Mask ι) (hd : DisjointMasks (residuals events))
++    (hs : MaskSubset (maskUnion (residuals events)) pending)
++    (originalInput : X → WindowState ι K A R × B)
++    (relocatedInput : X → WindowState ι K A R × C)
++    (sameRetained : ∀ x, (originalInput x).1 = (relocatedInput x).1)
++    (observe : WindowState ι K A R → Y) (x : X) :
++    observe (onHost (remainderMask pending (maskUnion (residuals events)))
++        (program.runRelocated (relocatedInput x)).1) =
++      observe (onHost pending (program.runOriginal (originalInput x)).1) := by
++  rw [program.original_projection, program.relocated_projection, sameRetained x]
++  exact congrArg observe (whole_hosting events pending hd hs (relocatedInput x).1)
++
++end WholeHosting
++
++#print axioms WholeHosting.PhysicalImplementations.original_projection
++#print axioms WholeHosting.PhysicalImplementations.relocated_projection
++#print axioms WholeHosting.physical_whole_hosting
++#print axioms WholeHosting.physical_hosting_in_context
+diff --git a/research/lean-whole-residual-hosting/PinnedHosting.lean b/research/lean-whole-residual-hosting/PinnedHosting.lean
+new file mode 100644
+index 0000000..2724169
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/PinnedHosting.lean
+@@ -0,0 +1,46 @@
++import PhysicalHosting
++import PinnedWindow
++
++/-!
++Connect the source-derived interval certificate to the window theorem.
++Apache-2.0. Prepared with substantial OpenAI Codex assistance.
++
++This is a conditional instantiation on retained endpoints whose residual
++list matches the four selected masks. It does not identify every raw gate
++or cover-class occurrence in the source with these four endpoint events.
++Intervening operations can be absorbed into the complete endpoint contracts
++only after their required independence and common-chart properties are proved.
++-/
++namespace WholeHosting.PinnedBitWindow
++
++/-- The selected rank-28 child has empty remainder. For any complete window
++with precisely these four residual masks, the hosted window already includes
++the child's entire action on the retained state. -/
++theorem selected_window_hosting {K A R}
++    (events : List (WindowEvent (Fin 64) R))
++    (selected : residuals events = residualMasks)
++    (s : WindowState (Fin 64) K A R) :
++    runHosted events s = onHost pending (runBase events s) := by
++  have hd : DisjointMasks (residuals events) := by rw [selected]; exact disjoint
++  have hs : MaskSubset (maskUnion (residuals events)) pending := by rw [selected]; exact subset
++  have h := whole_hosting events pending hd hs s
++  rw [selected, remainder_empty] at h
++  exact h
++
++/-- The same selected child result for two different auxiliary-bank layouts.
++The physical endpoint contracts, universal in both banks' dirt, remain
++premises. The conclusion compares exactly the retained state. -/
++theorem selected_physical_hosting {K A R B C}
++    {events : List (WindowEvent (Fin 64) R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (selected : residuals events = residualMasks)
++    (s : WindowState (Fin 64) K A R) (oldBank : B) (newBank : C) :
++    (program.runRelocated (s, newBank)).1 =
++      onHost pending (program.runOriginal (s, oldBank)).1 := by
++  rw [program.original_projection, program.relocated_projection]
++  exact selected_window_hosting events selected s
++
++end WholeHosting.PinnedBitWindow
++
++#print axioms WholeHosting.PinnedBitWindow.selected_window_hosting
++#print axioms WholeHosting.PinnedBitWindow.selected_physical_hosting
+diff --git a/research/lean-whole-residual-hosting/PinnedWindow.lean b/research/lean-whole-residual-hosting/PinnedWindow.lean
+new file mode 100644
+index 0000000..a790714
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/PinnedWindow.lean
+@@ -0,0 +1,81 @@
++import CoordinateSwap
++
++/-!
++One literal whole-hosting window selected from PR442's bit template.
++Apache-2.0. Prepared with substantial OpenAI Codex assistance.
++
++The pinned source and extraction receipt identify idle child 2, copy 27,
++replica 0, family 507. Its pending rank is 28. The four whole helper
++residuals have intervals [24,28), [0,8), [8,16), [16,24), in stage order
++0,1,1,2. The two stage-1 factors have different helper-route selectors;
++their order at a fixed physical stream depends on cover enumeration. We check both
++representative orders and their equality. This module checks Fin 64 masks.
++
++The interval indices are coordinates in the inherited pending-child chart,
++not a proof of that chart's physical address realization. The macro/window
++theorem separately handles the intervening program.
++-/
++
++namespace WholeHosting.PinnedBitWindow
++
++def interval (lo hi : Nat) : Mask (Fin 64) :=
++  fun i => decide (lo ≤ i.val ∧ i.val < hi)
++
++def pending : Mask (Fin 64) := interval 0 28
++
++def residualMasks : List (Mask (Fin 64)) :=
++  [interval 24 28, interval 0 8, interval 8 16, interval 16 24]
++
++theorem disjoint : DisjointMasks residualMasks := by
++  simp only [DisjointMasks, residualMasks, MasksDisjoint, maskUnion, unionMask, interval]
++  decide
++
++theorem subset : MaskSubset (maskUnion residualMasks) pending := by
++  simp only [MaskSubset, maskUnion, residualMasks, unionMask, pending, interval]
++  decide
++
++theorem coverage : maskUnion residualMasks = pending := by
++  funext i
++  have h : ∀ j : Fin 64, maskUnion residualMasks j = pending j := by
++    simp only [maskUnion, residualMasks, unionMask, interval, pending]
++    decide
++  exact h i
++
++def reorderedMasks : List (Mask (Fin 64)) :=
++  [interval 24 28, interval 8 16, interval 0 8, interval 16 24]
++
++/-- The two same-stage residuals may occur in either cover-class order. -/
++theorem same_stage_reorder {K : Type v} {A : Type w}
++    (value : Stream (Fin 64) K A) :
++    bitFactors residualMasks value = bitFactors reorderedMasks value := by
++  simp only [residualMasks, reorderedMasks, bitFactors]
++  rw [bitAction_commute (interval 0 8) (interval 8 16)]
++
++theorem remainder_empty : remainderMask pending (maskUnion residualMasks) =
++    (fun _ => false) := by
++  rw [coverage]
++  funext i
++  simp [remainderMask]
++
++/-- The four actual interval factors together give the entire pending
++rank-28 child for every stream, without any payload cleanliness premise. -/
++theorem complete {K : Type v} {A : Type w} (value : Stream (Fin 64) K A) :
++    bitFactors residualMasks value = bitAction pending value := by
++  rw [bitFactors_union residualMasks disjoint, coverage]
++
++/-- The generic completion theorem also verifies that the emitted zero
++remainder has exactly the same action. -/
++theorem complete_with_remainder {K : Type v} {A : Type w}
++    (value : Stream (Fin 64) K A) :
++    bitAction (remainderMask pending (maskUnion residualMasks))
++        (bitFactors residualMasks value) = bitAction pending value :=
++  bitFactors_complete pending residualMasks disjoint subset value
++
++end WholeHosting.PinnedBitWindow
++
++#print axioms WholeHosting.PinnedBitWindow.disjoint
++#print axioms WholeHosting.PinnedBitWindow.subset
++#print axioms WholeHosting.PinnedBitWindow.coverage
++#print axioms WholeHosting.PinnedBitWindow.same_stage_reorder
++#print axioms WholeHosting.PinnedBitWindow.complete
++#print axioms WholeHosting.PinnedBitWindow.complete_with_remainder
+diff --git a/research/lean-whole-residual-hosting/README.md b/research/lean-whole-residual-hosting/README.md
+new file mode 100644
+index 0000000..a1072aa
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/README.md
+@@ -0,0 +1,132 @@
++# Lean: whole-residual absorption through a complete invocation window
++
++This independent local contribution proves the **conditional bit hosting
++operator lemma** in PR442, `research/idle-axis-hosting/PROOF.md` §2. It moves
++whole residuals through a finite window of complete invocation endpoints and
++absorbs them into a pending child's exact remainder. It also checks a concrete
++rank-28 interval selection from the pinned emitted template. It establishes
++no cost, κ, physical compiler instance, or multiplication bound.
++
++The motivating construction is DaysSky's PR442 at
++`4e16d001d505d4f21dd2bcfc44591f9be4c279bd`, against repository main
++`12a4934d15006e8c10f9b2264f13f8f341be802b`. See [AUDIT.json](AUDIT.json),+[pinned-window.json](pinned-window.json), and [NOTICE.md](NOTICE.md) for provenance.
++
++## What is proved
++
++The retained state consists of one whole host stream and all other retained
++state `R`. A stream is an arbitrary function from paired coordinate addresses
++to arbitrary payloads. A bit factor swaps the address halves at selected
++coordinates, matching the diagonal-coordinate case of the inherited
++`D_U = [[I-P,P],[P,I-P]]` operator. No zero-input, independence-of-payloads,
++binary-address, or linearity assumption is imposed on stream contents.
++
++Each **complete endpoint** has the product form
++`(host, rest) ↦ (D_idle host, other rest)`. Its relocated form additionally
++applies the whole hosted residual to the host. All masks use the same chart.
++The theorem proves, for arbitrary finite event lists and arbitrary inputs:
++
++```text
++D_(pending \ union residuals) ∘ relocated window
++    = D_pending ∘ original window
++```
++
++The residual masks must be pairwise disjoint and contained in `pending`.
++Intervening idle factors may act on the host: the proof uses their commutation.
++Other retained outputs must be independent of the host at the complete
++endpoint. Preserving the host alone would not suffice. Internal dirty reads
++are permitted when the complete endpoint contract is proved after cleanup.
++
++`PhysicalHosting` extends this result to different old/new auxiliary bank
++types. Each endpoint contract holds for every auxiliary input, and actual
++bank outputs pass into subsequent invocations. The conclusion compares only
++the retained projection. Excluded auxiliary outputs are neither equal nor
++restored by this theorem. Every output or scratch component whose equality
++matters must be retained in `R` or covered by a separate contract; later use
++of excluded banks requires its own scope or independence argument.
++
++| File | Checked obligation |
++| --- | --- |
++| [CoordinateSwap.lean](CoordinateSwap.lean) | Same-chart bit factors, disjoint union, exact remainder |
++| [Hosting.lean](Hosting.lean) | Retiming complete endpoints; window and context identities |
++| [PhysicalHosting.lean](PhysicalHosting.lean) | Universal dirty-bank contracts and retained projections |
++| [PinnedWindow.lean](PinnedWindow.lean) | Four source-derived masks cover the rank-28 pending child |
++| [PinnedHosting.lean](PinnedHosting.lean) | Conditional window instance for that interval list |
++| [BoundaryExamples.lean](BoundaryExamples.lean) | Counterexamples to dropping key hypotheses |
++| [PhysicalExample.lean](PhysicalExample.lean) | Nonempty toy instance with different changing bank types |
++| [Audit.lean](Audit.lean) | Transitive axiom reports for all 47 named theorems |
++
++## Concrete source selection and remaining refinement
++
++Child 2, copy 27, replica 0, family 507 has pending interval `[0,28)` in
++64 coordinates. The selected whole residuals are `[24,28)`, `[0,8)`,
++`[8,16)`, `[16,24)` at stages 0, 1, 1, 2. Their union is the entire child;
++the remainder is empty. Both orders of the two stage-1 factors are checked.
++
++These offsets are in the inherited pending-child chart. Family 507 is a
++family of physical streams indexed by cover classes, not one physical
++register. Different selectors affect when factors reach a fixed stream.
++`PinnedHosting` assumes a complete endpoint list with the selected residual
++list; it does not derive that list from every raw gate or cover occurrence.
++
++Application to the physical provider still requires its universal dirty
++endpoint, ownership injection and absence of aliasing, physical realization
++of the common chart, cover-sweep chronology, remainder implementation, and
++any obligations on later use or restoration of excluded banks. These are
++explicit premises, not additional axioms in Lean. The finite source checker
++does not discharge them. The complex construction is outside this proof.
++
++## Replay
++
++Install the official Lean 4.33.0 toolchain, then run from the repository root:
++
++```sh
++python3 -B research/lean-whole-residual-hosting/replay.py \
++  --lean /absolute/path/to/lean-4.33.0-linux/bin/lean \
++  --receipt /tmp/whole-hosting-replay.json
++```
++
++For another working directory, use an absolute script path.
++The runner performs no download. It copies all eight modules into an empty
++temporary directory, uses only installed `Std` and newly built dependencies,
++compiles with `-t 0`, checks source hashes and every named theorem's transitive
++axioms, and requires six false mathematical claims to be rejected by Lean.
++Only `propext` and `Quot.sound` are permitted; there are no project axioms,
++`sorry`, `native_decide`, or prebuilt project proof objects.
++
++To reproduce the separate source binding, first replay the pinned PR442
++package with its documented `verify.py OUTPUT` command, then run:
++
++```sh
++python3 -B research/lean-whole-residual-hosting/check_source.py \
++  --source-root /path/to/pinned-pr442 \
++  --template /path/to/OUTPUT/bit/GLOBAL-TEMPLATE.json.gz
++```
++
++This Python check binds the literal Lean intervals to source hashes, slots,
++owners, and schedule. It is not kernel verification of the JSON parser or
++the full template. See [VALIDATION.md](VALIDATION.md) for recorded results.
++
++## Review and relationship to existing work
++
++[REVIEW-PRIOR.md](REVIEW-PRIOR.md) answers whether the earlier single-stream
++obstruction faithfully models the disputed interface: its abstract local
++statements are correct, but it supplies no full priced-word refinement or
++whole-program impossibility theorem. PR448's author acknowledgement remains
++the independent reason its advertised gain is unestablished. This proof uses
++whole residuals and assumes no unprovided multi-stream register interface.
++
++[REVIEW-POSITIVE.md](REVIEW-POSITIVE.md) records a separate agent's mathematical
++and interface review, including the correction needed for different bank
++layouts. The reviewer authored the boundary/example modules; those modules
++are not independently authored review evidence.
++
++The coordinate algebra and hosting argument are predecessor work. Jacob
++Sussman's `pk_union`, `pk_sdiff`, `win_step`, and `win_all` already formalize
++related factor/window identities. OpenAI's `WordScheduling.lean` proves
++generic scheduling on fixed disjoint supports and substitution given full
++matrix equality. Newly inspected PR505 gives a related complete-endpoint
++scheduling argument in prose. This package's addition is
++a checked conditional bit absorption theorem with explicit retained-state
++and dirty-bank contracts, boundary witnesses, and a pinned concrete interval
++instance. The bounded audit found no matching Lean hosting implementation;
++it makes no global novelty or priority claim.
+diff --git a/research/lean-whole-residual-hosting/REVIEW-POSITIVE.md b/research/lean-whole-residual-hosting/REVIEW-POSITIVE.md
+new file mode 100644
+index 0000000..e06163f
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/REVIEW-POSITIVE.md
+@@ -0,0 +1,155 @@
++# Independent review of the positive whole-hosting proof
++
++Prepared with OpenAI Codex assistance. This review made no changes to
++`CoordinateSwap.lean`, `Hosting.lean`, `PhysicalHosting.lean`, or
++`PinnedWindow.lean`. The reviewer authored the supporting `BoundaryExamples`
++and `PhysicalExample` modules, so those files are not independently authored
++evidence.
++
++## Verdict
++
++No mathematical error, inconsistent hypothesis, or vacuity was found in the
++new conditional bit window-absorption theorem. Fresh trust-zero compilation
++passed for all five modules at the hashes below. The result is appropriately
++described as an operator lemma under explicit complete-endpoint, ownership,
++and common-chart contracts. It does not prove that the repository's physical
++provider satisfies those contracts.
++
++The initial formulation had a material application ambiguity: retaining an
++old bank in `R` would require its output to agree after its residual had been
++relocated away. The new `PhysicalHosting` projection adapter resolves that
++issue by allowing different auxiliary layouts and comparing only the common
++retained state. This is an actual clarification of the interface, not a
++claim that old and new bank outputs are equal.
++
++## Mathematical checks
++
++`CoordinateSwap.lean:35-41` defines the bit residual as a coordinate swap
++within one complete stream. Coordinate and payload types are arbitrary;
++the argument does not depend on binary address values, zero scratch, or
++separable arrays. The commutation theorem allows overlapping masks, while
++union-based composition and child completion correctly require disjointness
++and containment (`:58-71`, `:85-112`, `:134-150`). The overlap/containment
++requirements are witnessed by explicit counterexamples in `BoundaryExamples`.
++
++`Hosting.lean:29-43` makes each *complete retained endpoint* a product of a
++coordinate action on the host and an arbitrary map of all other retained
++state. This is sufficient to prove the full-state commutation required by
++`:74-87`. It correctly avoids the weaker and false inference that preserving
++the host component alone implies commutation. The residuals are delayed
++through arbitrary finite event lists and then completed with the exact
++remainder. There is no bounded enumeration of possible programs hidden in
++the theorem.
++
++`R` is genuinely arbitrary. It may contain all other physical streams,
++retained scratch, and bookkeeping. Its transformation `other : R → R` need
++not be linear, invertible, or clean. Universality over the complete state
++allows correlated inputs; the context theorem permits arbitrary prefixes
++and observations of the retained state. That generality is logically sound
++because the required product endpoint is quantified over every state.
++
++## Physical-layout projection adapter
++
++The new module has the needed quantifier order and chronology:
++
++- `PhysicalHosting.lean:21-25` permits original layout `S × B` and relocated
++  layout `S × C`, where `S` is the common retained state. Both retained
++  endpoint contracts hold for **every** `s` and auxiliary input. There is no
++  initialization assumption or requirement that the old and new banks match.
++- `:36-48` passes each actual complete output, including its changed bank,
++  into the next invocation. Banks are not silently reset between calls.
++- `:50-76` proves the two retained projection invariants by induction on
++  these actual executions. Each induction step uses the universal contract
++  at the predecessor's real output bank.
++- `:80-89` applies window absorption to those retained projections.
++  `:94-107` permits differently correlated original/relocated inputs and any
++  observation of retained outputs, provided the retained inputs agree.
++
++The contracts constrain no auxiliary output. Those outputs may depend on
++the retained state and previous auxiliary state. The theorem therefore
++proves no equality, restoration, erasure, space bound, or future-use safety
++for excluded banks. The header at `:13-17` says this explicitly. Every
++component whose output or restoration is claimed must be retained or
++covered by an additional contract. This resolves the earlier concern without
++introducing a restored-work claim.
++
++The auxiliary type is fixed within each original/relocated window; the two
++types may differ from each other. A provider whose internal representation
++changes must first supply an appropriate whole-window state type or a
++representation theorem. This is a modest expressiveness boundary, not a
++logical defect.
++
++## Nonvacuity and fresh checks
++
++All five package modules were copied into a fresh temporary directory and
++compiled with the official installed Lean 4.33.0 executable, `-t 0`, with
++inherited extra Lean paths removed. The dependency directory was the only
++extra import path. All 37 printed theorem axiom reports contained either
++no axioms or only `propext` and/or `Quot.sound`.
++
++A separate temporary review probe instantiated the physical interface with
++nonempty retained state
++`Stream Unit Bool Bool × Int`, old bank type `Int`, and new bank type `Bool`.
++The first event has a nonempty hosted residual; the second has an intervening
++idle factor and no hosted residual. Both increment the retained integer.
++The original bank update is `bank + retainedInteger`; the relocated bank
++update is Boolean negation. The endpoint projection proofs are reflexive,
++so these contracts have concrete inhabitants without additional assumptions.
++
++Lean checked the absorption instance for **arbitrary** old and new bank
++inputs. It also checked the explicit two-step bank outputs:
++
++```text
++original bank output  = (bank + retainedInteger) + (retainedInteger + 1)
++relocated bank output = !(!bank)
++```
++
++These equations demonstrate that the real auxiliary outputs are threaded
++through the sequence while remaining outside the equality conclusion. The
++two threading theorems use no axioms; the instantiated absorption theorem
++uses only `propext` and `Quot.sound`. The temporary probe was removed after
++compilation. At the implementing agent's request, the same example was then
++retained as the 57-line `PhysicalExample.lean`, explicitly labeled as a toy
++validation rather than a repository source provider. A further fresh
++trust-zero compilation of its dependency chain and all three named theorems
++passed with those same axiom sets.
++
++## Source fidelity and remaining boundaries
++
++The result matches the algebraic content of PR442's written hosting step:
++move complete, wholly owned residuals through an admissible window and
++absorb them into the pending child's exact remainder. The implementation
++strengthens the wording "nothing touches the family" to the actual condition
++needed: other endpoints are independent of the host, while host-local idle
++factors commute in the same coordinate chart.
++
++The selected `PinnedWindow` proves a concrete finite-mask coverage identity
++for the stated source intervals, universally over stream contents. It does
++not establish the physical chart, owner injection, full intervening schedule,
++or the dirty-invocation endpoint. This review checked its Lean statements and
++compilation; extraction and fresh-template matching are separate audit work.
++
++The remaining source obligations are meaningful: deriving universal
++projected dirty endpoints from the actual word; proving owner injections
++and absence of aliasing; realizing a common chart and its conjugacy with the
++physical factors; preserving cover-sweep chronology; implementing the
++remainder child; and justifying any subsequent use of excluded auxiliary
++state. No cost, larger κ, all-size compiler, or integer-multiplication claim
++follows from this local theorem alone. The stated scope retains these limits.
++
++## Exact reviewed snapshots
++
++SHA-256 of files copied into the fresh build:
++
++```text
++CoordinateSwap.lean   74d47e67dad5e8d548e69b008de19b65cfd138d3be71cf80d0b6c6990cf65841
++Hosting.lean          102084fe6a003ab54e3b1eace36ccd9d872857eb4fc9b0770de3d6f7961af1f9
++PhysicalHosting.lean  edd25772ad9c7cbae66a65bd9bc5cb00b98cf79e0e44913df4ff5f940525bc48
++PinnedWindow.lean     0b9c4a29a8f2d94f1d76a0760bacf65398c848794580222dcc880177e8b9fb34
++BoundaryExamples.lean 6af4e1fc731daef67186cbdc4ef88478cb652b517c4944c6e37cfcced560f3d3
++PhysicalExample.lean  a1394afe490bb5cd8837495a2b859575795d9f197ef27e380402fed4ba7d93da
++```
++
++Executable: `/workspace/toolchains/lean-4.33.0-linux/bin/lean`.
++Later edits require their own fresh replay; this review records exactly the
++snapshots examined and compiled.
+diff --git a/research/lean-whole-residual-hosting/REVIEW-PRIOR.md b/research/lean-whole-residual-hosting/REVIEW-PRIOR.md
+new file mode 100644
+index 0000000..1ef5a79
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/REVIEW-PRIOR.md
+@@ -0,0 +1,148 @@
++# Independent review of the single-stream obstruction
++
++Prepared with OpenAI Codex assistance for the second local session. No source
++files in the existing contribution were modified. Nothing was published.
++
++## Verdict
++
++The Lean statements are correct and freshly replay successfully, but they
++formalize abstract necessary conditions, not a faithful execution model of the
++entire disputed PR448 interface. The existing README states this limitation
++accurately. In particular, this package does not establish an impossibility
++theorem for PR448's priced word or reproduce RaD's finite program enumeration.
++Its strongest directly relevant statement is the single-owner residual support
++obstruction. No mathematical error was found in the proved statements.
++
++Fresh independent command:
++
++```sh
++python3 /workspace/integer-mult-bounds/research/lean-single-stream-obstruction/replay.py \
++  --lean /workspace/toolchains/lean-4.33.0-linux/bin/lean \
++  --receipt /tmp/interface-review-replay.json
++```
++
++Result: PASS; one fresh module, all 15 expected transitive axiom reports,
++five mathematically rejected negative controls. The recorded proof SHA-256 is
++`c7d41804b1fed5b4349ff89f6d244283aa004f7e6413b6a8643fdb910ae32f29`.
++
++## Pinned sources checked
++
++- Main: `12a4934d15006e8c10f9b2264f13f8f341be802b`.
++- PR397: `cb6455fa1e9af68be47c33948d3d1a6f0717a5e4`.
++- PR448: `359022bcd71143e45d48def0dd005bf67f339aa7`.
++- Jacob Sussman: `9c94857bbaee886f8649edee0bc2d3c738f9555e`.
++- PR442 API snapshot in this session:
++  `4e16d001d505d4f21dd2bcfc44591f9be4c279bd`.
++
++The first four hashes were independently read from local Git HEADs. PR442
++text references below are the inherited files present in the pinned PR448
++checkout; identifying them does not assert that this review compared every
++byte to the separate PR442 head.
++
++## Findings, in order of significance
++
++1. **The missing source-to-model refinement remains the main obligation.**
++   `SingleStream.lean:24-25` assumes that a read factors through one projection;
++   `SingleStream.lean:62-64` assumes every visible update ignores hidden state.
++   No theorem proves those premises for a lowered repository instruction or a
++   complete GWord. This restriction does match a fixed helper operand under
++   a verified ownership invariant. It does not describe the whole upstream
++   language: Sussman's `Work/Block/Word.lean:27-30,197-200` includes arbitrary
++   scalar role mixing through `localM`, and
++   `Work/GFrame/Engine/Route.lean:56-60` admits cross-role gates when frames
++   agree. A separate proof must establish which roles may feed the particular
++   operand and throughout which interval. See the existing explicit scope
++   warning in `README.md:84-91`.
++
++2. **The dirty-read witness is illustrative, not the disputed operand.**
++   `SingleStream.lean:83-101` proves that scalar `x+a+b` depends on both
++   independent inputs. PR448 splits *address-coordinate residual directions*
++   between entire physical stream arrays; it does not define the replacement
++   helper payload as a sum of two scalar values. RaD's pinned
++   `/workspace/audit/job1_stream_model.py:14-21,89-94,141-145` instead executes
++   a wrapper with a genuine helper read `x += A h`, residual action,
++   inverse cancellation, and target action. A source binding would have to
++   specify the proposed multi-stream helper read and prove its dependence
++   witnesses; the scalar theorem does not supply that binding.
++
++3. **Gate failure cannot imply endpoint failure.**
++   The wrapper's dirty reads cancel. Its endpoint on the live target is `T x`
++   regardless of the original helper value. Consequently
++   `dirty_read_no_local_program` does not rule out that endpoint. Indeed the
++   definition `Step` permits the single abstract step
++   `visible (x,a) = (T x,f a)`, `hidden _ b = g b`, which realizes the whole
++   endpoint `(T x,f a,g b)` while satisfying visible noninterference. This is
++   compatible with, rather than a counterexample to, the proved theorem.
++   `README.md:77-82` already explains the cancellation caveat. RaD compares
++   complete live-stream endpoints including remainder children
++   (`job1_stream_model.py:177-218`); the Lean package does not yet do so.
++
++4. **Residual support is a sound local abstraction, with a useful source
++   correspondence.** `split_residual_no_owner` (`SingleStream.lean:114-132`)
++   captures the fact that a single role-local operation preserves every other
++   role. Sussman's `DirectionalWords.lean:12,31-32` represents data as one
++   array per role and `roleAct` changes only its named role;
++   `Work/GFrame/Engine/Letters.lean:151-154` applies permutations and phases
++   through `roleAct`. An address adapter acting on one role cannot change the family
++   owner. PR442 specifies owner `(F,d·σ⁻¹)` with the same `F`
++   (`idle-axis-hosting/PROOF.md:43-45`), and its generators store exactly one
++   family plus a route descriptor (`bit_hosted.py:75-83`,
++   `complex_hosted.py:49-57`). PR448 stores the second family *inside* that
++   descriptor while retaining the first as the owner (`bit_split.py:89-97`,
++   `complex_split.py:50-58`); its audit explicitly checks this representation
++   (`audit_split.py:53-59`). Neither the Lean package nor these schema checks
++   defines a physical implementation of that second-family access.
++
++5. **The bit and complex witnesses are small exact examples, not the full
++   coordinate theorem.** `SingleStream.lean:134-172` uses a two-element bit
++   address alphabet and one complex coordinate. RaD's bit model uses
++   arbitrary `q`-ary addresses and tests `q=3,5`
++   (`job1_stream_model.py:51-62,223-225`). The generic support lemma applies
++   once actual nontriviality witnesses are supplied, but the package does
++   not prove all nonempty coordinate factors nontrivial at the construction's
++   parameters. Its README describes them as one-coordinate instances, which
++   is appropriately limited.
++
++The author's acknowledged gap in PR448 remains independent evidence of the
++claimed bound's unestablished status. It must not be promoted to a stronger
++consequence of these Lean theorems.
++
++## Requirements for the proposed positive whole-hosting lemma
++
++PR442's surviving argument is in
++`/workspace/pr448/research/idle-axis-hosting/PROOF.md:12-57`. The finite window
++finder ignores idle children (`hosting_core.py:13-27`), relying on their
++commutation rather than literal absence of operations on a family. A useful
++formalization should therefore allow intervening idle factors and prove:
++
++- Exact coordinate factorization on one stream, over arbitrary payloads and
++  arbitrary address-coordinate types. For swaps, disjoint masks combine by
++  union; masks with overlap combine by symmetric difference. State the
++  disjointness condition when using union, and the subset condition when
++  using a remainder. For several slots, pairwise disjointness and exact
++  coverage of the removed set must be explicit.
++- A complete invocation endpoint, valid for every initial dirty value,
++  factors into its other-role action and exactly the hosted residual on the
++  selected physical family. Move this *complete macro*, after cleanup;
++  internal dirty gates can read the hosted family and cannot in general be
++  moved individually. Restored scratch must be included in the endpoint
++  contract or explicitly hidden by a sound projection.
++- Each intervening macro commutes with that residual on the *complete
++  state*. Merely preserving the family's output is too weak: on state
++  `(f,z)`, `W(f,z)=(f,z+f)` preserves `f`, but fails to commute with
++  `R(f,z)=(-f,z)`. Sufficient cases are an independent map on other roles,
++  or another coordinate factor in the same chart. For conjugated factors,
++  prove common-chart or actual commutation conditions; different names for
++  coordinate sets do not establish commutation across arbitrary charts.
++- After moving hosted residuals through the allowed window, compose them
++  with the child's exact remainder and recover the original complete child.
++  This equality is pointwise for arbitrary correlated inputs because it is
++  an equality of full state transformations.
++
++Instantiation still needs the actual owner injection (including absence of
++aliasing with live data/scratch within an invocation), coordinate route
++conjugacy, and the ordering of the cover sweeps. The parent construction
++emphasizes phase-major cover execution in
++`research/five-stage-gen4-banks/proof/INTEGRATED_PROOF.md:23-25`. A local
++absorption theorem can close the algebraic/window obligation while keeping
++these compiler refinements and every cost or κ claim explicitly separate.
+diff --git a/research/lean-whole-residual-hosting/VALIDATION.md b/research/lean-whole-residual-hosting/VALIDATION.md
+new file mode 100644
+index 0000000..75a4a4e
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/VALIDATION.md
+@@ -0,0 +1,47 @@
++# Recorded validation
++
++The new package passed a fresh offline build with the official Lean 4.33.0
++Linux executable (compiler commit
++`d8b18978322de05a8f3dba51ef03cf5461676c17`). All eight modules compiled with
++trust level zero; all 47 theorem axiom reports passed. Seventeen have no
++axioms; the rest use only `propext`, `Quot.sound`, or both. The precise source
++hashes and per-theorem closures are in proof-manifest.json and replay-result.json.
++
++The official release archive SHA-256 was checked against its GitHub release:
++`4b3fb03c29a1e0a253fb1d11f9bae3725f19a0dc6fc09b3ea16d2c9df3349e2c`.
++The build has no Mathlib dependency. Jacob Sussman's larger project was
++inspected as source; no complete rebuild of that project is claimed.
++
++Lean rejected six false finite instances: host preservation implies
++commutation; overlapping residuals combine by union; a hosted residual may
++lie outside the pending child; independently changed charts commute;
++omitting the selected four-coordinate residual preserves coverage; and
++retaining the whole pending child after hosting preserves its action.
++The runner requires mathematical rejection by `decide`, not a generic
++compiler error. BoundaryExamples also proves explicit negations, and
++PhysicalExample checks a nonempty interface instance with changing banks.
++
++The separate source check passed for the five pinned PR442 files and the
++freshly emitted template. It verifies the selected slots, exact single-family
++owners, schedule, coverage, and matching literal masks. Its source-check
++receipt is separate from the Lean result. This is finite Python validation,
++not an additional Lean theorem.
++
++PR442's full `research/idle-axis-hosting/verify.py` replay completed with
++`PASS_FULL_IDLE_AXIS_HOSTING_COMPOSITION`, including the parent construction,
++bit/complex generation, independent hosting audit, and exact assembly.
++repository-checks.json records the command, exit status, and original receipt
++hash. Its reported numerical bounds retain all upstream assumptions; this
++package does not independently certify those bounds.
++
++The preceding session ran the repository-required `make gen4-bank-verify`:
++all nine stages passed and all 112 inherited inputs were unchanged. The broad
++`make verify` run was stopped after its `joint-dual-verify` prerequisite failed
++with `AssertionError: Makefile`, independently reproduced on clean pinned
++main. That broad suite did not pass. These unchanged baseline results are
++recorded in repository-checks.json; no inherited implementation was changed
++and those expensive baseline checks were not repeated for this additive proof.
++
++Review snapshots and final upstream checks are recorded separately. The
++final replay covers the exact packaged sources, including any later editorial
++changes to comments. Nothing was pushed, published, or sent to maintainers.
+diff --git a/research/lean-whole-residual-hosting/check_source.py b/research/lean-whole-residual-hosting/check_source.py
+new file mode 100644
+index 0000000..605ceea
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/check_source.py
+@@ -0,0 +1,180 @@
++#!/usr/bin/env python3
++"""Recheck the pinned PR442 source and bit-window fixture, entirely offline.
++
++This is a Python source-binding check, not a kernel verification of JSON
++parsing, the complete template, or the inherited physical compiler interface.
++The Lean replay separately checks the literal interval/operator theorems.
++"""
++
++import argparse
++import gzip
++import hashlib
++import json
++from pathlib import Path
++import re
++import sys
++
++
++ROOT = Path(__file__).resolve().parent
++PIN = '4e16d001d505d4f21dd2bcfc44591f9be4c279bd'
++SOURCE_FILES = {
++    'research/idle-axis-hosting/PROOF.md',
++    'research/idle-axis-hosting/hosting_core.py',
++    'research/idle-axis-hosting/bit_hosted.py',
++    'research/idle-axis-hosting/SELECTION.json',
++    'research/e8-early-reset-kernel/bit_global.py',
++}
++
++
++def require(condition, message):
++    if not condition:
++        raise ValueError(message)
++
++
++def sha256(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def check_lean_intervals(selected, slots):
++    """Bind the literal masks; theorem checking remains the Lean replay's job."""
++    text = ' '.join((ROOT / 'PinnedWindow.lean').read_text().split())
++    pending = re.search(
++        r'def pending : Mask \(Fin (\d+)\) := interval (\d+) (\d+)', text)
++    require(pending is not None, 'Cannot locate the literal pending mask')
++    require(tuple(map(int, pending.groups())) ==
++            (selected['ambient_dimension'], 0, selected['pending_rank']),
++            'Lean pending mask differs from the selected source window')
++    residuals = re.search(
++        r'def residualMasks : List \(Mask \(Fin (\d+)\)\) := \[(.*?)\]', text)
++    require(residuals is not None, 'Cannot locate the literal residual masks')
++    require(int(residuals.group(1)) == selected['ambient_dimension'],
++            'Lean residual ambient dimension differs')
++    intervals = []
++    for item in residuals.group(2).split(','):
++        interval = re.fullmatch(r'\s*interval (\d+) (\d+)\s*', item)
++        require(interval is not None, 'Residual mask is not a literal interval')
++        intervals.append(tuple(map(int, interval.groups())))
++    expected = [(row['offset'], row['offset'] + row['width']) for row in slots]
++    require(intervals == expected,
++            'Lean residual intervals differ from representative source order')
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--source-root', required=True, type=Path,
++                        help='PR442 checkout or source tree at the pinned revision')
++    parser.add_argument('--template', required=True, type=Path,
++                        help='freshly replayed bit/GLOBAL-TEMPLATE.json.gz')
++    parser.add_argument('--receipt', type=Path, default=ROOT / 'pinned-window.json',
++                        help='extraction receipt (default: bundled pinned-window.json)')
++    args = parser.parse_args()
++    receipt = json.loads(args.receipt.read_bytes())
++    require(receipt['source_pr'] == 442 and receipt['source_commit'] == PIN,
++            'Unexpected source revision in extraction receipt')
++    require(set(receipt['source_sha256']) == SOURCE_FILES,
++            'The receipt must pin exactly the five inspected source files')
++    for relative, expected_hash in receipt['source_sha256'].items():
++        data = (args.source_root / relative).read_bytes()
++        require(sha256(data) == expected_hash, 'Source hash mismatch: ' + relative)
++
++    compressed = args.template.read_bytes()
++    # The raw JSON is the source identity. Gzip metadata/encoders can differ
++    # across Python versions while decompressing to exactly those pinned bytes.
++    same_gzip = sha256(compressed) == receipt['template_gzip_sha256']
++    raw = gzip.decompress(compressed)
++    require(sha256(raw) == receipt['template_json_sha256'],
++            'Raw template JSON hash mismatch')
++    template = json.loads(raw)
++    selected = receipt['selected']
++    require(selected == {
++        'child': 2, 'copy': 27, 'replica': 0, 'pair': 2, 'side': 0,
++        'port': 27, 'family': 507, 'ambient_dimension': 64,
++        'pending_rank': 28, 'source_level': -1, 'target_level': 3,
++        'remainder_rank': 0, 'window_stages': [0, 1, 2, 3],
++        'child_schedule_position': 8,
++    }, 'Unexpected selected fixture')
++    child, copy, pair = selected['child'], selected['copy'], selected['pair']
++    require(template['m'] == selected['ambient_dimension'], 'Ambient dimension differs')
++    require(template['hosting']['windows'][str(child)] ==
++            [pair, selected['pending_rank'], selected['window_stages']],
++            'Stored hosting window differs')
++    rows = [row for row in template['hosting']['slots']
++            if row[0] == child and row[1] == copy]
++    require(rows == receipt['slots_in_source_order'], 'Selected slot rows differ')
++    ordered = sorted(rows, key=lambda row: (row[4], row[2]))
++    witnesses = receipt['slots_in_representative_stage_order']
++    require(len(ordered) == len(witnesses) == 4, 'Four whole residuals required')
++    covered = set()
++    for row, witness in zip(ordered, witnesses):
++        _, _, offset, width, stage, helper = row
++        require((stage, helper, offset, width) ==
++                (witness['stage'], witness['helper'], witness['offset'], witness['width']),
++                'Representative slot descriptor differs')
++        require(witness['local_register'] == 240 + helper,
++                'Helper/local-register numbering differs')
++        require(width == 8 - witness['entrance_rank'],
++                'Residual width differs from the receipt entrance rank')
++        calls = [call for call in template['calls']
++                 if call['stage'] == stage and call['replica'] == selected['replica']]
++        require(len(calls) == 1, 'Selected invocation is missing or duplicated')
++        call = calls[0]
++        require(call['pair'] == witness['active_pair'] != pair and
++                call['orientation'] == witness['orientation'],
++                'Invocation pair/orientation differs or touches the host pair')
++        expected_owner = [selected['family'], ['hosted', child, offset, width]]
++        require(call['owners'][240 + helper] == witness['owner'] == expected_owner,
++                'Whole single-family owner descriptor differs')
++        cells = set(range(offset, offset + width))
++        require(width > 0 and offset >= 0 and not (covered & cells),
++                'Empty, negative, or overlapping residual interval')
++        require(cells <= set(range(selected['pending_rank'])),
++                'Residual extends outside the pending child')
++        covered.update(cells)
++    require(covered == set(range(selected['pending_rank'])),
++            'Residuals do not exactly cover the pending child')
++
++    schedule = template['schedule']
++    position = selected['child_schedule_position']
++    require(schedule[:position] == receipt['schedule_before_child'] and
++            schedule[position] == receipt['child_event'],
++            'Selected source schedule differs')
++    require(schedule[position] == {
++        'idx': child, 'kind': 'idle', 'pair': pair,
++        'rank': selected['pending_rank'],
++        'source_level': selected['source_level'],
++        'target_level': selected['target_level'],
++    }, 'Selected child event differs')
++    stages = []
++    for event in schedule[:position]:
++        if event['kind'] == 'local_cover_sweep':
++            require(event['pair'] != pair, 'Intervening local invocation touches host pair')
++            stages.append(event['stage'])
++        elif event['kind'] == 'bridge':
++            require(pair not in (event['src'], event['dst']),
++                    'Intervening bridge touches host pair')
++        elif event['kind'] == 'idle':
++            require(event['pair'] != pair,
++                    'This fixture requires intervening idle events on other pairs')
++        else:
++            raise ValueError('Unexpected intervening schedule event')
++    require(stages == selected['window_stages'], 'Re-derived window stages differ')
++    for key, receipt_key in [('bit_operator', 'operator_description'),
++                             ('cover', 'cover_description'), ('loop_order', 'loop_order')]:
++        require(template[key] == receipt[receipt_key], 'Source interface text differs: ' + key)
++    check_lean_intervals(selected, witnesses)
++    print(json.dumps({
++        'status': 'PASS_PINNED_SOURCE_WINDOW', 'source_commit': PIN,
++        'source_files_checked': len(SOURCE_FILES),
++        'template_json_sha256': sha256(raw), 'child': child,
++        'matches_recorded_gzip_bytes': same_gzip,
++        'family': selected['family'], 'whole_residuals_checked': len(rows),
++        'scope': 'Offline Python source binding; Lean checks the literal mask theorems separately.',
++    }, sort_keys=True))
++
++
++if __name__ == '__main__':
++    try:
++        main()
++    except (ValueError, KeyError, IndexError, OSError, TypeError) as error:
++        print('FAIL: ' + str(error), file=sys.stderr)
++        sys.exit(1)
+diff --git a/research/lean-whole-residual-hosting/lean-toolchain b/research/lean-whole-residual-hosting/lean-toolchain
+new file mode 100644
+index 0000000..025e595
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/lean-toolchain
+@@ -0,0 +1 @@
++leanprover/lean4:v4.33.0
+diff --git a/research/lean-whole-residual-hosting/pinned-window.json b/research/lean-whole-residual-hosting/pinned-window.json
+new file mode 100644
+index 0000000..f2fc0ad
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/pinned-window.json
+@@ -0,0 +1,237 @@
++{
++  "status": "PASS_EXTRACTED_PR442_BIT_WINDOW",
++  "source_repository": "https://github.com/CrocSwap/integer-mult-bounds",
++  "source_pr": 442,
++  "source_commit": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd",
++  "source_sha256": {
++    "research/idle-axis-hosting/PROOF.md": "cfe34bf0b64259661312dae22c3a23adc5bf6f6326951eee5c1488ccfc347542",
++    "research/idle-axis-hosting/hosting_core.py": "d8b90cd5d152df3c7c351230863d9e61816ad5e1f21d69bea1a86a5daad559a3",
++    "research/idle-axis-hosting/bit_hosted.py": "6dfbf26213e8adf87563b3575cfb722bd07ecd65627f056b3293411dd3d89a61",
++    "research/idle-axis-hosting/SELECTION.json": "315d54be472842707cce879618be477d8b897050e873bc136d114eec6a232f97",
++    "research/e8-early-reset-kernel/bit_global.py": "79c7dc84e65dca10c35c842cf170e4719d45c38a25d03bf762332b24c700b6c9"
++  },
++  "template_path": "/workspace/audit/session2/whole-hosting-replay/bit/GLOBAL-TEMPLATE.json.gz",
++  "template_gzip_sha256": "6e18a9ce240229c34556ba43fd6ec28f83200dfcf85e5584d4a670aeb605aeb0",
++  "template_json_sha256": "dd7833dcaff8c84b258847f4c4d65b6402c702700ae37d2c464083ee37b24126",
++  "global_receipt_sha256": "1dce4483c6faa64c1952dd502533469f111baf01bf028bf19870d38018f070cf",
++  "full_replay_receipt_sha256": "3affb78d748b323f6593a133788610b9ba075b8ad1a7b25e8e3044dbacd21444",
++  "full_replay_status": "PASS_FULL_IDLE_AXIS_HOSTING_COMPOSITION",
++  "selected": {
++    "child": 2,
++    "copy": 27,
++    "replica": 0,
++    "pair": 2,
++    "side": 0,
++    "port": 27,
++    "family": 507,
++    "ambient_dimension": 64,
++    "pending_rank": 28,
++    "source_level": -1,
++    "target_level": 3,
++    "remainder_rank": 0,
++    "window_stages": [
++      0,
++      1,
++      2,
++      3
++    ],
++    "child_schedule_position": 8
++  },
++  "slots_in_source_order": [
++    [
++      2,
++      27,
++      0,
++      8,
++      1,
++      139
++    ],
++    [
++      2,
++      27,
++      8,
++      8,
++      1,
++      140
++    ],
++    [
++      2,
++      27,
++      16,
++      8,
++      2,
++      0
++    ],
++    [
++      2,
++      27,
++      24,
++      4,
++      0,
++      709
++    ]
++  ],
++  "slots_in_representative_stage_order": [
++    {
++      "stage": 0,
++      "active_pair": 0,
++      "orientation": "forward",
++      "helper": 709,
++      "local_register": 949,
++      "entrance_frame": 458,
++      "entrance_rank": 4,
++      "offset": 24,
++      "width": 4,
++      "owner": [
++        507,
++        [
++          "hosted",
++          2,
++          24,
++          4
++        ]
++      ]
++    },
++    {
++      "stage": 1,
++      "active_pair": 0,
++      "orientation": "reverse",
++      "helper": 139,
++      "local_register": 379,
++      "entrance_frame": 0,
++      "entrance_rank": 0,
++      "offset": 0,
++      "width": 8,
++      "owner": [
++        507,
++        [
++          "hosted",
++          2,
++          0,
++          8
++        ]
++      ]
++    },
++    {
++      "stage": 1,
++      "active_pair": 0,
++      "orientation": "reverse",
++      "helper": 140,
++      "local_register": 380,
++      "entrance_frame": 0,
++      "entrance_rank": 0,
++      "offset": 8,
++      "width": 8,
++      "owner": [
++        507,
++        [
++          "hosted",
++          2,
++          8,
++          8
++        ]
++      ]
++    },
++    {
++      "stage": 2,
++      "active_pair": 0,
++      "orientation": "forward",
++      "helper": 0,
++      "local_register": 240,
++      "entrance_frame": 0,
++      "entrance_rank": 0,
++      "offset": 16,
++      "width": 8,
++      "owner": [
++        507,
++        [
++          "hosted",
++          2,
++          16,
++          8
++        ]
++      ]
++    }
++  ],
++  "schedule_before_child": [
++    {
++      "kind": "local_cover_sweep",
++      "pair": 0,
++      "reverse": false,
++      "stage": 0
++    },
++    {
++      "kind": "local_cover_sweep",
++      "pair": 0,
++      "reverse": true,
++      "stage": 1
++    },
++    {
++      "idx": 0,
++      "kind": "idle",
++      "pair": 1,
++      "rank": 14,
++      "source_level": -1,
++      "target_level": 1
++    },
++    {
++      "coefficient": 1,
++      "dst": 0,
++      "kind": "bridge",
++      "src": 1
++    },
++    {
++      "kind": "local_cover_sweep",
++      "pair": 0,
++      "reverse": false,
++      "stage": 2
++    },
++    {
++      "idx": 1,
++      "kind": "idle",
++      "pair": 1,
++      "rank": 7,
++      "source_level": 1,
++      "target_level": 2
++    },
++    {
++      "coefficient": -1,
++      "dst": 0,
++      "kind": "bridge",
++      "src": 1
++    },
++    {
++      "kind": "local_cover_sweep",
++      "pair": 1,
++      "reverse": true,
++      "stage": 3
++    }
++  ],
++  "child_event": {
++    "idx": 2,
++    "kind": "idle",
++    "pair": 2,
++    "rank": 28,
++    "source_level": -1,
++    "target_level": 3
++  },
++  "checked": [
++    "Raw JSON hash equals GLOBAL.json template_sha256",
++    "Exact selected slot rows are present in fresh template",
++    "All four replica-0 call owners have family507 and exact hosted selector",
++    "Each residual width equals8 minus its pinned entrance-frame rank",
++    "All masks are disjoint and their union is exactly [0,28)",
++    "No local/bridge event before child2 names host pair2",
++    "All five source files equal pinned Git blobs"
++  ],
++  "operator_description": "D_U exchanges the two address halves on projector U; D_I D_P = D_(I-P) exactly.",
++  "cover_description": "O(I_64/2,F_q) for admitted odd address primes q",
++  "loop_order": "Each recipe phase: replicas then all cover classes; finish every local invocation before the next.",
++  "proof_module": "research/lean-whole-residual-hosting/PinnedWindow.lean",
++  "scope_notes": [
++    "Offsets are coordinates in the pending-child chart; this receipt does not construct its physical address isometry.",
++    "Family507 means one family over all cover classes. Two stage1 helper route selectors differ; order at a fixed physical (family,cover class) is not encoded by slot-list order. Lean same_stage_reorder proves the two possible orders equal.",
++    "The complete macro endpoint and single-stream ownership/chart realization remain premises of the hosting theorem; neither this extraction nor the coordinate theorem establishes those compiler interfaces.",
++    "The Python extraction checks finite source data; it is not a Lean verification of the JSON parser or of the whole emitted template."
++  ]
++}
+diff --git a/research/lean-whole-residual-hosting/proof-manifest.json b/research/lean-whole-residual-hosting/proof-manifest.json
+new file mode 100644
+index 0000000..a36ac89
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/proof-manifest.json
+@@ -0,0 +1,94 @@
++{
++  "sha256": {
++    "CoordinateSwap.lean": "74d47e67dad5e8d548e69b008de19b65cfd138d3be71cf80d0b6c6990cf65841",
++    "Hosting.lean": "102084fe6a003ab54e3b1eace36ccd9d872857eb4fc9b0770de3d6f7961af1f9",
++    "PhysicalHosting.lean": "edd25772ad9c7cbae66a65bd9bc5cb00b98cf79e0e44913df4ff5f940525bc48",
++    "PinnedWindow.lean": "0b9c4a29a8f2d94f1d76a0760bacf65398c848794580222dcc880177e8b9fb34",
++    "PinnedHosting.lean": "76d9562e64aa255dd349cade5b89a91c57d8b62300d38715010dbd9127019226",
++    "BoundaryExamples.lean": "6af4e1fc731daef67186cbdc4ef88478cb652b517c4944c6e37cfcced560f3d3",
++    "PhysicalExample.lean": "a1394afe490bb5cd8837495a2b859575795d9f197ef27e380402fed4ba7d93da",
++    "Audit.lean": "d53ab2e6ded98b0648334e0f5ef6a06a6f8c0abaa91b948f3cbf3fdd58b4aa9b"
++  },
++  "imports": {
++    "CoordinateSwap.lean": [
++      "Std"
++    ],
++    "Hosting.lean": [
++      "CoordinateSwap"
++    ],
++    "PhysicalHosting.lean": [
++      "Hosting"
++    ],
++    "PinnedWindow.lean": [
++      "CoordinateSwap"
++    ],
++    "PinnedHosting.lean": [
++      "PhysicalHosting",
++      "PinnedWindow"
++    ],
++    "BoundaryExamples.lean": [
++      "CoordinateSwap"
++    ],
++    "PhysicalExample.lean": [
++      "PhysicalHosting"
++    ],
++    "Audit.lean": [
++      "CoordinateSwap",
++      "Hosting",
++      "PhysicalHosting",
++      "PinnedWindow",
++      "PinnedHosting",
++      "BoundaryExamples",
++      "PhysicalExample"
++    ]
++  },
++  "theorems": [
++    "WholeHosting.masksDisjoint_symm",
++    "WholeHosting.swapAddress_involution",
++    "WholeHosting.swapAddress_commute",
++    "WholeHosting.swapAddress_disjoint_union",
++    "WholeHosting.bitAction_involution",
++    "WholeHosting.bitAction_commute",
++    "WholeHosting.bitAction_disjoint_comp",
++    "WholeHosting.remainder_disjoint",
++    "WholeHosting.union_remainder",
++    "WholeHosting.bitAction_complete",
++    "WholeHosting.bitAction_empty",
++    "WholeHosting.bitFactors_union",
++    "WholeHosting.bitFactors_complete",
++    "WholeHosting.base_commutes",
++    "WholeHosting.runBase_commutes",
++    "WholeHosting.delay_residuals",
++    "WholeHosting.whole_hosting",
++    "WholeHosting.whole_hosting_in_context",
++    "WholeHosting.Implementations.original_eq",
++    "WholeHosting.Implementations.relocated_eq",
++    "WholeHosting.implementation_whole_hosting",
++    "WholeHosting.PhysicalImplementations.original_projection",
++    "WholeHosting.PhysicalImplementations.relocated_projection",
++    "WholeHosting.physical_whole_hosting",
++    "WholeHosting.physical_hosting_in_context",
++    "WholeHosting.PinnedBitWindow.disjoint",
++    "WholeHosting.PinnedBitWindow.subset",
++    "WholeHosting.PinnedBitWindow.coverage",
++    "WholeHosting.PinnedBitWindow.same_stage_reorder",
++    "WholeHosting.PinnedBitWindow.remainder_empty",
++    "WholeHosting.PinnedBitWindow.complete",
++    "WholeHosting.PinnedBitWindow.complete_with_remainder",
++    "WholeHosting.PinnedBitWindow.selected_window_hosting",
++    "WholeHosting.PinnedBitWindow.selected_physical_hosting",
++    "WholeHosting.Boundary.readHost_preserves_host",
++    "WholeHosting.Boundary.host_preservation_not_commutation",
++    "WholeHosting.Boundary.overlapping_masks_not_disjoint",
++    "WholeHosting.Boundary.overlapping_masks_not_union",
++    "WholeHosting.Boundary.outside_pending_not_completion",
++    "WholeHosting.Boundary.swapAB_involution",
++    "WholeHosting.Boundary.swapCD_involution",
++    "WholeHosting.Boundary.chartBC_involution",
++    "WholeHosting.Boundary.same_chart_commute",
++    "WholeHosting.Boundary.different_charts_not_commute",
++    "WholeHosting.PhysicalExample.old_output_is_threaded",
++    "WholeHosting.PhysicalExample.relocated_output_is_threaded",
++    "WholeHosting.PhysicalExample.absorption"
++  ]
++}
+diff --git a/research/lean-whole-residual-hosting/replay-result.json b/research/lean-whole-residual-hosting/replay-result.json
+new file mode 100644
+index 0000000..2015429
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/replay-result.json
+@@ -0,0 +1,159 @@
++{
++  "status": "PASS",
++  "lean": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)",
++  "trust_level": 0,
++  "source_sha256": {
++    "CoordinateSwap.lean": "74d47e67dad5e8d548e69b008de19b65cfd138d3be71cf80d0b6c6990cf65841",
++    "Hosting.lean": "102084fe6a003ab54e3b1eace36ccd9d872857eb4fc9b0770de3d6f7961af1f9",
++    "PhysicalHosting.lean": "edd25772ad9c7cbae66a65bd9bc5cb00b98cf79e0e44913df4ff5f940525bc48",
++    "PinnedWindow.lean": "0b9c4a29a8f2d94f1d76a0760bacf65398c848794580222dcc880177e8b9fb34",
++    "PinnedHosting.lean": "76d9562e64aa255dd349cade5b89a91c57d8b62300d38715010dbd9127019226",
++    "BoundaryExamples.lean": "6af4e1fc731daef67186cbdc4ef88478cb652b517c4944c6e37cfcced560f3d3",
++    "PhysicalExample.lean": "a1394afe490bb5cd8837495a2b859575795d9f197ef27e380402fed4ba7d93da",
++    "Audit.lean": "d53ab2e6ded98b0648334e0f5ef6a06a6f8c0abaa91b948f3cbf3fdd58b4aa9b"
++  },
++  "fresh_modules_compiled": 8,
++  "axioms": {
++    "WholeHosting.masksDisjoint_symm": [
++      "propext"
++    ],
++    "WholeHosting.swapAddress_involution": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.swapAddress_commute": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.swapAddress_disjoint_union": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.bitAction_involution": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.bitAction_commute": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.bitAction_disjoint_comp": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.remainder_disjoint": [
++      "propext"
++    ],
++    "WholeHosting.union_remainder": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.bitAction_complete": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.bitAction_empty": [],
++    "WholeHosting.bitFactors_union": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.bitFactors_complete": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.base_commutes": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.runBase_commutes": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.delay_residuals": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.whole_hosting": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.whole_hosting_in_context": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.Implementations.original_eq": [],
++    "WholeHosting.Implementations.relocated_eq": [],
++    "WholeHosting.implementation_whole_hosting": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PhysicalImplementations.original_projection": [],
++    "WholeHosting.PhysicalImplementations.relocated_projection": [],
++    "WholeHosting.physical_whole_hosting": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.physical_hosting_in_context": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.disjoint": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.subset": [
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.coverage": [
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.same_stage_reorder": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.remainder_empty": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.complete": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.complete_with_remainder": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.selected_window_hosting": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.PinnedBitWindow.selected_physical_hosting": [
++      "propext",
++      "Quot.sound"
++    ],
++    "WholeHosting.Boundary.readHost_preserves_host": [],
++    "WholeHosting.Boundary.host_preservation_not_commutation": [],
++    "WholeHosting.Boundary.overlapping_masks_not_disjoint": [],
++    "WholeHosting.Boundary.overlapping_masks_not_union": [],
++    "WholeHosting.Boundary.outside_pending_not_completion": [],
++    "WholeHosting.Boundary.swapAB_involution": [],
++    "WholeHosting.Boundary.swapCD_involution": [],
++    "WholeHosting.Boundary.chartBC_involution": [],
++    "WholeHosting.Boundary.same_chart_commute": [],
++    "WholeHosting.Boundary.different_charts_not_commute": [],
++    "WholeHosting.PhysicalExample.old_output_is_threaded": [],
++    "WholeHosting.PhysicalExample.relocated_output_is_threaded": [],
++    "WholeHosting.PhysicalExample.absorption": [
++      "propext",
++      "Quot.sound"
++    ]
++  },
++  "negative_controls_rejected": {
++    "host_preservation_suffices": "Control.lean:6:99: error: Tactic `decide` proved that the proposition\n  readHost (flipHost (1, 0)) = flipHost (readHost (1, 0))\nis false",
++    "overlap_is_union": "Control.lean:8:83: error: Tactic `decide` proved that the proposition\n  bitAction fullMask (bitAction fullMask witnessStream) witnessAddress =\n    bitAction (unionMask fullMask fullMask) witnessStream witnessAddress\nis false",
++    "outside_pending_is_allowed": "Control.lean:9:70: error: Tactic `decide` proved that the proposition\n  bitAction (remainderMask (fun x => false) fullMask) (bitAction fullMask witnessStream) witnessAddress =\n    bitAction (fun x => false) witnessStream witnessAddress\nis false",
++    "independent_charts_commute": "Control.lean:6:95: error: Tactic `decide` proved that the proposition\n  swapAB (otherChartCD Slot.a) = otherChartCD (swapAB Slot.a)\nis false",
++    "omit_selected_slot": "Control.lean:9:63: error: Tactic `decide` proved that the proposition\n  bitFactors [interval 0 8, interval 8 16, interval 16 24] selectedStream selectedAddress =\n    bitAction pending selectedStream selectedAddress\nis false",
++    "keep_entire_pending_child": "Control.lean:8:63: error: Tactic `decide` proved that the proposition\n  bitAction pending (bitFactors residualMasks selectedStream) selectedAddress =\n    bitAction pending selectedStream selectedAddress\nis false"
++  }
++}
+diff --git a/research/lean-whole-residual-hosting/replay.py b/research/lean-whole-residual-hosting/replay.py
+new file mode 100644
+index 0000000..1c2c5f3
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/replay.py
+@@ -0,0 +1,160 @@
++#!/usr/bin/env python3
++"""Offline fresh Lean 4.33.0 kernel replay, using only Python's standard library."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import subprocess
++import tempfile
++
++ROOT = Path(__file__).resolve().parent
++MODULES = [
++    'CoordinateSwap', 'Hosting', 'PhysicalHosting', 'PinnedWindow',
++    'PinnedHosting', 'BoundaryExamples', 'PhysicalExample', 'Audit',
++]
++# Each deliberately false equality is evaluated at explicit finite inputs.
++CONTROLS = {
++    'host_preservation_suffices':
++        'readHost (flipHost (1, 0)) = flipHost (readHost (1, 0))',
++    'overlap_is_union': '''
++        bitAction fullMask (bitAction fullMask witnessStream) witnessAddress =
++        bitAction (unionMask fullMask fullMask) witnessStream witnessAddress''',
++    'outside_pending_is_allowed': '''
++        bitAction (remainderMask (fun _ => false) fullMask)
++            (bitAction fullMask witnessStream) witnessAddress =
++        bitAction (fun _ => false) witnessStream witnessAddress''',
++    'independent_charts_commute':
++        'swapAB (otherChartCD .a) = otherChartCD (swapAB .a)',
++    'omit_selected_slot': '''
++        bitFactors [interval 0 8, interval 8 16, interval 16 24]
++            selectedStream selectedAddress =
++        bitAction pending selectedStream selectedAddress''',
++    'keep_entire_pending_child': '''
++        bitAction pending (bitFactors residualMasks selectedStream) selectedAddress =
++        bitAction pending selectedStream selectedAddress''',
++}
++
++
++def require(condition, message):
++    if not condition:
++        raise RuntimeError(message)
++
++
++def uncomment(source):
++    """Strip this package's comments for supplementary declaration hygiene."""
++    return re.sub(r'--[^\n]*', '', re.sub(r'/\-[\s\S]*?\-/', '', source))
++
++
++def theorem_names(source):
++    code = uncomment(source)
++    namespace = re.findall(r'^namespace (\S+)\s*$', code, re.M)
++    require(len(namespace) == 1, 'Expected one explicit module namespace')
++    return [namespace[0] + '.' + name for name in
++            re.findall(r'^theorem ([\w.]+)(?=\s|:)', code, re.M)]
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--lean', required=True, type=Path,
++                        help='installed Lean binary; no toolchain download is performed')
++    parser.add_argument('--receipt', type=Path)
++    args = parser.parse_args()
++    lean = args.lean.resolve(strict=True)
++    env = dict(os.environ)
++    for name in ('LEAN_PATH', 'LEAN_SRC_PATH'):
++        env.pop(name, None)
++    version = subprocess.check_output([str(lean), '--version'], env=env,
++                                      text=True, timeout=30).strip()
++    require(version.startswith('Lean (version 4.33.0,'), 'Lean 4.33.0 required')
++    manifest = json.loads((ROOT / 'proof-manifest.json').read_text())
++    sources, names = {}, []
++    for module in MODULES:
++        filename = module + '.lean'
++        source = (ROOT / filename).read_bytes()
++        require(hashlib.sha256(source).hexdigest() == manifest['sha256'][filename],
++                'Source hash changed: ' + filename)
++        code = uncomment(source.decode())
++        require(not re.search(r'\b(sorry|admit|native_decide|unsafe)\b', code),
++                'Disallowed proof escape: ' + filename)
++        require(not re.search(r'^\s*(axiom|opaque)\s', code, re.M),
++                'Project axioms/opaque declarations forbidden: ' + filename)
++        imports = re.findall(r'^import (.+)$', code, re.M)
++        require(imports == manifest['imports'][filename], 'Imports changed: ' + filename)
++        require(all(x == 'Std' or x in MODULES[:MODULES.index(module)] for x in imports),
++                'Unexpected external or forward import: ' + filename)
++        if module != 'Audit':
++            names.extend(theorem_names(source.decode()))
++        sources[filename] = source
++    require(names == manifest['theorems'], 'Theorem inventory changed')
++    require(re.findall(r'^#print axioms (\S+)$', sources['Audit.lean'].decode(), re.M)
++            == names, 'Audit must cover every named theorem exactly once')
++
++    with tempfile.TemporaryDirectory(prefix='whole-hosting-lean-') as tmp:
++        build = Path(tmp)
++        env['LEAN_PATH'] = str(build)
++        for filename, source in sources.items():
++            (build / filename).write_bytes(source)
++
++        def compile_file(filename, output=None):
++            command = [str(lean), '-t', '0']
++            if output:
++                command += ['-o', output]
++            command += [filename]
++            return subprocess.run(command, cwd=build, env=env, text=True,
++                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
++                                  timeout=60)
++
++        compilation = {}
++        for module in MODULES:
++            result = compile_file(module + '.lean', module + '.olean')
++            require(result.returncode == 0, module + '\n' + result.stdout)
++            require('warning:' not in result.stdout, module + '\n' + result.stdout)
++            compilation[module] = result.stdout
++        reports = {}
++        for line in compilation['Audit'].splitlines():
++            match = re.fullmatch(r"'([^']+)' does not depend on any axioms", line)
++            if match:
++                reports[match[1]] = []
++                continue
++            match = re.fullmatch(r"'([^']+)' depends on axioms: \[([^]]*)\]", line)
++            require(match is not None, 'Unexpected audit output: ' + line)
++            axioms = match[2].split(', ') if match[2] else []
++            require(set(axioms) <= {'propext', 'Quot.sound'},
++                    'Unexpected transitive axiom: ' + line)
++            reports[match[1]] = axioms
++        require(list(reports) == names, 'Missing, duplicate, or extra axiom reports')
++        require(len(compilation['Audit'].splitlines()) == len(names),
++                'Duplicate axiom report')
++
++        rejected = {}
++        for name, statement in CONTROLS.items():
++            control_source = '''import BoundaryExamples
++import PinnedWindow
++open WholeHosting WholeHosting.Boundary WholeHosting.PinnedBitWindow
++def selectedAddress : Address (Fin 64) Bool := fun _ => (false, true)
++def selectedStream : Stream (Fin 64) Bool Bool := fun a => (a ⟨24, by decide⟩).1
++''' + f'theorem {name} : {statement} := by decide\n'
++            (build / 'Control.lean').write_text(control_source)
++            result = compile_file('Control.lean')
++            require(result.returncode != 0 and
++                    'Tactic `decide` proved that the proposition' in result.stdout and
++                    'is false' in result.stdout,
++                    'Control not mathematically rejected: ' + name + '\n' + result.stdout)
++            rejected[name] = result.stdout.strip()
++        receipt = {
++            'status': 'PASS', 'lean': version, 'trust_level': 0,
++            'source_sha256': manifest['sha256'],
++            'fresh_modules_compiled': len(MODULES),
++            'axioms': reports, 'negative_controls_rejected': rejected,
++        }
++    if args.receipt:
++        args.receipt.write_text(json.dumps(receipt, indent=2) + '\n')
++    print(json.dumps({'status': 'PASS', 'compiled_modules': len(MODULES),
++                      'axiom_reports': len(reports),
++                      'negative_controls_rejected': len(rejected)}))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/research/lean-whole-residual-hosting/repository-checks.json b/research/lean-whole-residual-hosting/repository-checks.json
+new file mode 100644
+index 0000000..9a02bbe
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/repository-checks.json
+@@ -0,0 +1,102 @@
++{
++  "fresh_pr442_replay": {
++    "command": "python3 -B research/idle-axis-hosting/verify.py OUTPUT",
++    "cwd_commit": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd",
++    "exit_code": 0,
++    "receipt_sha256": "3affb78d748b323f6593a133788610b9ba075b8ad1a7b25e8e3044dbacd21444",
++    "reported_result": {
++      "status": "PASS_FULL_IDLE_AXIS_HOSTING_COMPOSITION",
++      "kappa": "618775866623647/500000000000000000",
++      "kappa_decimal": "0.001237551733247294",
++      "gain_over_pr434_percent": 9.218174040448298,
++      "manifest_sha256": "f68b82604363329618529313ac9c3796dc1e88b176eaee4a7b0dec9be428e987",
++      "checks": [
++        {
++          "name": "parent-434-full",
++          "seconds": 172.8,
++          "log_sha256": "20b2ab6d5158ef8586d70330043d87b3d163513d380e7db3f90232c046b355df"
++        },
++        {
++          "name": "bit-hosting",
++          "seconds": 0.6,
++          "log_sha256": "0f4134e600e0f195c6630a3f4ec2f3253d2bc7cf1fd83bbf5d4361d52aeff898"
++        },
++        {
++          "name": "complex-hosting",
++          "seconds": 0.6,
++          "log_sha256": "3b42f65586cb5c37e06df560fae4dcde1c42526238697a73d103f9895df24fcd"
++        },
++        {
++          "name": "independent-audit",
++          "seconds": 4.2,
++          "log_sha256": "ded19b28c151388cc76fd9a13a489d71eb801837f76c81d9195660da10cc10ee"
++        },
++        {
++          "name": "exact-assembly",
++          "seconds": 0.3,
++          "log_sha256": "17d508e07b103a54c1301e2440c65affd06e3352798f620e3b21384c3aa0a619"
++        }
++      ],
++      "python": "3.12.14"
++    },
++    "scope": "Upstream Python replay; reported bounds retain upstream assumptions, not Lean-certified here."
++  },
++  "unchanged_baseline_checks_from_preceding_session": {
++    "gen4_bank_verify": {
++      "exit_code": 0,
++      "report": {
++        "status": "PASS_IMMUTABLE_PARITY_FUSED_GEN4_FIVE_STAGE_BANKED_CONSTRUCTION",
++        "manifest_sha256": "99e202d9ffe5baf89e02796edbfc7095b2b227622eccf7b61afa01fd61aeb385",
++        "files": 112,
++        "kappa": "90446448750933/125000000000000000",
++        "kappa_scientific": "7.235715900074640e-04",
++        "fresh_stages": [
++          "banks",
++          "bit",
++          "complex",
++          "finite",
++          "math",
++          "primes",
++          "raw",
++          "scalar",
++          "virtual"
++        ],
++        "inputs_unchanged": true,
++        "timings": {
++          "virtual": 63.39302749500001,
++          "raw": 9.919700458000023,
++          "bit": 63.939947475999986,
++          "scalar": 115.73293484300001,
++          "primes": 16.673246737,
++          "banks": 74.63627826700008,
++          "complex": 47.07069410700001,
++          "math": 0.6351751199999853,
++          "finite": 0.16642942200007838
++        },
++        "seconds": 400.249373811,
++        "negative_controls": [
++          "omitted banks stage",
++          "omitted bit stage",
++          "omitted complex stage",
++          "omitted finite stage",
++          "omitted math stage",
++          "omitted primes stage",
++          "omitted raw stage",
++          "omitted scalar stage",
++          "omitted virtual stage"
++        ]
++      },
++      "log_sha256": "79f9ab98afa535ad138e36f41063d5ea9d9dce58a2f989d6e3b695c946959501"
++    },
++    "joint_dual_verify": {
++      "exit_code": 2,
++      "error": "AssertionError: Makefile",
++      "reproduced_on_clean_pinned_main": true
++    },
++    "make_verify": {
++      "status": "STOPPED_AFTER_BASELINE_BLOCKER_CONFIRMED",
++      "completed": false,
++      "log": "/workspace/audit/make-verify.log"
++    }
++  }
++}
+diff --git a/research/lean-whole-residual-hosting/source-check-result.json b/research/lean-whole-residual-hosting/source-check-result.json
+new file mode 100644
+index 0000000..f3a1072
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/source-check-result.json
+@@ -0,0 +1 @@
++{"child": 2, "family": 507, "matches_recorded_gzip_bytes": true, "scope": "Offline Python source binding; Lean checks the literal mask theorems separately.", "source_commit": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd", "source_files_checked": 5, "status": "PASS_PINNED_SOURCE_WINDOW", "template_json_sha256": "dd7833dcaff8c84b258847f4c4d65b6402c702700ae37d2c464083ee37b24126", "whole_residuals_checked": 4}
+diff --git a/research/lean-whole-residual-hosting/upstream-check.json b/research/lean-whole-residual-hosting/upstream-check.json
+new file mode 100644
+index 0000000..c8b5c6c
+--- /dev/null
++++ b/research/lean-whole-residual-hosting/upstream-check.json
+@@ -0,0 +1,236 @@
++{
++  "check_completed_at_utc": "2026-10-11T22:12:37.864870+00:00",
++  "remote_read_started_at_utc": "2026-10-11T22:10:42.998169+00:00",
++  "heads_observed_at_utc": "2026-10-11T22:10:44.411256+00:00",
++  "read_only": true,
++  "repository": "https://github.com/CrocSwap/integer-mult-bounds",
++  "heads": {
++    "main": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++    "pr397": "cb6455fa1e9af68be47c33948d3d1a6f0717a5e4",
++    "pr442": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd",
++    "pr448": "359022bcd71143e45d48def0dd005bf67f339aa7",
++    "jacob_main": "9c94857bbaee886f8649edee0bc2d3c738f9555e"
++  },
++  "heads_unchanged_from_session_pins": true,
++  "methods": [
++    "git ls-remote for main and pull refs",
++    "GitHub pull-request metadata cross-check for 397, 442, 448",
++    "git ls-remote HEAD and main for jacobalansussman/wht-power-saving-lean",
++    "GitHub latest-100 updated-sorted all-state pull title/body screening",
++    "All PR448 issue comments (one page, no pagination)",
++    "New PR505 changed-file list and pinned scheduling prose inspected",
++    "Pinned external WordScheduling.lean source inspected; not rebuilt"
++  ],
++  "pr448_discussion": {
++    "url": "https://api.github.com/repos/CrocSwap/integer-mult-bounds/issues/448/comments?per_page=100&page=1",
++    "comment_count": 2,
++    "pagination_remaining": false,
++    "unchanged_comment_ids": [
++      6113791847,
++      6113842081
++    ],
++    "latest": {
++      "url": "https://github.com/CrocSwap/integer-mult-bounds/pull/448#issuecomment-6113842081",
++      "author": "higherbeing",
++      "created_at": "2026-10-11T21:15:52Z",
++      "updated_at": "2026-10-11T21:15:52Z",
++      "body_sha256": "9dae8fe8a08d32fdc48b21aac6fcaab4e4f3d996e35894994ee70d7a904f9a35",
++      "summary": "Author acknowledges missing multi-stream register interface; two-register realization changes the word and cost. Advertised split-residual gains remain unestablished."
++    },
++    "scope": "Issue comments; no new issue comment since the prior audit."
++  },
++  "latest_pull_scan": {
++    "url": "https://api.github.com/repos/CrocSwap/integer-mult-bounds/pulls?state=all&sort=updated&direction=desc&per_page=100&page=1",
++    "count": 100,
++    "order": "updated descending, state all, first page only",
++    "updated_at_range": [
++      "2026-10-11T11:17:29Z",
++      "2026-10-11T22:09:48Z"
++    ],
++    "scanned_pr_numbers": [
++      493,
++      505,
++      473,
++      499,
++      504,
++      503,
++      477,
++      485,
++      502,
++      501,
++      500,
++      498,
++      494,
++      480,
++      448,
++      484,
++      497,
++      496,
++      491,
++      495,
++      466,
++      489,
++      492,
++      490,
++      488,
++      458,
++      487,
++      486,
++      483,
++      186,
++      482,
++      481,
++      479,
++      478,
++      476,
++      475,
++      376,
++      468,
++      470,
++      474,
++      397,
++      469,
++      275,
++      472,
++      450,
++      464,
++      471,
++      467,
++      463,
++      454,
++      460,
++      462,
++      465,
++      459,
++      451,
++      461,
++      457,
++      456,
++      455,
++      453,
++      445,
++      446,
++      444,
++      200,
++      443,
++      452,
++      449,
++      439,
++      447,
++      434,
++      436,
++      437,
++      425,
++      431,
++      433,
++      442,
++      441,
++      440,
++      438,
++      426,
++      432,
++      424,
++      435,
++      419,
++      422,
++      429,
++      417,
++      387,
++      352,
++      412,
++      390,
++      385,
++      382,
++      380,
++      377,
++      374,
++      430,
++      379,
++      428,
++      427
++    ],
++    "title_body_head_snapshot_sha256": "322d1b29005dc1b4be945a29497c8b0744bdf4d56ba8054b78ccf1bede5948eb",
++    "screening": "All returned titles/bodies searched for Lean/formalization and whole-owner/whole-hosting/window/scheduling terms; relevant matches reviewed for scope.",
++    "new_pr_numbers_relative_to_session_start": [
++      505
++    ],
++    "relevant_candidates": [
++      {
++        "number": 397,
++        "head": "cb6455fa1e9af68be47c33948d3d1a6f0717a5e4",
++        "title": "Formalize the indexed B_K scalar bridge and bind the pinned B3 word",
++        "url": "https://github.com/CrocSwap/integer-mult-bounds/pull/397",
++        "assessment": "Indexed scalar bridge; existing formalization, distinct from bit residual/window absorption."
++      },
++      {
++        "number": 430,
++        "head": "06c806849952efb9f9b90c2dc80477725a216fce",
++        "title": "Independently audit B3 composition and PR390 helper interfaces",
++        "url": "https://github.com/CrocSwap/integer-mult-bounds/pull/430",
++        "assessment": "Partial structural Lean audit of B3 and physical-provider interfaces; no matched whole-hosting completion theorem identified."
++      },
++      {
++        "number": 487,
++        "head": "15b49f66cb2d2663fb71672f4d594e755bd93938",
++        "title": "[Lean] Verification of selected 1320-port bijection, κ=0.000661885549259598",
++        "url": "https://github.com/CrocSwap/integer-mult-bounds/pull/487",
++        "assessment": "Selected 1320-port bijection; distinct obligation."
++      },
++      {
++        "number": 488,
++        "head": "edd3102b415df5b9d6f633ac0a4dedcf69c58525",
++        "title": "[Lean] Verification of binary input preparation, κ=0.000661885549259598",
++        "url": "https://github.com/CrocSwap/integer-mult-bounds/pull/488",
++        "assessment": "Binary input preparation; distinct obligation."
++      },
++      {
++        "number": 442,
++        "head": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd",
++        "title": "Conditional κ ≈ 1.2375517e-3: idle-axis hosting of helper residuals (+9.2% over #434)",
++        "url": "https://github.com/CrocSwap/integer-mult-bounds/pull/442",
++        "assessment": "Written whole-residual hosting argument; body explicitly claims no Lean proof."
++      },
++      {
++        "number": 505,
++        "head": "4ee769c8e28837482272b5f4742497da8e2fc9d4",
++        "title": "Asynchronous whole-owner replicas: kappa 0.001357701757628940 (+1.9236% over #496)",
++        "url": "https://github.com/CrocSwap/integer-mult-bounds/pull/505",
++        "assessment": "New asynchronous whole-owner prose argument; no Lean files among 64 changed paths; generic external scheduling sources cited as inspiration."
++      }
++    ],
++    "bounded_conclusion": "No matching completed Lean whole-residual bit window-absorption formalization was identified in this latest-100 title/body screen or the specifically inspected new source. This is not an exhaustive implementation search, priority claim, or claim of mathematical novelty."
++  },
++  "new_pr505_source_check": {
++    "head": "4ee769c8e28837482272b5f4742497da8e2fc9d4",
++    "files_endpoint": "https://api.github.com/repos/CrocSwap/integer-mult-bounds/pulls/505/files?per_page=100&page=1",
++    "changed_file_count": 64,
++    "changed_lean_files": [],
++    "pagination_remaining": false,
++    "written_lemma_url": "https://raw.githubusercontent.com/CrocSwap/integer-mult-bounds/4ee769c8e28837482272b5f4742497da8e2fc9d4/research/asynchronous-whole-owners/SCHEDULING-LEMMA.md",
++    "written_lemma_sha256": "73effa4a41524fb800e0213bd61f470a0cc61f4110af13dcf4037daf24300511",
++    "scope_quote": "This is a mathematical composition proof, not Lean certification.",
++    "relationship": "Prose gives complete-invocation endpoint substitution and commuting residual/remainder absorption for asynchronous whole-owner schedules. Same established algebraic mechanism; the local contribution adds a checked conditional bit specialization and dirty-bank projection adapter, without novelty claims."
++  },
++  "external_scheduling_source": {
++    "repository": "https://github.com/openai/math",
++    "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
++    "path": "lean/OAI/Computability/FourierCircuit/WordScheduling.lean",
++    "git_blob": "855218b68a6b0f501c158cd7aa43696e5416d136",
++    "sha256": "dba4f2335bdce8d3ed38aefbff7a6420ba1b394e3597bc4e7d65030bdf0f9267",
++    "url": "https://raw.githubusercontent.com/openai/math/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Computability/FourierCircuit/WordScheduling.lean",
++    "inspection": "All 392 source lines read; dependency development not rebuilt. Recursive tree search was truncated, but this exact matching blob was fetched in full.",
++    "relevant_theorems": [
++      {
++        "name": "OAI.ExactFourier.Packing.scheduledLayer_product",
++        "lines": "40-54",
++        "statement_scope": "A strictly ordered schedule of words on fixed disjoint physical supports has the block-diagonal product of the per-support words."
++      },
++      {
++        "name": "OAI.ExactFourier.Packing.Word.matrix_substitute",
++        "lines": "76-83",
++        "statement_scope": "Replacing calls by words with the same supplied complete matrix preserves the containing word matrix."
++      }
++    ],
++    "reuse_and_difference": "Existing generic fixed-support scheduling and complete-word substitution background. Neither statement directly supplies same-host coordinate-swap mask factorization/remainder absorption, the PR442 mask instance, or projected equivalence between different dirty-bank layouts. Deriving the selected lemma from this framework would still require these domain-specific identities and interface proofs. No new scheduling principle is claimed."
++  }
++}
