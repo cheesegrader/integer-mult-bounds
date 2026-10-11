@@ -1,0 +1,1377 @@
+diff --git a/research/lean-multi-host-framework/MultiHostControls.lean b/research/lean-multi-host-framework/MultiHostControls.lean
+new file mode 100644
+index 0000000..c8f3b6d
+--- /dev/null
++++ b/research/lean-multi-host-framework/MultiHostControls.lean
+@@ -0,0 +1,59 @@
++import MultiHosting
++
++/-!
++Boundary controls for the multi-host framework. Apache-2.0.
++Prepared with substantial OpenAI Codex assistance.
++
++These small models are not source providers. They show why retaining every
++host does not permit arbitrary host mixing, and why distinct abstract host
++indices must refine to distinct physical streams.
++-/
++namespace MultiHosting.Controls
++open WholeHosting
++
++def full : Mask Unit := fun _ => true
++def firstOnly : HostMask Bool Unit := fun h _ => !h
++def both : HostMask Bool Unit := fun _ => full
++def address : Address Unit Bool := fun _ => (false, true)
++def value : Stream Unit Bool Bool := fun a => (a ()).1
++
++def initial : MultiHosting.WindowState Bool Unit Bool Bool Unit :=
++  (fun h => if h then fun _ => false else value, ())
++
++/-- A genuine cross-host XOR, outside the product endpoint interface. -/
++def mixHosts (s : MultiHosting.WindowState Bool Unit Bool Bool Unit) :
++    MultiHosting.WindowState Bool Unit Bool Bool Unit :=
++  (fun h => if h then fun a => s.1 true a ^^ s.1 false a else s.1 false, s.2)
++
++theorem mixing_does_not_commute :
++    mixHosts (onHosts firstOnly initial) ≠ onHosts firstOnly (mixHosts initial) := by
++  intro equality
++  have observation := congrArg
++    (fun s : MultiHosting.WindowState Bool Unit Bool Bool Unit => s.1 true address)
++    equality
++  change true = false at observation
++  cases observation
++
++/-- An invalid ownership interpretation: both abstract hosts are views of
++the same physical stream. A source owner-injectivity proof must exclude it. -/
++def aliasedView (s : Stream Unit Bool Bool) :
++    MultiHosting.WindowState Bool Unit Bool Bool Unit := (fun _ => s, ())
++
++def aliasedPhysicalRun (s : Stream Unit Bool Bool) : Stream Unit Bool Bool :=
++  bitAction full (bitAction full s)
++
++/-- Each nominal host receives one residual in the abstract endpoint, but
++the actual aliased stream receives both, so the abstract endpoint is wrong. -/
++theorem alias_breaks_refinement :
++    onHosts both (aliasedView value) ≠ aliasedView (aliasedPhysicalRun value) := by
++  intro equality
++  have observation := congrArg
++    (fun s : MultiHosting.WindowState Bool Unit Bool Bool Unit => s.1 false address)
++    equality
++  change true = false at observation
++  cases observation
++
++end MultiHosting.Controls
++
++#print axioms MultiHosting.Controls.mixing_does_not_commute
++#print axioms MultiHosting.Controls.alias_breaks_refinement
+diff --git a/research/lean-multi-host-framework/MultiHosting.lean b/research/lean-multi-host-framework/MultiHosting.lean
+new file mode 100644
+index 0000000..b2928e0
+--- /dev/null
++++ b/research/lean-multi-host-framework/MultiHosting.lean
+@@ -0,0 +1,223 @@
++import CoordinateSwap
++
++/-!
++Whole residual hosting on all affected physical streams. Apache-2.0.
++Prepared with substantial OpenAI Codex assistance.
++
++`H` indexes distinct physical streams, not merely source family labels.
++Each stream has a fixed coordinate chart throughout the window. Source
++ownership and chart transport must establish this interpretation; they are
++not consequences of the abstract product type. `R` contains all remaining
++retained outputs, including scratch whose restoration is to be compared.
++The complete endpoint contracts quantify over arbitrary stream contents,
++retained state and auxiliary dirt; no independence or initialization is
++assumed. Source refinement remains a separate obligation.
++-/
++namespace MultiHosting
++open WholeHosting
++
++abbrev HostMask (H : Type h) (ι : Type u) := H → Mask ι
++abbrev WindowState (H : Type h) (ι : Type u) (K : Type v) (A : Type w) (R : Type z) :=
++  (H → Stream ι K A) × R
++
++/-- One complete invocation endpoint in fixed charts for every host. `other`
++cannot depend on any host, although a physical implementation may temporarily
++read them if its complete endpoint satisfies the universal contract. -/
++structure WindowEvent (H : Type h) (ι : Type u) (R : Type z) where
++  idle : HostMask H ι
++  residual : HostMask H ι
++  other : R → R
++
++def onHosts {H ι K A R} (masks : HostMask H ι)
++    (s : WindowState H ι K A R) : WindowState H ι K A R :=
++  (fun h => bitAction (masks h) (s.1 h), s.2)
++
++def WindowEvent.base {H ι K A R} (e : WindowEvent H ι R)
++    (s : WindowState H ι K A R) : WindowState H ι K A R :=
++  (fun h => bitAction (e.idle h) (s.1 h), e.other s.2)
++
++def WindowEvent.hosted {H ι K A R} (e : WindowEvent H ι R)
++    (s : WindowState H ι K A R) : WindowState H ι K A R :=
++  onHosts e.residual (e.base s)
++
++def runBase {H ι K A R} :
++    List (WindowEvent H ι R) → WindowState H ι K A R → WindowState H ι K A R
++  | [], s => s
++  | e :: es, s => runBase es (e.base s)
++
++def runHosted {H ι K A R} :
++    List (WindowEvent H ι R) → WindowState H ι K A R → WindowState H ι K A R
++  | [], s => s
++  | e :: es, s => runHosted es (e.hosted s)
++
++def residuals {H ι R} (events : List (WindowEvent H ι R)) (h : H) : List (Mask ι) :=
++  events.map (fun e => e.residual h)
++
++def masksUnion {H ι R} (events : List (WindowEvent H ι R)) : HostMask H ι :=
++  fun h => maskUnion (residuals events h)
++
++def remainders {H ι R} (pending : HostMask H ι)
++    (events : List (WindowEvent H ι R)) : HostMask H ι :=
++  fun h => remainderMask (pending h) (masksUnion events h)
++
++def allOnHosts {H ι K A R} (events : List (WindowEvent H ι R))
++    (s : WindowState H ι K A R) : WindowState H ι K A R :=
++  (fun h => bitFactors (residuals events h) (s.1 h), s.2)
++
++theorem base_commutes {H ι K A R} (e : WindowEvent H ι R) (p : HostMask H ι)
++    (s : WindowState H ι K A R) : e.base (onHosts p s) = onHosts p (e.base s) := by
++  apply Prod.ext
++  · funext h
++    exact bitAction_commute (p h) (e.idle h) (s.1 h)
++  · rfl
++
++theorem runBase_commutes {H ι K A R} (events : List (WindowEvent H ι R))
++    (p : HostMask H ι) (s : WindowState H ι K A R) :
++    runBase events (onHosts p s) = onHosts p (runBase events s) := by
++  induction events generalizing s with
++  | nil => rfl
++  | cons e es ih =>
++    change runBase es (e.base (onHosts p s)) = onHosts p (runBase es (e.base s))
++    rw [base_commutes, ih]
++
++/-- Simultaneously move the residual on every host to the end. This permits
++several hosts to change during the same complete invocation. -/
++theorem delay_residuals {H ι K A R} (events : List (WindowEvent H ι R))
++    (s : WindowState H ι K A R) :
++    runHosted events s = allOnHosts events (runBase events s) := by
++  induction events generalizing s with
++  | nil => rfl
++  | cons e es ih =>
++    change runHosted es (onHosts e.residual (e.base s)) =
++      allOnHosts (e :: es) (runBase es (e.base s))
++    rw [ih, runBase_commutes]
++    rfl
++
++/-- Each physical host has its own disjoint-mask and pending-subset
++obligations. The equality covers every host and all of `R` on every input.
++It does not by itself prove that a source program implements these endpoints. -/
++theorem multi_hosting {H ι K A R} (events : List (WindowEvent H ι R))
++    (pending : HostMask H ι)
++    (hd : ∀ h, DisjointMasks (residuals events h))
++    (hs : ∀ h, MaskSubset (masksUnion events h) (pending h))
++    (s : WindowState H ι K A R) :
++    onHosts (remainders pending events) (runHosted events s) =
++      onHosts pending (runBase events s) := by
++  rw [delay_residuals]
++  apply Prod.ext
++  · funext h
++    exact bitFactors_complete (pending h) (residuals events h) (hd h) (hs h)
++      ((runBase events s).1 h)
++  · rfl
++
++theorem multi_hosting_in_context {H ι K A R X Y}
++    (events : List (WindowEvent H ι R)) (pending : HostMask H ι)
++    (hd : ∀ h, DisjointMasks (residuals events h))
++    (hs : ∀ h, MaskSubset (masksUnion events h) (pending h))
++    (before : X → WindowState H ι K A R)
++    (after : WindowState H ι K A R → Y) (x : X) :
++    after (onHosts (remainders pending events) (runHosted events (before x))) =
++      after (onHosts pending (runBase events (before x))) :=
++  congrArg after (multi_hosting events pending hd hs (before x))
++
++/-- `B` and `C` may be different auxiliary layouts. All semantically relevant
++outputs must remain in the host family or `R`; this type grants no permission
++to omit a changed output. Auxiliary outputs require a separate scope or
++restoration argument before later code can ignore or reuse them. -/
++structure PhysicalContract {H ι K A R} (e : WindowEvent H ι R)
++    (B : Type b) (C : Type c) where
++  original : (WindowState H ι K A R × B) → (WindowState H ι K A R × B)
++  relocated : (WindowState H ι K A R × C) → (WindowState H ι K A R × C)
++  original_retained : ∀ s bank, (original (s, bank)).1 = e.base s
++  relocated_retained : ∀ s bank, (relocated (s, bank)).1 = e.hosted s
++
++/-- Actual auxiliary outputs, including arbitrary changed dirt, feed the
++next invocation. No resetting or replacing the bank between calls occurs. -/
++inductive PhysicalImplementations {H ι K A R} (B : Type b) (C : Type c) :
++    List (WindowEvent H ι R) → Type _ where
++  | nil : PhysicalImplementations (K := K) (A := A) B C []
++  | cons {e es} (contract : PhysicalContract (K := K) (A := A) e B C)
++      (rest : PhysicalImplementations (K := K) (A := A) B C es) :
++      PhysicalImplementations (K := K) (A := A) B C (e :: es)
++
++def PhysicalImplementations.runOriginal {H ι K A R B C}
++    {events : List (WindowEvent H ι R)} :
++    PhysicalImplementations (K := K) (A := A) B C events →
++      (WindowState H ι K A R × B) → (WindowState H ι K A R × B)
++  | .nil, s => s
++  | .cons contract rest, s => rest.runOriginal (contract.original s)
++
++def PhysicalImplementations.runRelocated {H ι K A R B C}
++    {events : List (WindowEvent H ι R)} :
++    PhysicalImplementations (K := K) (A := A) B C events →
++      (WindowState H ι K A R × C) → (WindowState H ι K A R × C)
++  | .nil, s => s
++  | .cons contract rest, s => rest.runRelocated (contract.relocated s)
++
++theorem PhysicalImplementations.original_projection {H ι K A R B C}
++    {events : List (WindowEvent H ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (state : WindowState H ι K A R × B) :
++    (program.runOriginal state).1 = runBase events state.1 := by
++  induction program generalizing state with
++  | nil => rfl
++  | cons contract rest ih =>
++    change (rest.runOriginal (contract.original state)).1 = runBase _ state.1
++    rw [ih]
++    change runBase _ (contract.original (state.1, state.2)).1 = _
++    rw [contract.original_retained]
++    rfl
++
++theorem PhysicalImplementations.relocated_projection {H ι K A R B C}
++    {events : List (WindowEvent H ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (state : WindowState H ι K A R × C) :
++    (program.runRelocated state).1 = runHosted events state.1 := by
++  induction program generalizing state with
++  | nil => rfl
++  | cons contract rest ih =>
++    change (rest.runRelocated (contract.relocated state)).1 = runHosted _ state.1
++    rw [ih]
++    change runHosted _ (contract.relocated (state.1, state.2)).1 = _
++    rw [contract.relocated_retained]
++    rfl
++
++theorem physical_multi_hosting {H ι K A R B C}
++    {events : List (WindowEvent H ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (pending : HostMask H ι)
++    (hd : ∀ h, DisjointMasks (residuals events h))
++    (hs : ∀ h, MaskSubset (masksUnion events h) (pending h))
++    (s : WindowState H ι K A R) (oldBank : B) (newBank : C) :
++    onHosts (remainders pending events) (program.runRelocated (s, newBank)).1 =
++      onHosts pending (program.runOriginal (s, oldBank)).1 := by
++  rw [program.original_projection, program.relocated_projection]
++  exact multi_hosting events pending hd hs s
++
++theorem physical_multi_hosting_in_context {H ι K A R B C X Y}
++    {events : List (WindowEvent H ι R)}
++    (program : PhysicalImplementations (K := K) (A := A) B C events)
++    (pending : HostMask H ι)
++    (hd : ∀ h, DisjointMasks (residuals events h))
++    (hs : ∀ h, MaskSubset (masksUnion events h) (pending h))
++    (originalInput : X → WindowState H ι K A R × B)
++    (relocatedInput : X → WindowState H ι K A R × C)
++    (sameRetained : ∀ x, (originalInput x).1 = (relocatedInput x).1)
++    (observe : WindowState H ι K A R → Y) (x : X) :
++    observe (onHosts (remainders pending events)
++        (program.runRelocated (relocatedInput x)).1) =
++      observe (onHosts pending (program.runOriginal (originalInput x)).1) := by
++  rw [program.original_projection, program.relocated_projection, sameRetained x]
++  exact congrArg observe (multi_hosting events pending hd hs (relocatedInput x).1)
++
++end MultiHosting
++
++#print axioms MultiHosting.base_commutes
++#print axioms MultiHosting.runBase_commutes
++#print axioms MultiHosting.delay_residuals
++#print axioms MultiHosting.multi_hosting
++#print axioms MultiHosting.multi_hosting_in_context
++#print axioms MultiHosting.PhysicalImplementations.original_projection
++#print axioms MultiHosting.PhysicalImplementations.relocated_projection
++#print axioms MultiHosting.physical_multi_hosting
++#print axioms MultiHosting.physical_multi_hosting_in_context
+diff --git a/research/lean-multi-host-framework/README.md b/research/lean-multi-host-framework/README.md
+new file mode 100644
+index 0000000..0aa3cb5
+--- /dev/null
++++ b/research/lean-multi-host-framework/README.md
+@@ -0,0 +1,45 @@
++# Multiple-host residual hosting (Task A)
++
++This package proves the abstract multiple-host generalization and recovers the
++previous single-host theorem exactly. **It does not establish a physical source
++invocation.** That separate obligation is tracked in `../lean-multi-host-source`.
++
++`MultiHosting.lean` retains every selected physical stream and all remaining
++observed state. Residuals may act on several hosts during one invocation. The
++pending-mask containment and disjointness conditions are checked per host. The
++physical adapter quantifies over arbitrary dirty auxiliary inputs and threads
++actual auxiliary outputs through subsequent invocations.
++
++`SingleHostRecovery.lean` defines inverse embeddings for a singleton host and
++derives the exact previous operator theorem from `MultiHosting.multi_hosting`.
++It also recovers the previous physical theorem using its projection lemmas.
++`MultiHostControls.lean` proves that cross-host mixing and aliased physical
++owners can invalidate a proposed source refinement.
++
++The endpoint contracts remain premises. A host denotes a distinct physical
++stream, including its cover owner, with a fixed coordinate chart. Any output
++whose equality or restoration matters must be retained. This work supplies no
++new bound and does not assume PR448's missing split interface.
++
++## Build
++
++Use official Lean 4.33.0; no Mathlib is needed for Task A:
++
++```sh
++python3 research/lean-multi-host-framework/replay.py \
++  --lean /path/to/lean-4.33.0-linux/bin/lean \
++  --receipt /tmp/multi-host-framework-replay.json
++```
++
++The offline replay checks source hashes, builds all six modules from source in
++a fresh temporary directory with `lean -t 0`, audits all 21 new named theorem
++closures, and requires only `propext` and `Quot.sound` (or no axioms). The three
++unchanged dependencies are from `../lean-whole-residual-hosting`. The two
++boundary inequalities are checked proofs, not merely failed test executions.
++
++See `REVIEW.md`, `replay-result.json`, `proof-manifest.json`, and
++`overlap-audit.json` for review, validation, and exact source versions.
++
++Apache-2.0, following the repository license. Prepared with substantial OpenAI
++Codex assistance; the existing WholeHosting authorship and source attribution
++are retained in the sibling package and unchanged dependencies.
+diff --git a/research/lean-multi-host-framework/REVIEW.md b/research/lean-multi-host-framework/REVIEW.md
+new file mode 100644
+index 0000000..bcde081
+--- /dev/null
++++ b/research/lean-multi-host-framework/REVIEW.md
+@@ -0,0 +1,69 @@
++# Independent review of Task A: multi-host framework
++
++Reviewed 2026-10-11 by a separate Codex agent. The reviewer did not write the
++new framework or singleton recovery. No external publication occurred.
++
++**Verdict:** the abstract multi-host extension and exact singleton recovery are
++sound. A fresh independent Lean4.33.0 build of both new modules and their three
++dependencies passed. `framework-independent-build.json` contains source hashes
++and compiler output. This completes the abstract compatibility review only;
++no actual source invocation or physical-provider contract is discharged here.
++
++`MultiHosting.WindowState` retains a function from physical-host indices to
++whole streams together with all remaining retained state R. The H index is
++explicitly a distinct physical stream, including its cover owner when needed,
++and must not silently identify all streams with the same source-family label.
++The common coefficient/address/payload types do not force all streams to have
++the same actual physical chart, but a fixed chart for each stream throughout
++the window must be established by source refinement.
++
++Each event has a coordinate-mask action on every host and the same `other`
++function on R. The pointwise commuting proof correctly permits multiple hosts
++to change in one complete invocation and requires disjoint residual masks and
++pending containment separately for every host. The theorem does not discard
++any host or any part of R. Arbitrary input correlations are allowed because the
++identity holds on every state, and no independence of input values is assumed.
++
++The physical adapter permits distinct auxiliary layouts and quantifies over
++every original/relocated bank input. It threads actual bank outputs through
++successive calls. It compares only retained outputs. Its documentation correctly
++requires any component whose equality/restoration matters to stay retained;
++auxiliary outputs need a separate continuation scope/restoration argument.
++
++`SingleHostRecovery.embed` and `collapse` are inverse on all retained state.
++The recovered old operator statement genuinely follows by applying the new
++`multi_hosting` theorem and collapsing the singleton-host state. The old
++physical theorem is recovered using the old adapter's projection lemmas plus
++that new derivation, not by invoking the old whole-hosting theorem. Thus this
++is an exact conservative extension, not merely an analogous statement.
++
++No logical defect, dropped-state shortcut, initialization assumption, or new
++axiom was found. The supplied complete endpoint contracts remain genuine
++premises. In particular, an active-pair operation that reads/mixes a selected
++host cannot be hidden inside `other : R → R`. For a shared window, every
++selected host must have the stipulated independent coordinate action at every
++complete event. Wider source schedules may require separate windows or a more
++general commutation interface.
++
++Task B remains separate: instantiate concrete distinct owner streams, actual
++coordinate/frame transformations, all scratch conventions, and the universal
++arbitrary-dirt endpoint of the emitted source word. The new abstract theorem
++alone does not count as that source proof.
++
++Reviewed hashes:
++
++- MultiHosting.lean: `dc6188687ac8e089c64bf5ab7cd4c8c1a83f378d3c46bb1265a1b6ad43d199d6`
++- SingleHostRecovery.lean: `24590ece7ec72ad5edcdefc9d7f45acffa6dbccd644c95104ab8f2685fbaaf5d`
++
++Two checked negative controls in `MultiHostControls.lean` target source refinement:
++
++- `mixing_does_not_commute` retains both hosts but applies an actual XOR between them; moving a residual past that mix changes the result.
++- `alias_breaks_refinement` maps two nominal hosts onto one physical stream; the abstract one-residual-per-host action disagrees with the two sequential physical actions.
++
++Both statements compiled in the independent build and use no axioms. Each is
++a proved inequality, so replacing `≠` by `=` produces a false statement that
++can be rejected by the corresponding theorem. They are small boundary models,
++not claims about the actual source owner map. The source address coordinates
++are Bool only for these abstract controls; no prime-admission claim is made.
++
++MultiHostControls.lean SHA256: `4321a232d7e36e0f4417a01ce951c601afde1b283c42c0b8ad24372e25fbc94d`
+diff --git a/research/lean-multi-host-framework/SingleHostRecovery.lean b/research/lean-multi-host-framework/SingleHostRecovery.lean
+new file mode 100644
+index 0000000..9c4cce9
+--- /dev/null
++++ b/research/lean-multi-host-framework/SingleHostRecovery.lean
+@@ -0,0 +1,142 @@
++import MultiHosting
++import PhysicalHosting
++
++/-!
++Exact recovery of the previous one-host theorems from `MultiHosting`.
++Apache-2.0. Prepared with substantial OpenAI Codex assistance.
++
++The singleton embedding keeps the entire retained state. Its inverse shows
++that the multi-host theorem specializes to the old theorem without dropping
++any observations. The proof below calls the new `multi_hosting` theorem,
++not the old `WholeHosting.whole_hosting` theorem. The physical corollary
++uses the old adapter's independently proved projection lemmas, which thread
++actual auxiliary-bank outputs and quantify over every dirty input.
++
++This compatibility result supplies no source-program endpoint contract.
++-/
++namespace MultiHosting.SingleHost
++
++def embed {ι K A R} (s : WholeHosting.WindowState ι K A R) :
++    MultiHosting.WindowState Unit ι K A R :=
++  (fun _ => s.1, s.2)
++
++def collapse {ι K A R} (s : MultiHosting.WindowState Unit ι K A R) :
++    WholeHosting.WindowState ι K A R :=
++  (s.1 (), s.2)
++
++theorem collapse_embed {ι K A R} (s : WholeHosting.WindowState ι K A R) :
++    collapse (embed s) = s := by
++  rfl
++
++theorem embed_collapse {ι K A R} (s : MultiHosting.WindowState Unit ι K A R) :
++    embed (collapse s) = s := by
++  apply Prod.ext
++  · funext h
++    cases h
++    rfl
++  · rfl
++
++def event {ι R} (e : WholeHosting.WindowEvent ι R) :
++    MultiHosting.WindowEvent Unit ι R :=
++  { idle := fun _ => e.idle
++    residual := fun _ => e.residual
++    other := e.other }
++
++theorem collapse_onHosts {ι K A R} (p : MultiHosting.HostMask Unit ι)
++    (s : MultiHosting.WindowState Unit ι K A R) :
++    collapse (MultiHosting.onHosts p s) = WholeHosting.onHost (p ()) (collapse s) := by
++  rfl
++
++theorem collapse_base {ι K A R} (e : WholeHosting.WindowEvent ι R)
++    (s : MultiHosting.WindowState Unit ι K A R) :
++    collapse ((event e).base s) = e.base (collapse s) := by
++  rfl
++
++theorem collapse_hosted {ι K A R} (e : WholeHosting.WindowEvent ι R)
++    (s : MultiHosting.WindowState Unit ι K A R) :
++    collapse ((event e).hosted s) = e.hosted (collapse s) := by
++  rfl
++
++theorem collapse_runBase {ι K A R} (events : List (WholeHosting.WindowEvent ι R))
++    (s : MultiHosting.WindowState Unit ι K A R) :
++    collapse (MultiHosting.runBase (events.map event) s) =
++      WholeHosting.runBase events (collapse s) := by
++  induction events generalizing s with
++  | nil => rfl
++  | cons e es ih =>
++    change collapse (MultiHosting.runBase (es.map event) ((event e).base s)) = _
++    rw [ih, collapse_base]
++    rfl
++
++theorem collapse_runHosted {ι K A R} (events : List (WholeHosting.WindowEvent ι R))
++    (s : MultiHosting.WindowState Unit ι K A R) :
++    collapse (MultiHosting.runHosted (events.map event) s) =
++      WholeHosting.runHosted events (collapse s) := by
++  induction events generalizing s with
++  | nil => rfl
++  | cons e es ih =>
++    change collapse (MultiHosting.runHosted (es.map event) ((event e).hosted s)) = _
++    rw [ih, collapse_hosted]
++    rfl
++
++theorem residuals_event {ι R} (events : List (WholeHosting.WindowEvent ι R)) (h : Unit) :
++    MultiHosting.residuals (events.map event) h = WholeHosting.residuals events := by
++  induction events with
++  | nil => rfl
++  | cons e es ih =>
++    change e.residual :: MultiHosting.residuals (es.map event) h =
++      e.residual :: WholeHosting.residuals es
++    rw [ih]
++
++/-- The exact statement of `WholeHosting.whole_hosting`, derived from the
++multi-host theorem by an invertible singleton-host change of state space. -/
++theorem whole_hosting_recovered {ι K A R} (events : List (WholeHosting.WindowEvent ι R))
++    (pending : WholeHosting.Mask ι)
++    (hd : WholeHosting.DisjointMasks (WholeHosting.residuals events))
++    (hs : WholeHosting.MaskSubset (WholeHosting.maskUnion (WholeHosting.residuals events)) pending)
++    (s : WholeHosting.WindowState ι K A R) :
++    WholeHosting.onHost
++        (WholeHosting.remainderMask pending (WholeHosting.maskUnion (WholeHosting.residuals events)))
++        (WholeHosting.runHosted events s) =
++      WholeHosting.onHost pending (WholeHosting.runBase events s) := by
++  have hd' : ∀ h, WholeHosting.DisjointMasks (MultiHosting.residuals (events.map event) h) := by
++    intro h
++    simpa only [residuals_event] using hd
++  have hs' : ∀ h, WholeHosting.MaskSubset
++      (MultiHosting.masksUnion (events.map event) h) pending := by
++    intro h
++    simpa only [MultiHosting.masksUnion, residuals_event] using hs
++  have equality := MultiHosting.multi_hosting (events.map event) (fun _ => pending) hd' hs' (embed s)
++  have projected := congrArg collapse equality
++  simpa only [collapse_onHosts, MultiHosting.remainders, MultiHosting.masksUnion,
++    residuals_event, collapse_runHosted, collapse_runBase, collapse_embed] using projected
++
++/-- The exact previous physical theorem also follows. No auxiliary output
++is reset between invocations; the existing projection lemmas establish that
++the actual original and relocated banks are threaded through each word. -/
++theorem physical_whole_hosting_recovered {ι K A R B C}
++    {events : List (WholeHosting.WindowEvent ι R)}
++    (program : WholeHosting.PhysicalImplementations (K := K) (A := A) B C events)
++    (pending : WholeHosting.Mask ι)
++    (hd : WholeHosting.DisjointMasks (WholeHosting.residuals events))
++    (hs : WholeHosting.MaskSubset (WholeHosting.maskUnion (WholeHosting.residuals events)) pending)
++    (s : WholeHosting.WindowState ι K A R) (oldBank : B) (newBank : C) :
++    WholeHosting.onHost
++        (WholeHosting.remainderMask pending (WholeHosting.maskUnion (WholeHosting.residuals events)))
++        (program.runRelocated (s, newBank)).1 =
++      WholeHosting.onHost pending (program.runOriginal (s, oldBank)).1 := by
++  rw [program.original_projection, program.relocated_projection]
++  exact whole_hosting_recovered events pending hd hs s
++
++end MultiHosting.SingleHost
++
++#print axioms MultiHosting.SingleHost.collapse_embed
++#print axioms MultiHosting.SingleHost.embed_collapse
++#print axioms MultiHosting.SingleHost.collapse_onHosts
++#print axioms MultiHosting.SingleHost.collapse_base
++#print axioms MultiHosting.SingleHost.collapse_hosted
++#print axioms MultiHosting.SingleHost.collapse_runBase
++#print axioms MultiHosting.SingleHost.collapse_runHosted
++#print axioms MultiHosting.SingleHost.residuals_event
++#print axioms MultiHosting.SingleHost.whole_hosting_recovered
++#print axioms MultiHosting.SingleHost.physical_whole_hosting_recovered
+diff --git a/research/lean-multi-host-framework/framework-independent-build.json b/research/lean-multi-host-framework/framework-independent-build.json
+new file mode 100644
+index 0000000..f8b29bf
+--- /dev/null
++++ b/research/lean-multi-host-framework/framework-independent-build.json
+@@ -0,0 +1,41 @@
++{
++  "build_dir": "/tmp/session4-framework-review-_pzkdssb",
++  "results": [
++    {
++      "module": "CoordinateSwap",
++      "sha256": "74d47e67dad5e8d548e69b008de19b65cfd138d3be71cf80d0b6c6990cf65841",
++      "exit_code": 0,
++      "log": "'WholeHosting.swapAddress_involution' depends on axioms: [propext, Quot.sound]\n'WholeHosting.swapAddress_commute' depends on axioms: [propext, Quot.sound]\n'WholeHosting.swapAddress_disjoint_union' depends on axioms: [propext, Quot.sound]\n'WholeHosting.bitAction_involution' depends on axioms: [propext, Quot.sound]\n'WholeHosting.bitAction_commute' depends on axioms: [propext, Quot.sound]\n'WholeHosting.bitAction_disjoint_comp' depends on axioms: [propext, Quot.sound]\n'WholeHosting.bitAction_complete' depends on axioms: [propext, Quot.sound]\n'WholeHosting.bitFactors_union' depends on axioms: [propext, Quot.sound]\n'WholeHosting.bitFactors_complete' depends on axioms: [propext, Quot.sound]\n"
++    },
++    {
++      "module": "Hosting",
++      "sha256": "102084fe6a003ab54e3b1eace36ccd9d872857eb4fc9b0770de3d6f7961af1f9",
++      "exit_code": 0,
++      "log": "'WholeHosting.base_commutes' depends on axioms: [propext, Quot.sound]\n'WholeHosting.runBase_commutes' depends on axioms: [propext, Quot.sound]\n'WholeHosting.delay_residuals' depends on axioms: [propext, Quot.sound]\n'WholeHosting.whole_hosting' depends on axioms: [propext, Quot.sound]\n'WholeHosting.whole_hosting_in_context' depends on axioms: [propext, Quot.sound]\n'WholeHosting.Implementations.original_eq' does not depend on any axioms\n'WholeHosting.Implementations.relocated_eq' does not depend on any axioms\n'WholeHosting.implementation_whole_hosting' depends on axioms: [propext, Quot.sound]\n"
++    },
++    {
++      "module": "PhysicalHosting",
++      "sha256": "edd25772ad9c7cbae66a65bd9bc5cb00b98cf79e0e44913df4ff5f940525bc48",
++      "exit_code": 0,
++      "log": "'WholeHosting.PhysicalImplementations.original_projection' does not depend on any axioms\n'WholeHosting.PhysicalImplementations.relocated_projection' does not depend on any axioms\n'WholeHosting.physical_whole_hosting' depends on axioms: [propext, Quot.sound]\n'WholeHosting.physical_hosting_in_context' depends on axioms: [propext, Quot.sound]\n"
++    },
++    {
++      "module": "MultiHosting",
++      "sha256": "dc6188687ac8e089c64bf5ab7cd4c8c1a83f378d3c46bb1265a1b6ad43d199d6",
++      "exit_code": 0,
++      "log": "'MultiHosting.base_commutes' depends on axioms: [propext, Quot.sound]\n'MultiHosting.runBase_commutes' depends on axioms: [propext, Quot.sound]\n'MultiHosting.delay_residuals' depends on axioms: [propext, Quot.sound]\n'MultiHosting.multi_hosting' depends on axioms: [propext, Quot.sound]\n'MultiHosting.multi_hosting_in_context' depends on axioms: [propext, Quot.sound]\n'MultiHosting.PhysicalImplementations.original_projection' does not depend on any axioms\n'MultiHosting.PhysicalImplementations.relocated_projection' does not depend on any axioms\n'MultiHosting.physical_multi_hosting' depends on axioms: [propext, Quot.sound]\n'MultiHosting.physical_multi_hosting_in_context' depends on axioms: [propext, Quot.sound]\n"
++    },
++    {
++      "module": "SingleHostRecovery",
++      "sha256": "24590ece7ec72ad5edcdefc9d7f45acffa6dbccd644c95104ab8f2685fbaaf5d",
++      "exit_code": 0,
++      "log": "'MultiHosting.SingleHost.collapse_embed' does not depend on any axioms\n'MultiHosting.SingleHost.embed_collapse' depends on axioms: [Quot.sound]\n'MultiHosting.SingleHost.collapse_onHosts' does not depend on any axioms\n'MultiHosting.SingleHost.collapse_base' does not depend on any axioms\n'MultiHosting.SingleHost.collapse_hosted' does not depend on any axioms\n'MultiHosting.SingleHost.collapse_runBase' does not depend on any axioms\n'MultiHosting.SingleHost.collapse_runHosted' does not depend on any axioms\n'MultiHosting.SingleHost.residuals_event' does not depend on any axioms\n'MultiHosting.SingleHost.whole_hosting_recovered' depends on axioms: [propext, Quot.sound]\n'MultiHosting.SingleHost.physical_whole_hosting_recovered' depends on axioms: [propext, Quot.sound]\n"
++    },
++    {
++      "module": "MultiHostControls",
++      "sha256": "4321a232d7e36e0f4417a01ce951c601afde1b283c42c0b8ad24372e25fbc94d",
++      "exit_code": 0,
++      "log": "'MultiHosting.Controls.mixing_does_not_commute' does not depend on any axioms\n'MultiHosting.Controls.alias_breaks_refinement' does not depend on any axioms\n"
++    }
++  ]
++}
+diff --git a/research/lean-multi-host-framework/lean-toolchain b/research/lean-multi-host-framework/lean-toolchain
+new file mode 100644
+index 0000000..025e595
+--- /dev/null
++++ b/research/lean-multi-host-framework/lean-toolchain
+@@ -0,0 +1 @@
++leanprover/lean4:v4.33.0
+diff --git a/research/lean-multi-host-framework/overlap-audit.json b/research/lean-multi-host-framework/overlap-audit.json
+new file mode 100644
+index 0000000..8931706
+--- /dev/null
++++ b/research/lean-multi-host-framework/overlap-audit.json
+@@ -0,0 +1,520 @@
++{
++  "checked_at_utc": "2026-10-11T22:38:14.652375+00:00",
++  "written_at_utc": "2026-10-11T22:40:18.280873+00:00",
++  "read_only_upstream": true,
++  "no_publication": true,
++  "local_predecessor_commit": "365adef9e8ea858473ac85ecf7594c7ee910a8a3",
++  "task_split": {
++    "A": "Abstract multi-host theorem with all affected hosts retained; recover previous singleton theorem first.",
++    "B": "Actual source invocation with owner map, actual coordinate transformations and arbitrary dirty input. Abstract endpoint premises do not count as discharging B."
++  },
++  "heads": {
++    "refs/heads/main": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++    "refs/pull/397/head": "cb6455fa1e9af68be47c33948d3d1a6f0717a5e4",
++    "refs/pull/442/head": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd",
++    "refs/pull/448/head": "359022bcd71143e45d48def0dd005bf67f339aa7",
++    "refs/pull/505/head": "4ee769c8e28837482272b5f4742497da8e2fc9d4"
++  },
++  "jacob_refs": [
++    "9c94857bbaee886f8649edee0bc2d3c738f9555e\tHEAD",
++    "9c94857bbaee886f8649edee0bc2d3c738f9555e\trefs/heads/main"
++  ],
++  "primary_heads_unchanged_since_session3": true,
++  "methods": [
++    "Fresh read-only Git ls-remote main397442448505 and Jacob HEAD/main",
++    "Fresh PR397442448505 metadata and all returned PR448 issue comments",
++    "Latest100 updated-desc all-state PR titles/body/head metadata screened",
++    "Complete untruncated recursive trees of changed/new PR473477506507 compared by Lean blob SHA against pinned main",
++    "Relevant concrete Lean frame/physical/localization sources inspected",
++    "Actual R747 helper entrance bases inspected from pinned replay artifacts"
++  ],
++  "latest100": {
++    "url": "https://api.github.com/repos/CrocSwap/integer-mult-bounds/pulls?state=all&sort=updated&direction=desc&per_page=100&page=1",
++    "count": 100,
++    "first_page_only": true,
++    "updated_at_range": [
++      "2026-10-11T11:32:49Z",
++      "2026-10-11T22:33:18Z"
++    ],
++    "numbers": [
++      507,
++      506,
++      504,
++      473,
++      477,
++      472,
++      503,
++      493,
++      505,
++      499,
++      485,
++      502,
++      501,
++      500,
++      498,
++      494,
++      480,
++      448,
++      484,
++      497,
++      496,
++      491,
++      495,
++      466,
++      489,
++      492,
++      490,
++      488,
++      458,
++      487,
++      486,
++      483,
++      186,
++      482,
++      481,
++      479,
++      478,
++      476,
++      475,
++      376,
++      468,
++      470,
++      474,
++      397,
++      469,
++      275,
++      450,
++      464,
++      471,
++      467,
++      463,
++      454,
++      460,
++      462,
++      465,
++      459,
++      451,
++      461,
++      457,
++      456,
++      455,
++      453,
++      445,
++      446,
++      444,
++      200,
++      443,
++      452,
++      449,
++      439,
++      447,
++      434,
++      436,
++      437,
++      425,
++      431,
++      433,
++      442,
++      441,
++      440,
++      438,
++      426,
++      432,
++      424,
++      435,
++      419,
++      422,
++      429,
++      417,
++      387,
++      352,
++      412,
++      390,
++      385,
++      382,
++      380,
++      377,
++      374,
++      430,
++      379
++    ],
++    "new_numbers": [
++      506,
++      507
++    ],
++    "changed_heads": [
++      473,
++      477
++    ],
++    "body_only_changed": [
++      504
++    ]
++  },
++  "new_work": [
++    {
++      "number": 473,
++      "head": "94b3c908fb7628142817d995155368aba2eae841",
++      "title": "Conditional \u03ba = 0.001371428043382419: nonuniform asynchronous whole owners (+1.011% over #505)",
++      "lean_tree_comparison": {
++        "truncated": false,
++        "lean_count": 154,
++        "changed_lean_from_main": []
++      },
++      "assessment": "Nonuniform asynchronous whole-owner composition; finite physical/chart/controller checks and inherited interfaces; explicitly no new Lean proof."
++    },
++    {
++      "number": 477,
++      "head": "2f23f46f1f9e4599168d40096fbacce4973a2978",
++      "title": "Add categorized experiment log: 100 ideas, 300 trials, and recorded failures",
++      "lean_tree_comparison": {
++        "truncated": false,
++        "lean_count": 154,
++        "changed_lean_from_main": []
++      },
++      "assessment": "Search/experiment logs and failed/repaired matching attempts, no new Lean files."
++    },
++    {
++      "number": 506,
++      "head": "a4948baee6c7ea35323db74ff636620c6af2925a",
++      "title": "Conditional \u03ba = 0.001369588870945540: retimed word with asynchronous whole owners",
++      "lean_tree_comparison": {
++        "truncated": false,
++        "lean_count": 154,
++        "changed_lean_from_main": []
++      },
++      "assessment": "Retimed asynchronous whole-owner composition; finite Python physical/provider replays, conditional inherited interfaces, explicitly not a Lean proof."
++    },
++    {
++      "number": 507,
++      "head": "8d4444cf8a16d500cbb94add6e4fa8bcfb9c7d5e",
++      "title": "\u03ba = 0.001363614743745701: partial-own factory with 84 kernel pivots",
++      "lean_tree_comparison": {
++        "truncated": false,
++        "lean_count": 154,
++        "changed_lean_from_main": []
++      },
++      "assessment": "Changed partial-own complex factory/kernel84; finite scalar/frame/physical/owner checks, unchanged R489 bit supplier, inherited all-size contracts."
++    }
++  ],
++  "pr448": {
++    "comment_count": 2,
++    "pagination": null,
++    "latest_id": 6113842081,
++    "latest_url": "https://github.com/CrocSwap/integer-mult-bounds/pull/448#issuecomment-6113842081",
++    "latest_updated_at": "2026-10-11T21:15:52Z",
++    "body_sha256": "9dae8fe8a08d32fdc48b21aac6fcaab4e4f3d996e35894994ee70d7a904f9a35",
++    "assessment": "Same missing split-residual multistream-interface acknowledgement; advertised gain remains unestablished."
++  },
++  "prior_overlap_retained": {
++    "previous_audit": "/workspace/audit/session3/overlap-audit.json",
++    "sha256": "b726562393a74b09cef24e242ceea75b5ac74acc93fa1301b4323319d9908ed8",
++    "scope": "PR397 normalized Invocation premises, PR430 generic cut/owner lemmas, PR505 prose complete-call scheduling, external pinned WordScheduling.lean and Jacob generic dirty route work remain relevant, not newly recompiled."
++  },
++  "reusable_concrete_sources": [
++    {
++      "repository_commit": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++      "path": "research/machine-transfer-verification/transfer-proof/framed/AddressGauges.lean",
++      "sha256": "a84351ef576b4bdaa3a9e328dfef0aef617d6ea467db49555d794a33502059d0",
++      "lines": [
++        80,
++        118,
++        149,
++        182,
++        186,
++        231
++      ],
++      "scope": "Actual partial-swap D_P address permutations, involution, nested transport, complement endpoint, concrete matrix gauges. Missing source-specific matrix identities and emitted Trace still supplied.",
++      "verification": "source read only in this audit; not rebuilt"
++    },
++    {
++      "repository_commit": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++      "path": "research/machine-transfer-verification/full-transfer/localization/LocalizedAddressGauges.lean",
++      "sha256": "916af51a79becb7e21afc3fe5f3b963c4ea724020d4a0343d848352f25f3cbc5",
++      "lines": [
++        13,
++        28,
++        41,
++        58
++      ],
++      "scope": "Actual modular gauges and nested transport from rational projector identities plus prime eligibility. No modular matrix identity need be assumed separately once source rational identities are bound.",
++      "verification": "source read only in this audit; not rebuilt"
++    },
++    {
++      "repository_commit": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++      "path": "research/machine-transfer-verification/full-transfer/localization/EligibleLocalization.lean",
++      "sha256": "7c2525b8f30ddd26f5d9469972a8f9823c6b20805575d801c5c5755dea993c28",
++      "lines": [
++        21,
++        45,
++        67,
++        87,
++        93,
++        115
++      ],
++      "scope": "Finite rational table localization, numerator exceptions via reciprocal entries, eligible prime powers and eligible odd prime existence. Avoid fictitious field homomorphism from Q to finite fields.",
++      "verification": "source read only in this audit; not rebuilt"
++    },
++    {
++      "repository_commit": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++      "path": "research/machine-transfer-verification/transfer-proof/framed/FramedXor.lean",
++      "sha256": "67d8385bdcdb0a553c09252bcc95d80fb8417beb8dfb6834a186c6f0b13862c9",
++      "lines": [
++        55,
++        69,
++        104,
++        161,
++        277,
++        344,
++        358,
++        439
++      ],
++      "scope": "Physical gauge transport, equal-frame XOR Trace simulation, blank-temp copied center/fanout. No concrete finite graph, frame assignment or source Trace instantiated.",
++      "verification": "source read only in this audit; not rebuilt"
++    },
++    {
++      "repository_commit": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++      "path": "research/machine-transfer-verification/full-transfer/framed/TensorStageFrames.lean",
++      "sha256": "799c559518b6beccd32b24f3bc2bd5f096e9adffc8a9d26e9163ecfd83dc5fba",
++      "lines": [
++        17,
++        21,
++        51,
++        98,
++        120,
++        152
++      ],
++      "scope": "Exact ambient matrix/tensor identities for different two-stage geometry, not PR442 exterior-block geometry.",
++      "verification": "source read only in this audit; not rebuilt"
++    },
++    {
++      "repository_commit": "12a4934d15006e8c10f9b2264f13f8f341be802b",
++      "path": "research/ranked-pair-verification/lean/DirtyWrapper.lean",
++      "sha256": "3ee3ee58cdb31bfa29c09c5f25b07f123b06988bdc7af8fcbc4062ba2780e30f",
++      "lines": [
++        148,
++        189
++      ],
++      "scope": "Existing generic arbitrary-dirty XOR wrapper; not actual R747 source/frame/owner instantiation.",
++      "verification": "source read only in this audit; not rebuilt"
++    },
++    {
++      "repository": "jacobalansussman/wht-power-saving-lean",
++      "repository_commit": "9c94857bbaee886f8649edee0bc2d3c738f9555e",
++      "path": "Work/GFrame/Labels/GCarrier.lean",
++      "sha256": "fd613748598bcf50b9f564abaada1e9869a372b2b32c111487f0d983e54e5044",
++      "lines": [
++        72,
++        113,
++        142,
++        156
++      ],
++      "scope": "Dirty helper endpoint from generalized clean GRoute; complete source/certificate is a premise.",
++      "verification": "source read only; local Jacob checkout requests Lean4.34.1 while contribution uses Lean4.33.0"
++    },
++    {
++      "repository": "jacobalansussman/wht-power-saving-lean",
++      "repository_commit": "9c94857bbaee886f8649edee0bc2d3c738f9555e",
++      "path": "Work/GCert/Chain/InvThm.lean",
++      "sha256": "ade7e7873da75ca63a4b5ce2f562dde9c12bfbb69d87d7ae831039ff790e5adb",
++      "lines": [
++        34,
++        82,
++        86,
++        151
++      ],
++      "scope": "Actual labelled complex/general-frame invocation certificate engine, not the different R747 bit source word.",
++      "verification": "source read only; local Jacob checkout requests Lean4.34.1 while contribution uses Lean4.33.0"
++    },
++    {
++      "repository": "jacobalansussman/wht-power-saving-lean",
++      "repository_commit": "9c94857bbaee886f8649edee0bc2d3c738f9555e",
++      "path": "Work/GFrame/Engine/Adapt.lean",
++      "sha256": "feec0a3828867968a5c7c2c30b86ed70449abc3c660a60ada67203a75bae2ef7",
++      "lines": [
++        24,
++        33,
++        108,
++        138
++      ],
++      "scope": "Real address-permutation action and row transport in family-130 RAM model; no PR442 owner occurrence map.",
++      "verification": "source read only; local Jacob checkout requests Lean4.34.1 while contribution uses Lean4.33.0"
++    },
++    {
++      "repository": "jacobalansussman/wht-power-saving-lean",
++      "repository_commit": "9c94857bbaee886f8649edee0bc2d3c738f9555e",
++      "path": "Work/GFrame/Engine/Letters.lean",
++      "sha256": "34906dbf5ae16b5174db00b4881a5cc1d2e583b8c8806db6523a5e2f86565f09",
++      "lines": [
++        31,
++        39,
++        151,
++        159
++      ],
++      "scope": "Actual additive address-permutation letter semantics and generalized word execution, not assumed local wrapper.",
++      "verification": "source read only; local Jacob checkout requests Lean4.34.1 while contribution uses Lean4.33.0"
++    }
++  ],
++  "actual_source_simplification": {
++    "source_commit": "4e16d001d505d4f21dd2bcfc44591f9be4c279bd",
++    "states_sha256": "40c063fd3d7b63c735f762097e692b5c36f618c60e8ed257de9e5f92be11b48e",
++    "frames_sha256": "884480e45865a9d9d57f5f7198844a64271b046bc95e9820efbefb9e10878330",
++    "helper_registers": [
++      240,
++      986
++    ],
++    "entrance_frames": [
++      {
++        "frame": 0,
++        "helpers": 637,
++        "entrance_rank": 0,
++        "coordinate_axes": []
++      },
++      {
++        "frame": 2,
++        "helpers": 23,
++        "entrance_rank": 1,
++        "coordinate_axes": [
++          0
++        ]
++      },
++      {
++        "frame": 3,
++        "helpers": 17,
++        "entrance_rank": 1,
++        "coordinate_axes": [
++          1
++        ]
++      },
++      {
++        "frame": 4,
++        "helpers": 16,
++        "entrance_rank": 1,
++        "coordinate_axes": [
++          2
++        ]
++      },
++      {
++        "frame": 5,
++        "helpers": 3,
++        "entrance_rank": 1,
++        "coordinate_axes": [
++          3
++        ]
++      },
++      {
++        "frame": 6,
++        "helpers": 19,
++        "entrance_rank": 1,
++        "coordinate_axes": [
++          4
++        ]
++      },
++      {
++        "frame": 7,
++        "helpers": 18,
++        "entrance_rank": 1,
++        "coordinate_axes": [
++          5
++        ]
++      },
++      {
++        "frame": 9,
++        "helpers": 8,
++        "entrance_rank": 1,
++        "coordinate_axes": [
++          7
++        ]
++      },
++      {
++        "frame": 458,
++        "helpers": 1,
++        "entrance_rank": 4,
++        "coordinate_axes": [
++          0,
++          1,
++          2,
++          3
++        ]
++      },
++      {
++        "frame": 460,
++        "helpers": 1,
++        "entrance_rank": 4,
++        "coordinate_axes": [
++          0,
++          1,
++          6,
++          7
++        ]
++      },
++      {
++        "frame": 462,
++        "helpers": 1,
++        "entrance_rank": 4,
++        "coordinate_axes": [
++          0,
++          2,
++          5,
++          7
++        ]
++      },
++      {
++        "frame": 464,
++        "helpers": 1,
++        "entrance_rank": 4,
++        "coordinate_axes": [
++          0,
++          3,
++          5,
++          6
++        ]
++      },
++      {
++        "frame": 470,
++        "helpers": 1,
++        "entrance_rank": 4,
++        "coordinate_axes": [
++          2,
++          3,
++          6,
++          7
++        ]
++      },
++      {
++        "frame": 471,
++        "helpers": 1,
++        "entrance_rank": 4,
++        "coordinate_axes": [
++          4,
++          5,
++          6,
++          7
++        ]
++      }
++    ],
++    "finding": "Every helper entrance is span of distinct coordinate vectors2e_i. Residual I\u2212P_E has literal complement-coordinate support. Helper route onto an allocated residual interval can therefore use a coordinate permutation plus the prescribed pending-child chart; no arbitrary square-root isometry is needed for these endpoint subspaces.",
++    "limitation": "Intermediate source frame projectors and their physical instruction realization remain necessary. Exact source owner chart must still be constructed and linked to emitted selectors; scalar rank alone is insufficient."
++  },
++  "review_constraints": [
++    "All affected retained host streams must appear in the multi-host state; independent banks may differ but all compared scratch/output components stay retained.",
++    "Pointwise host masks must share an actual address chart within a window. Different family charts require explicit encodings, not rank equality.",
++    "Task A product maps require rest not read host inputs, or a more general proved commutation contract. Actual active-pair operations may mix retained data and cannot silently be put in independent rest.",
++    "Task B must quantify over arbitrary correlated dirty inputs, keep source blank-temporary preconditions explicit, and prove actual source owner injectivity and finite-field frame realization.",
++    "Returning to a theorem with supplied complete-call endpoint assumptions would repeat earlier conditional work and would not complete Task B."
++  ],
++  "bounded_conclusion": "No new Lean multi-host theorem or actual PR442 R747 source provider was identified in this bounded audit. All154 Lean blobs in each of PR473477506507 are byte-identical to main. This is not an exhaustive novelty search of all repositories, branches, discussions or mathematical literature.",
++  "evidence_files": [
++    {
++      "path": "/workspace/audit/session4/upstream-raw.json",
++      "sha256": "1e920f0b447b71daf0d3be3565b1e4e3d2c1e8a0898e1cee8f3f69e66cb4ccc1"
++    },
++    {
++      "path": "/workspace/audit/session4/new-work-raw.json",
++      "sha256": "25116dc0603be07ae11120f1c3cdd1f71fb06be98f42a8361a35ae2bf5c39d1f"
++    },
++    {
++      "path": "/workspace/audit/session4/new-work-lean-diff.json",
++      "sha256": "c7dc54b272616a1df38debd1b320d576a2737f8f4e4455df0136b30c461808b4"
++    }
++  ]
++}
+diff --git a/research/lean-multi-host-framework/proof-manifest.json b/research/lean-multi-host-framework/proof-manifest.json
+new file mode 100644
+index 0000000..10721fa
+--- /dev/null
++++ b/research/lean-multi-host-framework/proof-manifest.json
+@@ -0,0 +1,56 @@
++{
++  "source_base_commit": "365adef9e8ea858473ac85ecf7594c7ee910a8a3",
++  "lean_commit": "d8b18978322de05a8f3dba51ef03cf5461676c17",
++  "sha256": {
++    "CoordinateSwap": "74d47e67dad5e8d548e69b008de19b65cfd138d3be71cf80d0b6c6990cf65841",
++    "Hosting": "102084fe6a003ab54e3b1eace36ccd9d872857eb4fc9b0770de3d6f7961af1f9",
++    "PhysicalHosting": "edd25772ad9c7cbae66a65bd9bc5cb00b98cf79e0e44913df4ff5f940525bc48",
++    "MultiHosting": "dc6188687ac8e089c64bf5ab7cd4c8c1a83f378d3c46bb1265a1b6ad43d199d6",
++    "SingleHostRecovery": "24590ece7ec72ad5edcdefc9d7f45acffa6dbccd644c95104ab8f2685fbaaf5d",
++    "MultiHostControls": "4321a232d7e36e0f4417a01ce951c601afde1b283c42c0b8ad24372e25fbc94d"
++  },
++  "imports": {
++    "CoordinateSwap": [
++      "Std"
++    ],
++    "Hosting": [
++      "CoordinateSwap"
++    ],
++    "PhysicalHosting": [
++      "Hosting"
++    ],
++    "MultiHosting": [
++      "CoordinateSwap"
++    ],
++    "SingleHostRecovery": [
++      "MultiHosting",
++      "PhysicalHosting"
++    ],
++    "MultiHostControls": [
++      "MultiHosting"
++    ]
++  },
++  "theorems": [
++    "MultiHosting.base_commutes",
++    "MultiHosting.runBase_commutes",
++    "MultiHosting.delay_residuals",
++    "MultiHosting.multi_hosting",
++    "MultiHosting.multi_hosting_in_context",
++    "MultiHosting.PhysicalImplementations.original_projection",
++    "MultiHosting.PhysicalImplementations.relocated_projection",
++    "MultiHosting.physical_multi_hosting",
++    "MultiHosting.physical_multi_hosting_in_context",
++    "MultiHosting.SingleHost.collapse_embed",
++    "MultiHosting.SingleHost.embed_collapse",
++    "MultiHosting.SingleHost.collapse_onHosts",
++    "MultiHosting.SingleHost.collapse_base",
++    "MultiHosting.SingleHost.collapse_hosted",
++    "MultiHosting.SingleHost.collapse_runBase",
++    "MultiHosting.SingleHost.collapse_runHosted",
++    "MultiHosting.SingleHost.residuals_event",
++    "MultiHosting.SingleHost.whole_hosting_recovered",
++    "MultiHosting.SingleHost.physical_whole_hosting_recovered",
++    "MultiHosting.Controls.mixing_does_not_commute",
++    "MultiHosting.Controls.alias_breaks_refinement"
++  ]
++}
+diff --git a/research/lean-multi-host-framework/replay-result.json b/research/lean-multi-host-framework/replay-result.json
+new file mode 100644
+index 0000000..71ee4e0
+--- /dev/null
++++ b/research/lean-multi-host-framework/replay-result.json
+@@ -0,0 +1,68 @@
++{
++  "status": "PASS",
++  "task": "A only; no source endpoint contract supplied",
++  "lean": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)",
++  "trust_level": 0,
++  "fresh_modules_compiled": 6,
++  "source_sha256": {
++    "CoordinateSwap": "74d47e67dad5e8d548e69b008de19b65cfd138d3be71cf80d0b6c6990cf65841",
++    "Hosting": "102084fe6a003ab54e3b1eace36ccd9d872857eb4fc9b0770de3d6f7961af1f9",
++    "PhysicalHosting": "edd25772ad9c7cbae66a65bd9bc5cb00b98cf79e0e44913df4ff5f940525bc48",
++    "MultiHosting": "dc6188687ac8e089c64bf5ab7cd4c8c1a83f378d3c46bb1265a1b6ad43d199d6",
++    "SingleHostRecovery": "24590ece7ec72ad5edcdefc9d7f45acffa6dbccd644c95104ab8f2685fbaaf5d",
++    "MultiHostControls": "4321a232d7e36e0f4417a01ce951c601afde1b283c42c0b8ad24372e25fbc94d"
++  },
++  "axioms": {
++    "MultiHosting.base_commutes": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.runBase_commutes": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.delay_residuals": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.multi_hosting": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.multi_hosting_in_context": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.PhysicalImplementations.original_projection": [],
++    "MultiHosting.PhysicalImplementations.relocated_projection": [],
++    "MultiHosting.physical_multi_hosting": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.physical_multi_hosting_in_context": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.SingleHost.collapse_embed": [],
++    "MultiHosting.SingleHost.embed_collapse": [
++      "Quot.sound"
++    ],
++    "MultiHosting.SingleHost.collapse_onHosts": [],
++    "MultiHosting.SingleHost.collapse_base": [],
++    "MultiHosting.SingleHost.collapse_hosted": [],
++    "MultiHosting.SingleHost.collapse_runBase": [],
++    "MultiHosting.SingleHost.collapse_runHosted": [],
++    "MultiHosting.SingleHost.residuals_event": [],
++    "MultiHosting.SingleHost.whole_hosting_recovered": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.SingleHost.physical_whole_hosting_recovered": [
++      "propext",
++      "Quot.sound"
++    ],
++    "MultiHosting.Controls.mixing_does_not_commute": [],
++    "MultiHosting.Controls.alias_breaks_refinement": []
++  },
++  "proved_boundary_inequalities": 2
++}
+diff --git a/research/lean-multi-host-framework/replay.py b/research/lean-multi-host-framework/replay.py
+new file mode 100644
+index 0000000..5fc2c85
+--- /dev/null
++++ b/research/lean-multi-host-framework/replay.py
+@@ -0,0 +1,87 @@
++#!/usr/bin/env python3
++"""Fresh offline Lean kernel replay of Task A, independent of Task B."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import subprocess
++import tempfile
++
++ROOT = Path(__file__).resolve().parent
++DEPS = ['CoordinateSwap', 'Hosting', 'PhysicalHosting']
++MODULES = DEPS + ['MultiHosting', 'SingleHostRecovery', 'MultiHostControls']
++
++
++def require(ok, message):
++    if not ok:
++        raise RuntimeError(message)
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--lean', required=True, type=Path)
++    parser.add_argument('--receipt', type=Path)
++    args = parser.parse_args()
++    lean = args.lean.resolve(strict=True)
++    env = dict(os.environ)
++    env.pop('LEAN_PATH', None)
++    env.pop('LEAN_SRC_PATH', None)
++    version = subprocess.check_output([str(lean), '--version'], env=env,
++                                      text=True, timeout=30).strip()
++    require(version.startswith('Lean (version 4.33.0,'), 'Lean 4.33.0 required')
++    manifest = json.loads((ROOT / 'proof-manifest.json').read_text())
++    sources = {}
++    for module in MODULES:
++        source_dir = ROOT.parent / 'lean-whole-residual-hosting' if module in DEPS else ROOT
++        source = (source_dir / (module + '.lean')).read_bytes()
++        require(hashlib.sha256(source).hexdigest() == manifest['sha256'][module],
++                'Source mismatch: ' + module)
++        code = re.sub(r'--[^\n]*', '', re.sub(r'/\-[\s\S]*?\-/', '', source.decode()))
++        require(not re.search(r'\b(sorry|admit|native_decide|unsafe|axiom|opaque)\b', code),
++                'Proof escape: ' + module)
++        imports = re.findall(r'^import (\S+)$', code, re.M)
++        require(imports == manifest['imports'][module], 'Import mismatch: ' + module)
++        require(all(x == 'Std' or x in MODULES[:MODULES.index(module)] for x in imports),
++                'Unlisted dependency: ' + module)
++        sources[module] = source
++    reports = {}
++    with tempfile.TemporaryDirectory(prefix='multi-host-framework-') as tmp:
++        build = Path(tmp)
++        env['LEAN_PATH'] = str(build)
++        for module, source in sources.items():
++            (build / (module + '.lean')).write_bytes(source)
++        for module in MODULES:
++            result = subprocess.run([str(lean), '-t', '0', '-o', module + '.olean',
++                                     module + '.lean'], cwd=build, env=env,
++                                    text=True, stdout=subprocess.PIPE,
++                                    stderr=subprocess.STDOUT, timeout=90)
++            require(result.returncode == 0 and 'warning:' not in result.stdout,
++                    module + '\n' + result.stdout)
++            if module in DEPS:
++                continue
++            for line in result.stdout.splitlines():
++                match = re.fullmatch(r"'([^']+)' does not depend on any axioms", line)
++                if match:
++                    name, axioms = match[1], []
++                else:
++                    match = re.fullmatch(r"'([^']+)' depends on axioms: \[([^]]*)\]", line)
++                    require(match is not None, 'Unexpected output: ' + line)
++                    name, axioms = match[1], match[2].split(', ')
++                require(name not in reports, 'Duplicate axiom report: ' + name)
++                require(set(axioms) <= {'propext', 'Quot.sound'}, 'Unexpected axioms: ' + line)
++                reports[name] = axioms
++    require(list(reports) == manifest['theorems'], 'Theorem inventory mismatch')
++    receipt = {'status': 'PASS', 'task': 'A only; no source endpoint contract supplied',
++               'lean': version, 'trust_level': 0, 'fresh_modules_compiled': len(MODULES),
++               'source_sha256': manifest['sha256'], 'axioms': reports,
++               'proved_boundary_inequalities': 2}
++    if args.receipt:
++        args.receipt.write_text(json.dumps(receipt, indent=2) + '\n')
++    print(json.dumps({'status': 'PASS', 'compiled_modules': len(MODULES),
++                      'theorem_closures': len(reports), 'proved_boundary_inequalities': 2}))
++
++
++if __name__ == '__main__':
++    main()

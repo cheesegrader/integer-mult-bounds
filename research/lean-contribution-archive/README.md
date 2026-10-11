@@ -30,3 +30,14 @@ and this archive README. All proof/build/source/review details are in
 physical invocation provider.
 
 SHA-256: `ceeff669867e6e23b8f548aa5a5d1339870fe1b04b1467a12827fe998b563fc4`.
+
+## Multiple-host framework (Task A)
+
+`multi-host-framework.patch` targets local commit
+`365adef9e8ea858473ac85ecf7594c7ee910a8a3`. It contains the generalized
+theorem, exact singleton recovery, boundary controls, fresh build instructions
+and receipts, pinned overlap audit, and independent review. It excludes this
+archive copy and README. Task A supplies no source invocation contract;
+the separate source-connection work must establish that contract.
+
+SHA-256: `8de082b00f692069c52498985876ae42230b5e86ee2c20b8ff08617f4f3899ad`.
