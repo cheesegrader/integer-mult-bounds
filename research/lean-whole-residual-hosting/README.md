@@ -130,3 +130,9 @@ a checked conditional bit absorption theorem with explicit retained-state
 and dirty-bank contracts, boundary witnesses, and a pinned concrete interval
 instance. The bounded audit found no matching Lean hosting implementation;
 it makes no global novelty or priority claim.
+
+The subsequent [actual-invocation audit](../lean-source-invocation-audit/README.md)
+kernel-checks two trajectories through the literal R747 word and diagnoses
+why comparing the full banked and hosted invocation directly requires a
+broader contract: additional retained data families also receive residuals.
+The physical-provider refinement remains open.
