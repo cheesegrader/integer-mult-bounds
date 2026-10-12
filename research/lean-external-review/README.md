@@ -34,6 +34,26 @@ transfer, or κ. PR448's split-helper gain remains unestablished.
 
 ## Delivery and patch order
 
+The public review branch is
+[`cheesegrader/integer-mult-bounds:lean/single-stream-interface-obstruction`](https://github.com/cheesegrader/integer-mult-bounds/tree/lean/single-stream-interface-obstruction).
+To obtain the complete review sources directly:
+
+```sh
+git clone --branch lean/single-stream-interface-obstruction --single-branch \
+  https://github.com/cheesegrader/integer-mult-bounds.git review-checkout
+cd review-checkout
+git rev-parse HEAD
+python3 research/lean-external-review/verify_package.py
+```
+
+Record the printed commit ID to pin the snapshot you review. This checkout
+already contains the final sources; continue with **Install the public
+dependencies** and **Reproduce both tasks** below. The generated `review.patch`,
+portable archive and `delivery.json` are not tracked files or attached release
+assets. To create them from this checkout, use **Regenerating the delivery**
+below. The following patch/archive routes apply when those exported files
+have been supplied separately.
+
 Public repository: <https://github.com/CrocSwap/integer-mult-bounds>.
 Exact base: `12a4934d15006e8c10f9b2264f13f8f341be802b`.
 
@@ -168,4 +188,5 @@ python3 research/lean-external-review/export_review.py --output-dir /tmp/lean-re
 
 The exporter deliberately does not commit its own output into the package.
 This avoids recursive archives while keeping the complete delivery recipe
-and all authoritative sources under version control. Nothing is pushed or published.
+and all authoritative sources under version control. The exporter operates
+locally; it does not push commits or publish release assets.

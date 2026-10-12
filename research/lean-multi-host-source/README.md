@@ -118,7 +118,7 @@ are focused controls, not full replays of the corrupted word.
 The overlap search and its limits are in `overlap-review.md`. In particular,
 PR509 already formalizes overlapping generic transport and replay principles;
 the contribution here is the concrete source obligations. Attribution is
-recorded in `NOTICE.md`. No changes have been published.
+recorded in `NOTICE.md`.
 
 For the external-review delivery, start with
 [`../lean-external-review/README.md`](../lean-external-review/README.md).
