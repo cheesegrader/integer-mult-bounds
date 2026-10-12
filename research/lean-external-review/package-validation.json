@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "completed_utc": "2026-10-12T00:33:01.460926+00:00",
+  "manifest_sha256": "80614ac5057ff5bef87110098fe88742768e6b8ff75b38f286263543822b5f57",
+  "files_checked": 257,
+  "task_a_modules": 6,
+  "task_b_modules": 52,
+  "task_a_theorem_closures": 21,
+  "task_b_theorem_closures": 930,
+  "scope": "Inventory and recorded source/dependency bindings, not a new Lean build."
+}

@@ -1,5 +1,12 @@
 # Validation and remaining scope
 
+The completed build below is historical. For the final external-review
+delivery, see [`../lean-external-review/VALIDATION.md`](../lean-external-review/VALIDATION.md):
+Task A and source extraction were rerun fresh; Task B explicitly reused all
+52 receipt-anchored modules and reran the 930-declaration axiom inventory.
+Its new receipt reports zero fresh Task B modules and discloses the missing
+historical external-library fingerprint. No Lean proof source changed.
+
 **PASS:** the coherent package replay completed at
 2026-10-11 23:59:17 UTC. `replay-result.json` records 52 source-built modules
 with `lean -t 0` and 930 audited named theorem closures. Every source hash

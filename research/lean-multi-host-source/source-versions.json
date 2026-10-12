@@ -72,5 +72,16 @@
     "source": "https://github.com/CrocSwap/integer-mult-bounds",
     "Jacob_Sussman": "https://github.com/jacobalansussman/wht-power-saving-lean",
     "mathlib": "https://github.com/leanprover-community/mathlib4"
+  },
+  "audited_sources_scope": "Historical pre-packaging audit; see external_review_refresh for the subsequent bounded check.",
+  "external_review_refresh": {
+    "snapshot": "2026-10-12T00:15:23.950740+00:00",
+    "review": "EXTERNAL-OVERLAP-REVIEW.md",
+    "receipt": "review-receipts/external-overlap/summary.json",
+    "new_generic_overlap_PR516": "1c6b6ff9366a94e1f86a6c5d661a7df75c6ff814",
+    "new_counting_PR519": "ffd3c48a80ba8b579dc300e785e387fe8acddfef",
+    "updated_PR511": "9a20ad04be54b1c0fa26bd4ceb689f9ea220eab5",
+    "source_selection_changed": false,
+    "scope": "Latest 100 updated PRs plus required pinned heads; no global novelty claim."
   }
 }

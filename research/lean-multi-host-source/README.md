@@ -41,7 +41,7 @@ The final statements are collected in `SourceInvocation.lean`:
 | `actualContract` | Construct the old/new invocation contract from their literal execution folds. |
 | `selected_call_completion` | Apply the multi-host theorem to this invocation and its remaining pending swaps. |
 | `selected_native_completion` | Compare those same executions in common native coordinates. |
-| `selected_matrix_realization`, `selected_original_matrix_realization` | Identify both full executions with the source matrix word. |
+| `selected_matrix_realization`, `selected_original_matrix_realization` | Identify active-role gathers of both complete execution folds with the source matrix word; exterior preservation is proved separately. |
 | `selected_data_formula` | Display the data endpoint with actual entrance/exit frames and port charts. |
 | `selected_native_clean`, `selected_temporary_restoration` | Establish chronological COPY/ERASE legality and return the private row blank. |
 
@@ -60,7 +60,7 @@ injectivity concerns the actual functions on coordinates, not nominal tag
 inequality. The source permits a choice of slot isometry; the certificates
 construct one exact permitted choice from the literal slot descriptors.
 
-The native-coordinate bridge must identify an ADD with reading the same
+The native-coordinate bridge identifies an ADD with reading the same
 native address in its two streams. Its identity is
 `g_source σ_source σ_target⁻¹ = g_target`, where `g σ = d` is the common
 invocation chart. This uses one stream per helper. It assumes no split-helper
@@ -83,8 +83,8 @@ The comparison's retained state includes all 747 affected host streams,
 all 240 active data streams, and arbitrary payloads outside the union of
 the two layouts' active owner sets. Original helper-bank outputs
 are returned and threaded as auxiliary outputs. They are not silently
-asserted equal to their initial values. Temporary cleanliness must be
-proved separately for the actual trace.
+asserted equal to their initial values. `selected_native_clean` and
+`selected_temporary_restoration` prove temporary cleanliness for the actual trace.
 
 The common slot universe is a device for this local comparison. The input
 embeddings assign defaults to slots unused by a layout; this is not equality
@@ -119,3 +119,9 @@ The overlap search and its limits are in `overlap-review.md`. In particular,
 PR509 already formalizes overlapping generic transport and replay principles;
 the contribution here is the concrete source obligations. Attribution is
 recorded in `NOTICE.md`. No changes have been published.
+
+For the external-review delivery, start with
+[`../lean-external-review/README.md`](../lean-external-review/README.md).
+It provides the cumulative public-base patch, all local dependencies, exact
+setup and reproduction instructions, a refreshed bounded overlap review,
+and an explicit audit of these claims in [EXTERNAL-CLAIM-REVIEW.md](EXTERNAL-CLAIM-REVIEW.md).

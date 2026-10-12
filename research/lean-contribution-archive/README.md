@@ -1,5 +1,12 @@
 # Local contribution archive
 
+**For the final external-review delivery, use
+[`../lean-external-review/README.md`](../lean-external-review/README.md).**
+Its single cumulative `review.patch` starts at the public base and includes
+every local dependency. Do not combine it with the historical patches below.
+These archived patches preserve earlier snapshots and are not the final
+packaging update.
+
 The first two additive patches were delivered before the source-invocation
 follow-up. Both target upstream main
 `12a4934d15006e8c10f9b2264f13f8f341be802b`. They archive exactly the delivered

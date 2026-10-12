@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Fresh offline Lean kernel replay of Task A, independent of Task B."""
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -19,6 +20,27 @@ def require(ok, message):
         raise RuntimeError(message)
 
 
+
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def toolchain_snapshot(lean, env):
+    prefix = Path(subprocess.check_output([str(lean), '--print-prefix'], env=env,
+                                         text=True, timeout=30).strip()).resolve(strict=True)
+    require(lean == prefix / 'bin' / 'lean', 'Compiler is outside its reported toolchain prefix')
+    records = [(str(p.relative_to(prefix)), p.stat().st_size, sha256_file(p))
+               for p in sorted(prefix.rglob('*')) if p.is_file()]
+    digest = hashlib.sha256(json.dumps(records, separators=(',', ':')).encode()).hexdigest()
+    return {'sha256': digest, 'files': len(records), 'bytes': sum(r[1] for r in records),
+            'lean_binary_sha256': sha256_file(lean),
+            'meaning': 'Current installed compiler, libraries, and source bytes; not archive-origin attestation.'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--lean', required=True, type=Path)
@@ -28,10 +50,15 @@ def main():
     env = dict(os.environ)
     env.pop('LEAN_PATH', None)
     env.pop('LEAN_SRC_PATH', None)
+    env.pop('LEAN_SYSROOT', None)
     version = subprocess.check_output([str(lean), '--version'], env=env,
                                       text=True, timeout=30).strip()
     require(version.startswith('Lean (version 4.33.0,'), 'Lean 4.33.0 required')
-    manifest = json.loads((ROOT / 'proof-manifest.json').read_text())
+    manifest_bytes = (ROOT / 'proof-manifest.json').read_bytes()
+    manifest = json.loads(manifest_bytes)
+    revision = subprocess.check_output([str(lean), '--githash'], env=env, text=True, timeout=30).strip()
+    require(revision == manifest['lean_commit'], 'Wrong Lean revision')
+    toolchain = toolchain_snapshot(lean, env)
     sources = {}
     for module in MODULES:
         source_dir = ROOT.parent / 'lean-whole-residual-hosting' if module in DEPS else ROOT
@@ -73,8 +100,13 @@ def main():
                 require(set(axioms) <= {'propext', 'Quot.sound'}, 'Unexpected axioms: ' + line)
                 reports[name] = axioms
     require(list(reports) == manifest['theorems'], 'Theorem inventory mismatch')
+    require(toolchain_snapshot(lean, env) == toolchain, 'Toolchain changed during replay')
     receipt = {'status': 'PASS', 'task': 'A only; no source endpoint contract supplied',
-               'lean': version, 'trust_level': 0, 'fresh_modules_compiled': len(MODULES),
+               'lean': version, 'lean_commit': revision, 'trust_level': 0,
+               'completed_utc': datetime.now(timezone.utc).isoformat(),
+               'manifest_sha256': hashlib.sha256(manifest_bytes).hexdigest(),
+               'toolchain': toolchain, 'replay_mode': 'fresh',
+               'fresh_modules_compiled': len(MODULES), 'reused_modules': 0,
                'source_sha256': manifest['sha256'], 'axioms': reports,
                'proved_boundary_inequalities': 2}
     if args.receipt:

@@ -43,3 +43,9 @@ See `REVIEW.md`, `replay-result.json`, `proof-manifest.json`, and
 Apache-2.0, following the repository license. Prepared with substantial OpenAI
 Codex assistance; the existing WholeHosting authorship and source attribution
 are retained in the sibling package and unchanged dependencies.
+
+The [external-review delivery](../lean-external-review/README.md) includes all
+three WholeHosting dependencies and both tasks in one patch from the public
+base, with a portable source archive and fresh reproduction command. The
+human contributor initiated and coordinated the AI-assisted effort; they do
+not claim independent derivation or personal checking of the mathematics.
