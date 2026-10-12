@@ -41,3 +41,21 @@ archive copy and README. Task A supplies no source invocation contract;
 the separate source-connection work must establish that contract.
 
 SHA-256: `8de082b00f692069c52498985876ae42230b5e86ee2c20b8ff08617f4f3899ad`.
+
+## Concrete source invocation (Task B)
+
+`multi-host-source.patch` targets local commit
+`84f49692065163182d9fcbe1580495f841a75008`. It adds the concrete PR442 forward-invocation
+provider: the literal word, actual frame matrices and owners, arbitrary dirty
+Boolean inputs, native-coordinate comparison, and clean-private guards. The
+52-module source replay and 930 theorem-closure audits passed. Build instructions,
+pinned sources, exact input snapshots, receipts, and review notes are in
+`../lean-multi-host-source/README.md`. The patch was checked against its base
+using a separate temporary Git index.
+
+This is one invocation with explicit local embeddings and remaining pending
+swaps. It does not establish the full recursive schedule, a global allocation
+comparison, physical resource charging, or a new κ bound. It excludes its own
+archive copy and this archive README.
+
+SHA-256: `940c230077862443f05c1d2516d222592dfa08f131eef35000f78fa8cf18b055`.
