@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+from reanchor_metadata import verify_reanchor
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
@@ -40,6 +41,7 @@ def inventory():
 
 
 def bindings():
+    reanchor = verify_reanchor(ROOT)
     a = ROOT / 'research/lean-multi-host-framework'
     b = ROOT / 'research/lean-multi-host-source'
     ma = json.loads((a / 'proof-manifest.json').read_text())
@@ -48,7 +50,8 @@ def bindings():
     rb = json.loads((b / 'replay-result.json').read_text())
     require(ra['status'] == rb['status'] == 'PASS', 'Historical proof receipt failed')
     require(ra['source_sha256'] == ma['sha256'], 'Task A receipt/source mismatch')
-    require(rb['manifest_sha256'] == sha(b / 'proof-manifest.json'),
+    require(rb['manifest_sha256'] == reanchor['manifests'][
+                'research/lean-multi-host-source/proof-manifest.json']['historical_sha256'],
             'Task B receipt/manifest mismatch')
     require(rb['lean_commit'] == ma['lean_commit'] == mb['lean_commit'], 'Lean pin mismatch')
     require(list(ra['axioms']) == ma['theorems'], 'Task A axiom inventory mismatch')
@@ -73,9 +76,11 @@ def bindings():
     current_b = json.loads((HERE / 'validation/task-b.json').read_text())
     require(current_a['status'] == current_b['status'] == 'PASS', 'Packaging replay failed')
     require(current_a['source_sha256'] == ma['sha256'], 'New Task A receipt/source mismatch')
-    require(current_a['manifest_sha256'] == sha(a / 'proof-manifest.json') and
-            current_b['manifest_sha256'] == sha(b / 'proof-manifest.json'),
-            'New replay/manifest mismatch')
+    require(current_a['manifest_sha256'] == reanchor['manifests'][
+                'research/lean-multi-host-framework/proof-manifest.json']['historical_sha256'] and
+            current_b['manifest_sha256'] == reanchor['manifests'][
+                'research/lean-multi-host-source/proof-manifest.json']['historical_sha256'],
+            'Historical replay/reanchored manifest mismatch')
     require(current_a['lean_commit'] == current_b['lean_commit'] == ma['lean_commit'],
             'New replay Lean pin mismatch')
     require(current_a['toolchain']['sha256'] ==
@@ -115,8 +120,8 @@ def main():
     if args.write_manifest:
         manifest_path.write_text(json.dumps({
             'base_commit': '12a4934d15006e8c10f9b2264f13f8f341be802b',
-            'task_a_commit': '84f49692065163182d9fcbe1580495f841a75008',
-            'task_b_commit': 'f86e52f19569e801ac8d133d7070aa3fe39db08c',
+            'task_a_commit': '13611a8958fc71046a83d8431d2bd6335e6a3e2f',
+            'task_b_commit': 'f7330c5f5b1c5e85f91a98c95e8efc0e27c03490',
             'excluded_from_recursive_hash': sorted(EXCLUDED), 'sha256': files,
         }, indent=2) + '\n')
     expected = json.loads(manifest_path.read_text())

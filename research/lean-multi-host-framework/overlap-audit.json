@@ -3,7 +3,7 @@
   "written_at_utc": "2026-10-11T22:40:18.280873+00:00",
   "read_only_upstream": true,
   "no_publication": true,
-  "local_predecessor_commit": "365adef9e8ea858473ac85ecf7594c7ee910a8a3",
+  "local_predecessor_commit": "a7f9ceebc83cb1aed29ab07202ae82bdf39100a2",
   "task_split": {
     "A": "Abstract multi-host theorem with all affected hosts retained; recover previous singleton theorem first.",
     "B": "Actual source invocation with owner map, actual coordinate transformations and arbitrary dirty input. Abstract endpoint premises do not count as discharging B."

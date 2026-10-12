@@ -52,8 +52,8 @@ def main():
     entries['review.patch'] = patch
     metadata = {
         'base_commit': BASE, 'review_commit': head,
-        'task_a_commit': '84f49692065163182d9fcbe1580495f841a75008',
-        'task_b_commit': 'f86e52f19569e801ac8d133d7070aa3fe39db08c',
+        'task_a_commit': '13611a8958fc71046a83d8431d2bd6335e6a3e2f',
+        'task_b_commit': 'f7330c5f5b1c5e85f91a98c95e8efc0e27c03490',
         'patch_order': ['review.patch'],
         'patch_sha256': digest(patch),
         'source_manifest_sha256': digest(entries['research/lean-external-review/package-manifest.json']),
@@ -64,7 +64,7 @@ def main():
         'Read research/lean-external-review/README.md.\n'
         'This archive already contains the final review sources; do not apply review.patch here.\n'
         'Alternative: apply review.patch once to a clean public repository at ' + BASE + '.\n'
-        'Do not also apply historical patches under research/lean-contribution-archive.\n'
+        'Use only review.patch; superseded per-task patch copies are not part of this delivery.\n'
         'Verify SHA256SUMS with: sha256sum -c SHA256SUMS\n'
         'No private checkout, unpublished commit, or prebuilt local Lean artifact is required.\n'
     ).encode()

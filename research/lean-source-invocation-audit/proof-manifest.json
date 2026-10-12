@@ -1,5 +1,5 @@
 {
-  "predecessor_commit": "7263aa9f0aec0c2b21cf03424c3595b58f26f6e7",
+  "predecessor_commit": "58d2b198f62d5b51d6b84ba511f2c630095e94b0",
   "modules": {
     "CoordinateSwap": {
       "path": "../lean-whole-residual-hosting/CoordinateSwap.lean",

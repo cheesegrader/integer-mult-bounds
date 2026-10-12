@@ -1,8 +1,8 @@
 # External claim review
 
 Reviewed 2026-10-12 against local contribution commit
-`f86e52f19569e801ac8d133d7070aa3fe39db08c`, including Task A at
-`84f49692065163182d9fcbe1580495f841a75008`. The selected algorithm source is
+`f7330c5f5b1c5e85f91a98c95e8efc0e27c03490`, including Task A at
+`13611a8958fc71046a83d8431d2bd6335e6a3e2f`. The selected algorithm source is
 PR442 `4e16d001d505d4f21dd2bcfc44591f9be4c279bd`.
 
 **Verdict:** the statements support a checked abstract multi-host theorem

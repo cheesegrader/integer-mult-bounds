@@ -1,7 +1,8 @@
 # Independent review of the single-stream obstruction
 
-Prepared with OpenAI Codex assistance for the second local session. No source
-files in the existing contribution were modified. Nothing was published.
+Prepared with OpenAI Codex assistance for the second local session on
+2026-10-11. That review modified no source files in the existing contribution
+and published nothing at the time.
 
 ## Verdict
 
@@ -13,11 +14,12 @@ theorem for PR448's priced word or reproduce RaD's finite program enumeration.
 Its strongest directly relevant statement is the single-owner residual support
 obstruction. No mathematical error was found in the proved statements.
 
-Fresh independent command:
+The fresh independent replay used the following command, with installation
+and output paths shown as portable examples:
 
 ```sh
-python3 /workspace/integer-mult-bounds/research/lean-single-stream-obstruction/replay.py \
-  --lean /workspace/toolchains/lean-4.33.0-linux/bin/lean \
+python3 research/lean-single-stream-obstruction/replay.py \
+  --lean /path/to/lean-4.33.0-linux/bin/lean \
   --receipt /tmp/interface-review-replay.json
 ```
 
@@ -59,7 +61,8 @@ byte to the separate PR442 head.
    independent inputs. PR448 splits *address-coordinate residual directions*
    between entire physical stream arrays; it does not define the replacement
    helper payload as a sum of two scalar values. RaD's pinned
-   `/workspace/audit/job1_stream_model.py:14-21,89-94,141-145` instead executes
+   `job1_stream_model.py:14-21,89-94,141-145` (upstream URL and hash in
+   [AUDIT.json](../lean-single-stream-obstruction/AUDIT.json)) instead executes
    a wrapper with a genuine helper read `x += A h`, residual action,
    inverse cancellation, and target action. A source binding would have to
    specify the proposed multi-stream helper read and prove its dependence
@@ -110,7 +113,8 @@ consequence of these Lean theorems.
 ## Requirements for the proposed positive whole-hosting lemma
 
 PR442's surviving argument is in
-`/workspace/pr448/research/idle-axis-hosting/PROOF.md:12-57`. The finite window
+`research/idle-axis-hosting/PROOF.md:12-57` in the pinned PR448 checkout
+identified above. The finite window
 finder ignores idle children (`hosting_core.py:13-27`), relying on their
 commutation rather than literal absence of operations on a family. A useful
 formalization should therefore allow intervening idle factors and prove:

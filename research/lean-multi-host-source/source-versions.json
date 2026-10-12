@@ -67,7 +67,7 @@
     "PR511": "79f7c03c7f820ab89955b75ef239cbaccc627e6e",
     "PR513": "005dd3f4e3cba8d1761abc4ab391aaf6d14d6f73"
   },
-  "framework_commit": "84f49692065163182d9fcbe1580495f841a75008",
+  "framework_commit": "13611a8958fc71046a83d8431d2bd6335e6a3e2f",
   "repositories": {
     "source": "https://github.com/CrocSwap/integer-mult-bounds",
     "Jacob_Sussman": "https://github.com/jacobalansussman/wht-power-saving-lean",

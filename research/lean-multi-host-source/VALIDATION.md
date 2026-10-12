@@ -32,7 +32,7 @@ is separate from these local-module timings.
 
 ## Separate results
 
-Task A is local commit `84f49692065163182d9fcbe1580495f841a75008`. Its own
+Task A is local commit `13611a8958fc71046a83d8431d2bd6335e6a3e2f`. Its own
 fresh replay checked the multi-host theorem, exact single-host recovery,
 physical adapter, and boundary controls. Its endpoint contracts are premises.
 
@@ -96,4 +96,4 @@ auxiliary outputs needs the appropriate separate scope or restoration proof.
 The two mutation controls check a corrupted next checkpoint and a dirty-private
 first-COPY state; they are not full executions of corrupted programs. PR448's
 split-stream gain remains unestablished. No source algorithm or claimed κ was
-changed, and nothing was published.
+changed. This validation preceded publication on the public review branch.

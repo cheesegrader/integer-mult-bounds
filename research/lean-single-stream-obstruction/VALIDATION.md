@@ -3,7 +3,8 @@
 All checks below concern main pinned at
 `12a4934d15006e8c10f9b2264f13f8f341be802b` plus this new directory.
 No inherited source file, selected certificate, upstream source or scientific
-checker was changed. No CI result or publication is claimed.
+checker was changed. This records the initial local validation on 2026-10-11;
+no CI result or publication occurred as part of that validation.
 
 ## Lean contribution: PASS
 
@@ -13,10 +14,17 @@ The downloaded release archive's SHA-256 matched GitHub's published asset digest
 `4b3fb03c29a1e0a253fb1d11f9bae3725f19a0dc6fc09b3ea16d2c9df3349e2c`.
 Toolchain installation is a local setup step; replay itself is offline.
 
-```
+The command below uses portable example paths for the compiler and receipt:
+
+```sh
 python3 research/lean-single-stream-obstruction/replay.py \
-  --lean /workspace/toolchains/lean-4.33.0-linux/bin/lean \
-  --receipt /workspace/audit/final-lean-replay.json
+  --lean /path/to/lean-4.33.0-linux/bin/lean \
+  --receipt /tmp/final-lean-replay.json
+```
+
+Recorded result:
+
+```text
 {"status": "PASS", "compiled_modules": 1, "axiom_reports": 15, "negative_controls_rejected": 5}
 ```
 
@@ -34,7 +42,8 @@ detached worktree with the same installed compiler:
 {"status": "PASS", "compiled_targets": 3, "transitive_axiom_reports": 22, "lean_negative_controls_rejected": 5}
 ```
 
-Its full local receipt is `/workspace/audit/pr397-replay.json`.
+Its original full receipt, `pr397-replay.json`, was retained locally and is
+not included in this package; the result above records that historical run.
 This is independent execution evidence for that scalar packet, not a rebuild
 of Sussman's full Mathlib development or a certification of a physical supplier.
 
@@ -43,16 +52,16 @@ of Sussman's full Mathlib development or a certification of a physical supplier.
 `make joint-dual-verify` exits 2 with `AssertionError: Makefile` in
 `scripts/experiments/joint_dual_compose.py:70`. The identical failure was
 reproduced on a clean detached worktree of the pinned main commit, with no
-new contribution files. Logs:
-
-- `/workspace/audit/joint-dual-verify.log`
-- `/workspace/audit/baseline-joint-dual-verify.log`
+new contribution files. The original `joint-dual-verify.log` and
+`baseline-joint-dual-verify.log` were retained locally and are not included
+in this package. The result is summarized in [repository-checks.json](repository-checks.json).
 
 `make verify` was started and completed historical copied-fixed pair checks,
 including all 4,073,300 data pairs. It was subsequently **stopped**, before
 completion, after the required joint-dual subtarget's baseline failure was
 confirmed directly. Its full result is not claimed as a pass or as a completed
-failing run. The partial log is `/workspace/audit/make-verify.log`.
+failing run. Its original partial log, `make-verify.log`, is not included;
+the stopped status is recorded in `repository-checks.json`.
 No inherited source-hash check was weakened or repinned.
 
 ## Required selected gen4 replay: PASS
@@ -61,8 +70,8 @@ No inherited source-hash check was weakened or repinned.
 virtual, raw, bit, scalar, primes, banks, complex, math and finite.
 All 112 pinned inputs remained unchanged. The existing selected conditional
 certificate was reproduced; no exponent claim was changed by this contribution.
-Runtime was approximately 400 seconds. The full local log is
-`/workspace/audit/gen4-bank-verify.log`; its result is recorded in
+Runtime was approximately 400 seconds. The original full log,
+`gen4-bank-verify.log`, is not included; its hash and result are recorded in
 `repository-checks.json`.
 
 ## Original stream-model audit replay: PASS
@@ -71,5 +80,6 @@ The separately fetched, pinned RaD `job1_stream_model.py` was executed with
 NumPy 2.3.5. It reproduced 18 split cases and 152 single-register programs,
 with zero equal to the intended original operator. Whole-hosting and
 two-register controls passed. This is a finite Python replay, not a universal
-Lean whole-program theorem and not a κ computation. The receipt is
-`/workspace/audit/stream-model-results.json`; its summary is in `AUDIT.json`.
+Lean whole-program theorem and not a κ computation. The original
+`stream-model-results.json` receipt is not included; its result summary is in
+[AUDIT.json](AUDIT.json).

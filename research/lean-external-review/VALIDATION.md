@@ -3,15 +3,20 @@
 This packaging update changes delivery scripts, validation reporting and
 documentation. The manifested Lean source files for Tasks A and B, including
 their WholeHosting dependencies, are byte-for-byte unchanged from the completed
-work. The historical proof manifests and receipts remain included and unchanged.
+work. The original Task A/B proof receipts and fresh Task A packaging receipt
+remain byte-for-byte unchanged. Local commit citations in manifests and some
+historical evidence copies were updated after the privacy rewrite; their exact
+content-hash bindings and metadata-only changes are recorded in
+`validation/metadata-reanchor.json`. This update does not run Lean or repeat
+the historical builds. See [privacy and provenance](PRIVACY-AND-PROVENANCE.md).
 
 ## Proof and source checks
 
 | Check | Result and mode | Evidence |
 | --- | --- | --- |
-| Source snapshots and regenerated literals | PASS, freshly rerun; six snapshots, 19,002 events | `validation/source-binding.json` |
-| Task A | PASS, six modules freshly compiled, zero reused, 21 theorem closures | `validation/task-a.json`, `validation/task-a.log` |
-| Task B | PASS, zero modules freshly compiled, 52 reused, all 52 explicitly legacy; 930 closure reports rerun | `validation/task-b.json`, `validation/task-b.log` |
+| Source snapshots and regenerated literals | PASS in the recorded packaging run; six snapshots, 19,002 events | `validation/source-binding.json` |
+| Task A | PASS in the recorded packaging run, six modules freshly compiled, zero reused, 21 theorem closures | `validation/task-a.json`, `validation/task-a.log` |
+| Task B | PASS in the recorded packaging run, zero modules freshly compiled, 52 reused, all 52 explicitly legacy; 930 closure reports rerun then | `validation/task-b.json`, `validation/task-b.log` |
 | Resume-policy controls | PASS, 16 policy checks and eight artifact-inventory checks | `../lean-multi-host-source/review-receipts/external-build/reuse-policy-checks.json` |
 
 Both Lean replays use `-t 0`. Task A accepts only `propext` and `Quot.sound`;
@@ -22,7 +27,7 @@ generated certificate declarations; they do not measure mathematical novelty.
 Task B reused a copy of the coherent retained build, preserving the original
 build directory. Its source bytes, copied source bytes, ordered local dependency
 hashes and compiled `.olean` hashes matched the successful receipt committed at
-`f86e52f19569e801ac8d133d7070aa3fe39db08c`. The runner rejects unmanifested
+`f7330c5f5b1c5e85f91a98c95e8efc0e27c03490`. The runner rejects unmanifested
 artifacts that could shadow library imports. It freshly checked the exact Lean
 revision, clean pinned Mathlib and all eight dependency revisions, actual
 toolchain/library bytes, and search order, and verified the same external
@@ -71,9 +76,9 @@ compiled artifacts or private workspace paths are needed to reproduce afresh.
 ## Package integrity and delivery
 
 `verify_package.py` checks every delivered review file against
-`package-manifest.json`, verifies that both historical proof manifests match
-their receipts, resolves every local dependency within the package, and checks
-the new receipts against the same sources/axiom inventories. Its receipt is
+`package-manifest.json`, verifies the narrowly recorded metadata reanchoring of
+historical manifest hashes, resolves every local dependency within the package,
+and checks the receipts against the same sources/axiom inventories. Its receipt is
 `package-validation.json`. The manifest excludes itself and that receipt to
 avoid a circular digest; the exported archive's `SHA256SUMS` includes both.
 
@@ -86,15 +91,16 @@ tree and checks the package inventory again in the patched checkout. Its
 it can identify their exact final hashes without a commit/archive hash cycle.
 This is a fresh delivery test, distinct from the resumed Task B proof replay.
 
-The historical patches in `lean-contribution-archive` are preserved, with
-their original bases and hashes. They are not the application sequence for
-this delivery: apply only the new cumulative `review.patch` to public base
+The superseded per-task patch copies have been removed from the current
+delivery because they embed outdated commit citations and old packaging
+instructions. All corresponding source directories remain present. Apply
+only the new cumulative `review.patch` to public base
 `12a4934d15006e8c10f9b2264f13f8f341be802b`.
 
 ## Repository regression checks
 
 The repository-wide `make verify` was run in an isolated archive of the
-pre-packaging contribution commit `f86e52f19569e801ac8d133d7070aa3fe39db08c`.
+pre-packaging contribution commit `f7330c5f5b1c5e85f91a98c95e8efc0e27c03490`.
 The relevant upstream generators and Makefile are unchanged by this delivery.
 It completed `verify-community`, `verify-producers`, `verify-partial-gauge`,
 `verify-three-stage-cover`, and `verify-paired-cube`, then reached
@@ -111,11 +117,15 @@ generator or certificate was modified to make that sweep pass.
 
 ## Review readiness
 
-The final theorem/README review found no unresolved claim mismatch. It records
+The original theorem/README review recorded
 the field/chart parameters, reserved clean temporary, external Python extraction,
 local input embeddings, retained projection, and immediate-completion boundary.
-The bounded upstream refresh at 2026-10-12 00:15:23 UTC found material generic
-overlap with PR516 and preserves its attribution. No global novelty claim is made.
+The later feedback also identified the manually supplied pending-coordinate
+ranges and omission of `actualContract` from the permanent named axiom inventory;
+these remain disclosed follow-up items. The newer upstream/source context is
+documented in [privacy and provenance](PRIVACY-AND-PROVENANCE.md), including
+PR528 overlap and the explicit PR493/PR472/PR442 hosting lineage. No global
+novelty claim is made.
 
 The package is intended for external technical review. The main reviewer tasks
 are source fidelity and the proposed integration boundary; prior agent reviews

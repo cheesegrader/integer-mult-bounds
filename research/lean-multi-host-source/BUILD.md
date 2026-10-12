@@ -91,7 +91,7 @@ Default resume rejects that legacy cache. For the packaging validation only,
 an explicit `--allow-legacy-resume --legacy-receipt PATH --legacy-commit COMMIT`
 was used together with `--resume`, anchoring each retained local source,
 dependency and `.olean` hash to the successful receipt committed at
-`f86e52f19569e801ac8d133d7070aa3fe39db08c`. The current external environment
+`f7330c5f5b1c5e85f91a98c95e8efc0e27c03490`. The current external environment
 was checked and fingerprinted, but its historical bytes cannot be recovered
 from that old receipt. Thus the reported Task B PASS checks retained local
 artifacts and reruns their axiom audit; it cannot establish which external

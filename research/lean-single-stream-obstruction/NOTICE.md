@@ -2,7 +2,9 @@
 
 New files are under CrocSwap/integer-mult-bounds' Apache-2.0 license.
 Prepared with substantial OpenAI Codex assistance, as an independent local
-verification contribution. No publication, PR, or external comment was made.
+verification contribution. This stage was originally prepared locally; the
+contribution is now available on the public review branch. No PR or external
+comment was made as part of this stage.
 
 The motivating single-stream objection and exact numerical experiments are
 RaD / hipotures' work, directed by humans with Claude assistance. Their model

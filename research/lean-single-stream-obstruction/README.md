@@ -62,8 +62,9 @@ PR487's exact port bijection and PR488's input preparation concern other
 obligations. No matching completed Lean single-stream read/support obstruction
 was identified in the inspected material. This is a bounded nonduplication
 audit, not an assertion about every pending implementation or global priority.
-`AUDIT.json` pins the sources, discussion and inspection scope. The archived
-full API snapshot remains locally at `/workspace/audit/all-pulls.json`.
+`AUDIT.json` pins the sources, discussion and inspection scope, including
+the hash of the original full API snapshot. That snapshot was retained
+locally during the initial audit and is not included in this package.
 
 ## Assumptions and limits
 

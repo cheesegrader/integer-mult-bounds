@@ -1,7 +1,7 @@
 # External build and retained-cache review
 
 Reviewed on 2026-10-12 against committed contribution
-`f86e52f19569e801ac8d133d7070aa3fe39db08c`, with the runner fixes described
+`f7330c5f5b1c5e85f91a98c95e8efc0e27c03490`, with the runner fixes described
 below. No mathematical statement or Lean proof was changed in this review.
 
 The retained Task B build can be reused with an explicit historical-provenance
@@ -68,15 +68,15 @@ and 2,756.5 seconds of accumulated module compilation time. Its SHA-256 is
 `462fefd26aec066a37714a115e74dac08e1cef4b8b756ea3ff1c71f63699078e`.
 Those durations describe the historical compilation, not the new resume run.
 
-| Retained location | Objects | Runner progress | Use |
+| Historical artifact group | Objects | Runner progress | Use |
 | --- | ---: | --- | --- |
-| `/workspace/audit/session4/final-source-build` | 52 | 52 records | Complete historical cache; all current source, object, and dependency checks passed |
-| `/tmp/framed-replay-z2jut8h5` | 27 | None | Partial development artifacts |
-| `/tmp/session4-framework-review-_pzkdssb` | 6 | None | Earlier framework review |
-| `/tmp/session3-independent-lean-ubgpmoxx` | 6 | None | Earlier independent review |
-| `/tmp/frame-geometry-development-model` | 5 | None | Development model; not validation of the actual source certificate |
-| `/workspace/audit/session4/{scalar,parent-ownership,abstract-build,ownership,port-build,native-review-build,frame-build,reflection,singleton-build,frame-move-build,source-move-build}` | 1–18 each | None | Separate intermediate module builds |
-| `/workspace/audit/session2/lean-build` | 7 | None | Earlier contribution build |
+| Complete Task B cache | 52 | 52 records | Complete historical cache; source, object, and dependency checks passed |
+| Partial framed replay | 27 | None | Partial development artifacts |
+| Framework review | 6 | None | Earlier framework review |
+| Independent review | 6 | None | Earlier independent review |
+| Frame-geometry model | 5 | None | Development model; not validation of the actual source certificate |
+| Separate component builds | 1–18 each | None | Intermediate scalar, ownership, native, frame, and bridge builds |
+| Earlier contribution build | 7 | None | Earlier contribution build |
 
 Only the first directory supplies the complete old runner record. The other
 directories should not be silently adopted as a coherent replay cache. The
@@ -84,19 +84,20 @@ read-only check of all 52 cached modules and their committed receipt is saved in
 [retained-cache.json](review-receipts/external-build/retained-cache.json).
 
 To preserve the historical directory, copy it to a new directory before resuming.
-The final review uses `/workspace/audit/session5/resumed-source-build`. After
-preserving the original committed receipt as `old-task-b.json`, the explicit
-local reuse command has this form:
+The recorded review used a separate copy. Exact historical locations are
+preserved only in the linked evidence. After preserving the original committed
+receipt as `old-task-b.json`, an illustrative local reuse command has this form;
+these placeholders are not the command that produced the historical receipt:
 
 ```sh
 python3 research/lean-multi-host-source/replay.py \
-  --lean /workspace/toolchains/lean-4.33.0-linux/bin/lean \
-  --mathlib /workspace/mathlib-4.33 \
-  --build-dir /workspace/audit/session5/resumed-source-build \
+  --lean /path/to/lean-4.33.0-linux/bin/lean \
+  --mathlib /path/to/mathlib4 \
+  --build-dir /path/to/copied-historical-cache \
   --resume --allow-legacy-resume \
   --legacy-receipt old-task-b.json \
-  --legacy-commit f86e52f19569e801ac8d133d7070aa3fe39db08c \
-  --receipt research/lean-external-review/validation/task-b.json
+  --legacy-commit f7330c5f5b1c5e85f91a98c95e8efc0e27c03490 \
+  --receipt /tmp/task-b-resume.json
 ```
 
 The old receipt can be recovered with `git show` at the exact commit above and

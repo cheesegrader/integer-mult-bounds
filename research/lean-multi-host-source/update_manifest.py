@@ -53,7 +53,7 @@ for n in ordered:
 assert len(declarations) == len(set(declarations))
 
 manifest = {
-    'source_base_commit': '84f49692065163182d9fcbe1580495f841a75008',
+    'source_base_commit': '13611a8958fc71046a83d8431d2bd6335e6a3e2f',
     'lean_commit': 'd8b18978322de05a8f3dba51ef03cf5461676c17',
     'mathlib_commit': 'db584cd6d46c92f209a44c0f1c829460d327499d',
     'modules': [{'module': n, 'source': os.path.relpath(paths[n], root),

@@ -150,6 +150,7 @@ BoundaryExamples.lean 6af4e1fc731daef67186cbdc4ef88478cb652b517c4944c6e37cfcced5
 PhysicalExample.lean  a1394afe490bb5cd8837495a2b859575795d9f197ef27e380402fed4ba7d93da
 ```
 
-Executable: `/workspace/toolchains/lean-4.33.0-linux/bin/lean`.
+Compiler: official Lean 4.33.0, commit
+`d8b18978322de05a8f3dba51ef03cf5461676c17`.
 Later edits require their own fresh replay; this review records exactly the
 snapshots examined and compiled.

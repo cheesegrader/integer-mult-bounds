@@ -115,8 +115,9 @@ The reviewed source is PR442 commit
 forward orientation. During this review, `check_sources.py` passed: all six
 pinned input hashes, the binary-record reconstruction, the identical parent
 and hosted local words, all 19,002 events in order, and reproducible
-certificate extraction were checked. The receipt is at
-`/workspace/audit/session4/ownership/final-review-source-binding.json`.
+certificate extraction were checked. The original review receipt was a local
+artifact and is not included in this package. A separate, later regeneration
+is recorded in the shipped [source-binding receipt](../lean-external-review/validation/source-binding.json).
 This Python/source extraction boundary is reproducible, not kernel-verified.
 The Lean kernel checks the mathematical claims about the embedded literals.
 

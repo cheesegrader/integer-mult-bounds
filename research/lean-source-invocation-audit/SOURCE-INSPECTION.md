@@ -3,7 +3,10 @@
 The exact source is PR442 at `4e16d001d505d4f21dd2bcfc44591f9be4c279bd`,
 retaining PR434's R747 bit word. Full hashes, owner rows, frame data, and
 scope notes are in `invocation-source.json`. The inputs come from the fresh
-passing replay at `/workspace/audit/session2/whole-hosting-replay`.
+local PR442 replay recorded in the preceding package's
+[repository checks](../lean-whole-residual-hosting/repository-checks.json).
+Its source-window [receipt](../lean-whole-residual-hosting/source-check-result.json)
+records the same hosted-template JSON hash as `invocation-source.json`.
 
 ## Actual word and selected call
 

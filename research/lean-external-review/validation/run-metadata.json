@@ -8,7 +8,7 @@
     "script_sha256": "17a5ab55a0253358461725d360f85ee11c1a4887a162e7e814d029b0c6934583",
     "receipt": "task-b.json",
     "mode": "resumed with explicit receipt-anchored legacy authorization",
-    "legacy_commit": "f86e52f19569e801ac8d133d7070aa3fe39db08c"
+    "legacy_commit": "f7330c5f5b1c5e85f91a98c95e8efc0e27c03490"
   },
   "source_binding": {
     "script_sha256": "ae0edd46c8f3452ea0dc2ee17625e949691b8195ccf7fe95f66406c8f6fcdb24",
@@ -19,7 +19,7 @@
   "scope": "Packaging only; manifested Lean proof bytes unchanged.",
   "validation_commands": {
     "task_a": "python3 research/lean-multi-host-framework/replay.py --lean /workspace/toolchains/lean-4.33.0-linux/bin/lean --receipt research/lean-external-review/validation/task-a.json",
-    "task_b": "python3 research/lean-multi-host-source/replay.py --lean /workspace/toolchains/lean-4.33.0-linux/bin/lean --mathlib /workspace/mathlib-4.33 --build-dir /workspace/audit/session5/resumed-source-build --resume --allow-legacy-resume --legacy-receipt research/lean-multi-host-source/replay-result.json --legacy-commit f86e52f19569e801ac8d133d7070aa3fe39db08c --receipt research/lean-external-review/validation/task-b.json",
+    "task_b": "python3 research/lean-multi-host-source/replay.py --lean /workspace/toolchains/lean-4.33.0-linux/bin/lean --mathlib /workspace/mathlib-4.33 --build-dir /workspace/audit/session5/resumed-source-build --resume --allow-legacy-resume --legacy-receipt research/lean-multi-host-source/replay-result.json --legacy-commit f7330c5f5b1c5e85f91a98c95e8efc0e27c03490 --receipt research/lean-external-review/validation/task-b.json",
     "source_binding": "python3 research/lean-multi-host-source/check_sources.py --receipt research/lean-external-review/validation/source-binding.json"
   }
 }

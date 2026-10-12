@@ -18,9 +18,9 @@ respectively). All 37 changed files were fetched from the exact commits;
 their Git blob hashes were independently recomputed and matched the tree.
 All eight PR513 Lean SHA-256 entries also match its manifest.
 
-API responses, fetched files and per-file URLs/hashes are preserved under
-`/workspace/audit/session4/closing-lean-overlap/`; the portable URL/hash inventory
-is included as `review-receipts/closing-overlap-fetch-manifest.json`.
+The original API responses and fetched files were retained locally during
+this audit. The shipped [URL/hash inventory](review-receipts/closing-overlap-fetch-manifest.json)
+identifies the inspected files without requiring that local directory.
 The review inspected the new theorem statements/proofs and source-binding
 definitions, supporting theorem interfaces, README/provenance and manifests.
 It did not independently rebuild these Lean 4.21.0 packages or reproduce

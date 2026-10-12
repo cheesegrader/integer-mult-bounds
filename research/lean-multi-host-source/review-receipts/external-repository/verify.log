@@ -1,5 +1,5 @@
 make verify-community
-make[1]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/audit_community_candidate.py --check docs/research/community-audit-arithmetic.json
 PASS independent moments, seven margins and all 32 RaD source hashes
 python3 scripts/audit_followup_candidate.py --candidate-root . --check docs/research/community-followup-arithmetic.json
@@ -48,7 +48,7 @@ Ran 10 tests in 0.037s
 
 OK
 make copied-fixed-verify
-make[2]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 research/copied-fixed/producer.py
 Rebuilding scalar graph, original labels and fixed profiles, h=23
 profiles 10000 of 139675
@@ -112,9 +112,9 @@ test_zero_recovered_pivot_rejected (test_copied_fixed.CopiedFixedTests.test_zero
 Ran 17 tests in 1.068s
 
 OK
-make[2]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make climbed-48-verify
-make[2]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 research/climbed-48/producer.py
 Rebuilding climbed PR48 producer h=23
 profiles 10000 of 139865
@@ -153,12 +153,12 @@ test_strict_assembly_and_bracket (test_climbed_48.OptimalMatchingTests.test_stri
 Ran 5 tests in 0.222s
 
 OK
-make[2]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
-make[1]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
+make[1]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make verify-producers
-make[1]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 make stopped-product-verify
-make[2]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/stopped_product_producer.py
 Regenerating only complex h=24: aligned pair stars, all24 disjoint centers, divisor21
 h=24 phase 1 length 1 gained 8964 total 8964
@@ -332,9 +332,9 @@ h=24 phase 2 length 2 gained 2 total 8966
 python3 scripts/stopped_product_network.py
 PASS kappa=194869/2500000000 = 7.79476e-5
 Coarse and complex moments; stopped bit saving; exact rational-center guard; p^4000 stock; 47 strict constraints
-make[2]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make copied-centers-verify
-make[2]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/copied_centers_producer.py
 Checking 47 exact rational pivots and 315 weight-independent zero minors
 Regenerating only new complex h=28, d=19 scalar producer
@@ -574,9 +574,9 @@ h=28 phase 2 length 2 gained 3 total 12779
 python3 scripts/copied_centers_network.py
 PASS kappa=384569/10000000000 = 3.84569e-5
 Both exact moments; copied-center rank budgets; C1=1; p^2000 row stock; 47 strict constraints
-make[2]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make structured-bulk-verify
-make[2]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/structured_bulk_producer.py
 Structured bulk bit h=36: scalar DAG and exact support checks
 h=36 phase 1 length 1 gained 4140 total 4140
@@ -1011,9 +1011,9 @@ h=40 phase 2 length 2 gained 3 total 37271
 python3 scripts/structured_bulk_network.py
 PASS kappa=2504683/200000000000 = 1.2523415e-5
 Both moments; semantic C1=1; product row stock; 47 strict constraints and seven margins
-make[2]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make endpoint-gauge-producer endpoint-gauge-certificate
-make[2]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/endpoint_gauge_producer.py
 Endpoint gauge bit h=32: ordinary-base scalar DAG
 h=32 phase 1 length 1 gained 3296 total 3296
@@ -1708,9 +1708,9 @@ h=40 phase 2 length 2 gained 3 total 37642
 python3 scripts/endpoint_gauge_network.py
 PASS endpoint-gauge kappa=119723/20000000000 = 5.98615e-6
 29 strict constraints; 7 assembly margins; both moments and precision guard
-make[2]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make partial-swap-producer partial-swap-certificate
-make[2]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/partial_swap_producer.py
 Regenerating h=25: scalar DAG
 h=25 phase 1 length 1 gained 1589 total 1589
@@ -2129,10 +2129,10 @@ Regenerating complex h=28 histogram
 python3 scripts/partial_swap_network.py
 PASS partial-swap kappa=942293/500000000000 = 1.884586e-6
 29 strict constraints; 7 strict assembly margins; bit/complex moments and precision guard
-make[2]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
-make[1]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[2]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
+make[1]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make verify-partial-gauge
-make[1]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/partial_gauge_bit.py
 {
   "N": 3136441,
@@ -2425,9 +2425,9 @@ Checking scalar coefficients, actual frames, physical word and readout chains
 }
 python3 scripts/partial_gauge_network.py
 PASS kappa=7237/78125000 = 9.26336e-5; both moments, stopped saving, p^40000 stock, 47 strict constraints
-make[1]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make verify-three-stage-cover
-make[1]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/three_stage_cover_producer.py
 Replaying the pinned PR117 scalar DAG
 Constructing compatible carrier matching
@@ -2582,9 +2582,9 @@ Checking scalar coefficients, actual frames, physical word and readout chains
 }
 python3 scripts/three_stage_cover_network.py
 PASS kappa=3146011/10000000000 = 3.146011e-4; both moments, rare-class fallback, finite router, 47 strict constraints
-make[1]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make verify-paired-cube
-make[1]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 scripts/paired_cube_producer.py
 Regenerating paired-cube signed DAG from inherited PR117 restrictions
 Replaying frozen carrier matching and full binary intersections
@@ -3203,9 +3203,9 @@ python3 scripts/paired_cube_bit.py
 }
 python3 scripts/paired_cube_network.py
 PASS kappa=4609169/10000000000 = 4.609169e-4; both moments, shared cores, finite router and 47 strict constraints
-make[1]: Leaving directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Leaving directory '/workspace/audit/session5/repo-check-f7330c5'
 make verify-recycled-bit
-make[1]: Entering directory '/workspace/audit/session5/repo-check-f86e52f'
+make[1]: Entering directory '/workspace/audit/session5/repo-check-f7330c5'
 python3 research/recycled-bit-integration/verify.py --all
 [    4s] PASS exact composed plan, chronological ledger and unchanged set of new frame pairs
 make[1]: *** [Makefile:546: recycled-bit-full-verify] Terminated

@@ -2,7 +2,7 @@
 
 This is Task B of the local verification contribution. Task A, the abstract
 multi-host theorem and recovery of the previous single-host theorem, is
-separately committed as `84f49692065163182d9fcbe1580495f841a75008` in
+separately committed as `13611a8958fc71046a83d8431d2bd6335e6a3e2f` in
 `../lean-multi-host-framework`. Its success does not establish this source
 connection.
 
@@ -13,7 +13,7 @@ forward orientation. It uses the inherited R747 word: 19,002 events,
 arbitrary, correlated dirty payloads. The original and relocated templates
 contain the identical local word.
 
-**Build status: PASS.** The coherent source build checked all 52 local modules
+**Historical build status: PASS.** The coherent source build checked all 52 local modules
 with `lean -t 0` and audited 930 named theorem closures, using only standard
 Lean axioms. Hash-checked resume retained successful builds from the same
 initially empty directory. See [replay-result.json](replay-result.json) and
@@ -45,7 +45,9 @@ The final statements are collected in `SourceInvocation.lean`:
 | `selected_data_formula` | Display the data endpoint with actual entrance/exit frames and port charts. |
 | `selected_native_clean`, `selected_temporary_restoration` | Establish chronological COPY/ERASE legality and return the private row blank. |
 
-The complete dependency build and axiom audit cover these statements.
+The recorded build includes these declarations. The permanent named axiom
+inventory covers the theorem declarations but omits `actualContract`, a
+constructed definition; adding that declaration remains a follow-up audit task.
 
 The geometry uses exact integer witnesses, cast into any field with
 `2 ≠ 0`. Projectors have denominator dividing four; complete basis inverses
@@ -95,6 +97,8 @@ invertible family coordinate chart, so their complete payloads are retained.
 
 The corollary applies the multi-host theorem to this one completed
 invocation and an explicit remaining pending swap on each host. It does not
+derive the pending-coordinate ranges `[15,22)` and `[1,29)` from the global
+schedule: those values are manually supplied. It does not
 establish the full cover sweep or identify this immediate completion with
 the later child schedule of the full algorithm. It also does not establish
 a physical instruction-cost bill, an all-size compiler, analytic transfer,

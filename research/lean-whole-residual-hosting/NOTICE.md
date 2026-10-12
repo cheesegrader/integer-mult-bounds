@@ -2,7 +2,9 @@
 
 New files are under the repository's Apache-2.0 license. Prepared with
 substantial OpenAI Codex assistance, using separate implementation and review
-agents. No publication, pull request, or external comment was made.
+agents. This stage was originally prepared locally; the contribution is now
+available on the public review branch. No pull request or external comment
+was made as part of this stage.
 
 The whole-residual construction and written hosting lemma are DaysSky's
 PR442, with the inherited supplier lineage credited in that package. This

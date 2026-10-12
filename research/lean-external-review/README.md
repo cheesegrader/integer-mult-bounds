@@ -28,6 +28,8 @@ outputs are threaded as auxiliary state.
 This is a local stream-model theorem with explicit input embeddings and
 immediate completion by remaining pending swaps. The source parser and
 extraction are externally checked Python, not a proved compiler. There is
+no independent source derivation of the manually supplied pending-coordinate
+ranges `[15,22)` and `[1,29)`. There is
 no proof here of the full cover sweep, later recursive scheduling, arbitrary
 global allocation equivalence, physical costs, all-size compilation, analytic
 transfer, or κ. PR448's split-helper gain remains unestablished.
@@ -54,13 +56,25 @@ assets. To create them from this checkout, use **Regenerating the delivery**
 below. The following patch/archive routes apply when those exported files
 have been supplied separately.
 
+For a browser-only download, use the
+[public branch ZIP](https://github.com/cheesegrader/integer-mult-bounds/archive/refs/heads/lean/single-stream-interface-obstruction.zip).
+It contains the complete repository. After extracting it, enter its top-level
+directory and run `python3 research/lean-external-review/verify_package.py`.
+The default fresh reproduction also works from that directory. Regenerating
+the smaller review tarball and cumulative patch requires the Git clone above.
+
+[Privacy and provenance](PRIVACY-AND-PROVENANCE.md) explains the neutral Git
+identities, updated commit references, metadata-redacted historical records,
+and the remaining accessibility of previously published Git objects.
+
 Public repository: <https://github.com/CrocSwap/integer-mult-bounds>.
 Exact base: `12a4934d15006e8c10f9b2264f13f8f341be802b`.
 
 **There is one patch to apply: `review.patch`.** It is cumulative from that
-public base, including earlier local dependencies. Do not first apply Task A,
-Task B, or any historical archived patches. They are archival alternatives
-with different bases, not steps in this delivery's application order.
+public base, including earlier local dependencies. Superseded per-task patch
+copies have been retired from the current package; all required sources and
+proof receipts remain included. Do not first apply a separately obtained Task A
+or Task B patch.
 
 ```sh
 git clone https://github.com/CrocSwap/integer-mult-bounds.git review-checkout
@@ -90,12 +104,12 @@ Task B's 52-module build includes `CoordinateSwap` and `MultiHosting` from
 their sibling directories. Task A's six-module build includes all three
 WholeHosting dependencies. No unpublished local commit needs to be fetched.
 Earlier obstruction/source-audit packages and their reviews are included as
-historical context; their smaller claims and old workspace paths do not
-define the current reproduction procedure.
+historical context. Machine paths in raw execution evidence describe those
+runs; the portable commands in this README define current reproduction.
 
 The development checkpoints are Task A
-`84f49692065163182d9fcbe1580495f841a75008` and Task B
-`f86e52f19569e801ac8d133d7070aa3fe39db08c`. The exact final packaging commit
+`13611a8958fc71046a83d8431d2bd6335e6a3e2f` and Task B
+`f7330c5f5b1c5e85f91a98c95e8efc0e27c03490`. The exact final packaging commit
 is recorded in the exported `delivery.json`; embedding a commit's own hash
 inside its tracked files would be circular.
 
