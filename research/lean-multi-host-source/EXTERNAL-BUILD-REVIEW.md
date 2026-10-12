@@ -13,9 +13,13 @@ An outside reviewer should use the fresh build documented in [BUILD.md](BUILD.md
 The previous Task B runner checked manifested source bytes, copied source bytes,
 local `.olean` hashes, direct local dependency hashes, and the Lean and Mathlib
 commit identifiers. Its mutable progress file was the only resume anchor. It
-did not fingerprint external compiled libraries, and its summary counted reused
-modules as fresh. Task A always compiled fresh, but checked only the Lean version
-prefix rather than the exact recorded compiler commit.
+did not record byte hashes for the installed Lean 4.33.0 distribution (including
+Lean/Std libraries), Mathlib's compiled artifacts, or those of its eight manifest
+dependencies: plausible, LeanSearchClient, importGraph, proofwidgets, aesop, Qq,
+batteries, and Cli. Exact dependency revisions are in `mathlib-lake-manifest.json`.
+Its summary also counted reused modules as fresh. Task A always compiled fresh,
+but checked only the Lean version prefix rather than the exact recorded compiler
+commit.
 
 Both runners now check the exact compiler commit and snapshot the actual installed
 toolchain bytes before and after validation. Task B additionally checks clean
@@ -41,6 +45,15 @@ hashes, recorded duration, and compiler output. Extra unrecorded companion files
 prevent legacy reuse. A current environment snapshot is recorded separately;
 `historical_external_environment` remains `unrecorded`, including on subsequent
 explicit resumes. No new snapshot retrospectively certifies the old environment.
+
+This limits the final Task B PASS: it establishes that the 52 reused local
+modules match the old successful receipt and that their 930-declaration axiom
+audit passes now; it does not establish the external-library bytes used for
+their original compilation. The documented fresh reproduction resolves this
+for a new run by recompiling all 52 local modules and recording the installed
+toolchain/library hashes before and after compilation. Use new build/receipt
+directories, the pinned public dependency setup, and no resume options.
+The resulting new receipt does not retrospectively repair the old one.
 
 The snapshot observes current bytes and clean pinned source checkouts. It does
 not itself prove that every external compiled object was produced from those

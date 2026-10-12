@@ -84,17 +84,26 @@ and library search order. Changed modules and their dependents are rebuilt. The 
 axiom audit is always rerun. The default per-module timeout is two hours;
 `--module-timeout` adjusts it without changing a theorem or its proof.
 
-The first completed build predates the external-environment fingerprint.
+The first completed build recorded Lean/Mathlib revisions but no byte hashes
+for the installed Lean distribution, Mathlib or its eight manifest dependencies
+(named in [EXTERNAL-BUILD-REVIEW.md](EXTERNAL-BUILD-REVIEW.md)).
 Default resume rejects that legacy cache. For the packaging validation only,
 an explicit `--allow-legacy-resume --legacy-receipt PATH --legacy-commit COMMIT`
 was used together with `--resume`, anchoring each retained local source,
 dependency and `.olean` hash to the successful receipt committed at
 `f86e52f19569e801ac8d133d7070aa3fe39db08c`. The current external environment
 was checked and fingerprinted, but its historical bytes cannot be recovered
-from that old receipt. The new receipt labels this limitation and reports
-fresh, reused and legacy-reused module counts separately. This is not a
+from that old receipt. Thus the reported Task B PASS checks retained local
+artifacts and reruns their axiom audit; it cannot establish which external
+library bytes were used for the original compilation. The new receipt labels
+this limitation and reports fresh, reused and legacy-reused module counts
+separately. This is not a
 fresh 52-module recompilation or a `leanchecker --fresh` run. The legacy
 option requires that historical Git receipt; fresh reproduction does not.
+The fresh command above resolves the missing record for a new run: it compiles
+all 52 local modules against the prepared pinned libraries and records the
+actual toolchain/library hashes before and after the build. It creates new
+verification evidence rather than filling in the historical receipt.
 
 The portable delivery and one-command fresh reproduction of both tasks are
 documented in [`../lean-external-review/README.md`](../lean-external-review/README.md).

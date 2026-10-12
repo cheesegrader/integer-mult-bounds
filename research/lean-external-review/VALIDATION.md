@@ -29,14 +29,37 @@ toolchain/library bytes, and search order, and verified the same external
 fingerprint before and after the run. Task A and Task B observed identical
 toolchain bytes.
 
-**Historical limitation:** the original completed build did not record the
-bytes of every external library artifact. Today's fingerprint cannot establish
-what those bytes were then. Each reused module therefore retains
-`historical_external_environment: unrecorded`; this is an explicitly opted-in
-legacy resume, not a fresh compilation and not `leanchecker --fresh`.
-The new axiom audit reports the transitive axiom closure of the retained
-declarations; it is not a substitute for re-elaborating every source file.
-The package provides the default fresh reproduction route for reviewers.
+**What was not recorded:** the original Task B receipt recorded Lean and
+Mathlib commit identifiers, but no byte hashes of the installed Lean 4.33.0
+distribution (including its Lean/Std libraries), Mathlib's compiled artifacts,
+or the compiled artifacts of its eight manifest dependencies: plausible,
+LeanSearchClient, importGraph, proofwidgets, aesop, Qq, batteries, and Cli.
+These packages belong to the library environment; this list does not assert
+that every package was imported by the selected proof.
+Their exact pinned revisions are in `../lean-multi-host-source/mathlib-lake-manifest.json`.
+The missing record concerns the external environment as a whole, not one
+unidentified dependency. The local project sources, compiled modules and
+ordered local dependency hashes were recorded.
+
+**Effect on the reported verification:** today's hashes cannot establish which
+external-library bytes were used to compile the retained Task B modules.
+Task B's reported PASS is therefore a successful receipt-anchored reuse of
+52 local modules plus a rerun of their 930-declaration axiom audit. It is not
+a fresh source compilation or a `leanchecker --fresh` check of imported proofs.
+Each reused module retains `historical_external_environment: unrecorded`.
+The axiom audit reports the transitive axiom closure of retained declarations;
+it does not re-elaborate their source. Task A and source regeneration were
+rerun fresh and do not depend on that Task B cache.
+
+**Fresh reproduction:** a successful fresh run resolves this missing record
+for that run. Follow the
+pinned dependency setup and the fresh command in [README.md](README.md), with
+new build and receipt directories and no resume option. It recompiles all 52
+Task B modules and records the installed toolchain, Mathlib and dependency
+hashes before and after the build, tying the new results to those actual bytes.
+This creates new verification evidence; it cannot retrospectively fill in the
+old receipt. Installing the documented public dependencies remains part of
+reproduction: hashing artifacts alone does not prove their origin.
 See [the build review](../lean-multi-host-source/EXTERNAL-BUILD-REVIEW.md).
 
 The official Linux Lean archive available during this validation also matches

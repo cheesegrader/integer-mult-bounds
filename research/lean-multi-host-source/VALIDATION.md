@@ -4,8 +4,12 @@ The completed build below is historical. For the final external-review
 delivery, see [`../lean-external-review/VALIDATION.md`](../lean-external-review/VALIDATION.md):
 Task A and source extraction were rerun fresh; Task B explicitly reused all
 52 receipt-anchored modules and reran the 930-declaration axiom inventory.
-Its new receipt reports zero fresh Task B modules and discloses the missing
-historical external-library fingerprint. No Lean proof source changed.
+Its new receipt reports zero fresh Task B modules. The original receipt did
+not record byte hashes of the installed Lean distribution, Mathlib or its eight
+manifest dependencies, so the resumed PASS cannot establish the external-library
+bytes used in the original compilation. The linked delivery validation names
+those dependencies and explains how fresh reproduction recompiles all 52 modules
+and records the dependency hashes for a new run. No Lean proof source changed.
 
 **PASS:** the coherent package replay completed at
 2026-10-11 23:59:17 UTC. `replay-result.json` records 52 source-built modules

@@ -136,6 +136,14 @@ afresh and audits all named theorem closures with `lean -t 0`. Logs and receipts
 go under `--receipt-dir`. The earlier Task B build took about 46 minutes of
 module wall time, plus Mathlib setup; timings vary. Task A needs no Mathlib.
 
+The packaged Task B validation reused 52 local compiled modules. Their original
+receipt did not record byte hashes for the installed Lean distribution, Mathlib
+or Mathlib's eight dependencies; see [validation](VALIDATION.md) for their names
+and the resulting limit on that resumed PASS. The fresh command above removes
+reliance on those historical modules: it recompiles all 52 and records the
+actual toolchain/library hashes for the new run. It resolves the missing record
+for that new verification, without changing the historical receipt.
+
 For a build interrupted under the current runner, use the same build directory,
 a new receipt directory, and `--resume`. Every reuse is checked against source,
 local dependency, artifact, and recorded external-environment hashes. See

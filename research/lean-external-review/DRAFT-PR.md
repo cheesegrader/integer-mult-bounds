@@ -46,10 +46,19 @@ python3 research/lean-external-review/reproduce.py \
 ```
 
 Task A has six modules/21 audited theorem closures; Task B has 52/930.
-The packaging validation distinguishes fresh Task A/source regeneration
-from hash-checked resumed Task B and discloses the historical external-library
-fingerprint gap. Only standard Lean axioms are accepted. See the delivery's
-validation receipt for exact outcomes; no whole-algorithm claim follows.
+Task A and source regeneration were rerun fresh. Task B reused all 52 local
+compiled modules after checking their hashes and reran the 930-declaration
+axiom audit. The original build recorded Lean/Mathlib revisions but not byte
+hashes of the installed Lean 4.33.0 distribution (including Lean/Std libraries),
+Mathlib, or its eight dependencies: plausible, LeanSearchClient, importGraph,
+proofwidgets, aesop, Qq, batteries, and Cli. Today's hashes cannot establish
+which external-library bytes were used for that original compilation.
+The reported Task B PASS therefore describes checked reuse and a rerun axiom
+audit, not a fresh source build. A successful fresh run of the command above
+resolves this: it recompiles all 52 modules and records the current dependency hashes;
+it does not repair the old receipt. Only standard Lean axioms are accepted.
+See the delivery's validation receipt for exact outcomes; no whole-algorithm
+claim follows.
 `make gen4-bank-verify` passed separately. The full `make verify` sweep was
 stopped at a ten-minute limit during `verify-recycled-bit`; it is incomplete.
 
